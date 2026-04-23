@@ -1,0 +1,153 @@
+================================================================================
+PLAN DE MEJORAS — controlestaleiro
+Auditoría: 2026-04-11
+================================================================================
+
+════════════════════════════════════════════════════════════════════════════════
+FASE 1 — SEGURIDAD INMEDIATA
+════════════════════════════════════════════════════════════════════════════════
+
+[ ] 1.1 Añadir abort(403) en métodos Livewire sin autorización
+        - app/Livewire/GestaoSeguranca.php
+          · salvarContato(), editarContato(), apagarContato()
+        - app/Livewire/GestaoEquipas.php
+          · atribuirRecurso()
+        - app/Livewire/ImportarDados.php
+          · Verificación de permisos en el componente, no solo en routes
+        - app/Livewire/Epis/Entregas/Form.php
+          · save() — añadir isEpi() check
+        - app/Livewire/GestaoUtilizadores.php
+          · openEdit(), saveEdit() — verificar isAdmin()
+
+[ ] 1.2 Corregir N+1 en BulkFichaEpiController
+        - app/Http/Controllers/BulkFichaEpiController.php
+        - Cambiar Colaborador::find($id) dentro del foreach
+          por Colaborador::whereIn('id', $ids)->get()->keyBy('id')
+          antes del loop
+
+[ ] 1.3 Añadir paginación a listas sin límite
+        - app/Livewire/Epis/Index.php         — $query->get() → paginate(50)
+        - app/Livewire/Colaboradores/Index.php — $query->get() → paginate(50)
+        - Revisar también: Estatisticas/Colaboradores.php, Epis/Historico.php
+
+[ ] 1.4 Añadir índices a columnas críticas (nueva migración)
+        - epi_entregas: índice compuesto (colaborador_id, estado)
+        - asignaciones: índice en fecha
+        - ferramenta_logs: índices en colaborador_id, veiculo_id
+        - epi_items: índice en activo
+        - vehicle_driver_logs: índice en (vehicle_id, ended_at)
+          (usado en ativoParaVeiculo y ativoParaColaborador)
+
+
+════════════════════════════════════════════════════════════════════════════════
+FASE 2 — ARQUITECTURA Y MANTENIBILIDAD
+════════════════════════════════════════════════════════════════════════════════
+
+[ ] 2.1 Extraer SchedulingService de GestaoEquipas
+        - app/Livewire/GestaoEquipas.php (668 líneas)
+        - Mover a app/Services/SchedulingService.php:
+          · Lógica de atribuirRecurso()
+          · Cálculo de disponibilidad de colaboradores/vehículos
+          · Lógica de copia de datos entre fechas
+
+[ ] 2.2 Crear ColaboradorObserver para eliminación en cascada
+        - app/Livewire/Colaboradores/Index.php — eliminar() manual
+        - Crear app/Observers/ColaboradorObserver.php
+        - Registrar en app/Providers/AppServiceProvider.php
+
+[ ] 2.3 Crear Trait HasActivationLogic para código duplicado
+        - Patrón desactivar/reactivar/eliminar repetido en:
+          · Livewire/Colaboradores/Index.php
+          · Livewire/Materiais/Index.php
+          · Livewire/Veiculos/Index.php
+          · Livewire/Extintores/Index.php (verificar)
+        - Crear app/Livewire/Concerns/HasActivationLogic.php
+
+[ ] 2.4 Dividir HasGuias en traits más pequeños
+        - app/Livewire/Concerns/HasGuias.php (237 líneas)
+        - Dividir en:
+          · HasGuiaSearch.php
+          · HasGuiaValidation.php
+          · HasGuiaActions.php
+
+[ ] 2.5 Añadir tipos PHP 8.3 a métodos sin tipos
+        - app/Livewire/GestaoEquipas.php — atribuirRecurso()
+        - app/Livewire/Colaboradores/Form.php — múltiples métodos
+        - Revisar todos los componentes con parámetros sin tipo
+
+[ ] 2.6 Añadir defaults explícitos a columnas nullable en migraciones
+        - database/migrations/2026_03_31_000005_create_logistica_tables.php
+          · data_verificacao, proxima_verificacao, verificado_por,
+            num_registo_verificacao, checklist
+        - Solo para nuevas migraciones (no modificar las existentes)
+
+
+════════════════════════════════════════════════════════════════════════════════
+FASE 3 — TESTS Y CALIDAD
+════════════════════════════════════════════════════════════════════════════════
+
+Cobertura actual estimada: ~5%
+Objetivo mínimo: 60%
+
+[ ] 3.1 Tests de autorización para componentes admin
+        - tests/Feature/GestaoUtilizadoresTest.php
+          · operario no puede acceder a gestión de usuarios
+          · admin puede editar usuarios pero no super_admin
+        - tests/Feature/GestaoSegurancaTest.php
+          · solo admin puede modificar contactos de emergencia
+        - tests/Feature/GestaoEquipasTest.php
+          · solo admin puede atribuir recursos
+
+[ ] 3.2 Tests de lógica de asignación
+        - tests/Feature/AssignmentTest.php
+          · puede asignar colaborador a PEP
+          · no puede asignar vehículo a consulta médica
+          · asignación elimina del PEP anterior
+
+[ ] 3.3 Tests de eliminación de colaboradores
+        - tests/Feature/ColaboradorDeletionTest.php
+          · no puede eliminar colaborador con historial
+          · puede eliminar colaborador nuevo
+          · eliminación anula referencias FK correctamente
+
+[ ] 3.4 Tests de importación de datos
+        - tests/Feature/ImportTest.php
+          · importación válida procesa correctamente
+          · importación inválida lanza error sin datos parciales
+
+[ ] 3.5 Tests de servicios
+        - tests/Unit/WebPushServiceTest.php
+          · notificación se envía al colaborador correcto
+          · suscripciones expiradas se eliminan
+        - tests/Unit/EpiStockServiceTest.php (ampliar el existente)
+
+[ ] 3.6 Tests de políticas
+        - tests/Unit/EpiEntregaPolicyTest.php
+
+[ ] 3.7 Configurar análisis estático
+        - Instalar phpstan/larastan (nivel 5 mínimo)
+        - Añadir a CI/CD pipeline
+
+
+════════════════════════════════════════════════════════════════════════════════
+MANTENIMIENTO CONTINUO
+════════════════════════════════════════════════════════════════════════════════
+
+[ ] Ejecutar vendor/bin/pint --dirty en cada commit (ya en uso ✓)
+[ ] Revisar queries lentas con Laravel Debugbar (solo en dev)
+[ ] Code review antes de merge a main
+[ ] Actualizar dependencias mensualmente (composer outdated)
+[ ] Revisar suscripciones push huérfanas mensualmente
+
+
+================================================================================
+NOTAS
+================================================================================
+
+- Las fases son secuenciales: completar Fase 1 antes de Fase 2
+- Dentro de cada fase, los items son independientes y pueden hacerse en paralelo
+- Cada item de tests (Fase 3) debe hacerse al mismo tiempo que el código
+  que cubre, no al final
+- Prioridad máxima: items 1.1, 1.2, 1.4 (seguridad directa)
+
+================================================================================

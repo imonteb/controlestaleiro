@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão Completa — ControlEstaleiro</title>
+    <style>
+        :root {
+            --bg: #0a0f1e;
+            --bg2: #0f172a;
+            --bg3: #1e293b;
+            --border: rgba(255,255,255,0.08);
+            --yellow: #fbbf24;
+            --yellow-dim: rgba(251,191,36,0.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59,130,246,0.10);
+            --green: #10b981;
+            --green-dim: rgba(16,185,129,0.10);
+            --red: #ef4444;
+            --red-dim: rgba(239,68,68,0.10);
+            --orange: #f97316;
+            --orange-dim: rgba(249,115,22,0.10);
+            --purple: #a855f7;
+            --purple-dim: rgba(168,85,247,0.10);
+            --text: #e2e8f0;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* HEADER */
+        .hero {
+            background: linear-gradient(160deg, #0f2a5e 0%, #0a0f1e 60%);
+            border-bottom: 1px solid var(--border);
+            padding: 60px 40px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--yellow-dim);
+            border: 1px solid rgba(251,191,36,0.3);
+            color: var(--yellow);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+        .hero h1 span { color: var(--yellow); }
+        .hero p {
+            color: var(--text-dim);
+            font-size: 16px;
+            max-width: 600px;
+        }
+        .hero-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        .hero-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .hero-meta-item .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .hero-meta-item .value {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--yellow);
+        }
+        .hero-meta-item .value.blue { color: var(--blue); }
+        .hero-meta-item .value.green { color: var(--green); }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px 80px;
+        }
+
+        /* SCORE CARD */
+        .score-bar {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 36px;
+            margin: 32px 0;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(var(--yellow) 75%, rgba(255,255,255,0.07) 75%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 76px;
+            height: 76px;
+            background: var(--bg2);
+            border-radius: 50%;
+        }
+        .score-value {
+            position: relative;
+            z-index: 1;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--yellow);
+        }
+        .score-info h2 {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .score-info p {
+            color: var(--text-dim);
+            font-size: 14px;
+            max-width: 600px;
+        }
+        .score-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .pill {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid;
+        }
+        .pill.green { color: var(--green); border-color: rgba(16,185,129,0.3); background: var(--green-dim); }
+        .pill.yellow { color: var(--yellow); border-color: rgba(251,191,36,0.3); background: var(--yellow-dim); }
+        .pill.red { color: var(--red); border-color: rgba(239,68,68,0.3); background: var(--red-dim); }
+        .pill.blue { color: var(--blue); border-color: rgba(59,130,246,0.3); background: var(--blue-dim); }
+
+        /* SECTIONS */
+        .section {
+            margin-top: 48px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .section-icon.red { background: var(--red-dim); }
+        .section-icon.orange { background: var(--orange-dim); }
+        .section-icon.green { background: var(--green-dim); }
+        .section-icon.blue { background: var(--blue-dim); }
+        .section-icon.yellow { background: var(--yellow-dim); }
+        .section-icon.purple { background: var(--purple-dim); }
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .section-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .card:hover {
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+        .card-accent {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+        }
+        .card-accent.red { background: var(--red); }
+        .card-accent.orange { background: var(--orange); }
+        .card-accent.yellow { background: var(--yellow); }
+        .card-accent.green { background: var(--green); }
+        .card-accent.blue { background: var(--blue); }
+        .card-accent.purple { background: var(--purple); }
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .card-badge {
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: 100px;
+            border: 1px solid;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .card-badge.critical { color: var(--red); border-color: rgba(239,68,68,0.4); background: var(--red-dim); }
+        .card-badge.warning { color: var(--orange); border-color: rgba(249,115,22,0.4); background: var(--orange-dim); }
+        .card-badge.info { color: var(--blue); border-color: rgba(59,130,246,0.4); background: var(--blue-dim); }
+        .card-badge.good { color: var(--green); border-color: rgba(16,185,129,0.4); background: var(--green-dim); }
+        .card p {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.65;
+        }
+        .card-file {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 11px;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            color: var(--text-muted);
+        }
+        .card-solution {
+            margin-top: 14px;
+            background: rgba(16,185,129,0.06);
+            border: 1px solid rgba(16,185,129,0.15);
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+        .card-solution .label {
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--green);
+            margin-bottom: 4px;
+        }
+        .card-solution code {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 11px;
+            color: #a3e635;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* TABLE */
+        .table-wrap {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead tr {
+            background: rgba(255,255,255,0.04);
+        }
+        th {
+            text-align: left;
+            padding: 12px 20px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 13px 20px;
+            font-size: 13px;
+            color: var(--text-dim);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        td strong { color: #fff; font-weight: 700; }
+        td .impact { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        td .impact.alto { color: var(--red); }
+        td .impact.medio { color: var(--orange); }
+        td .impact.baixo { color: var(--blue); }
+        td .esforco { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+        .td-number {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--yellow);
+        }
+
+        /* ARCHITECTURE TABLE */
+        .arch-table td { font-size: 13px; }
+        .arch-ok { color: var(--green); font-size: 16px; }
+        .arch-warn { color: var(--orange); font-size: 16px; }
+        .arch-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .arch-score .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+
+        /* FEATURES GRID */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
+        }
+        .feature-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+        .feature-card:hover { border-color: rgba(255,255,255,0.15); }
+        .feature-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+        .feature-icon {
+            font-size: 26px;
+            width: 48px;
+            height: 48px;
+            background: var(--bg3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .feature-meta h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .feature-meta .priority {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .feature-meta .priority.high { color: var(--red); }
+        .feature-meta .priority.medium { color: var(--orange); }
+        .feature-meta .priority.low { color: var(--blue); }
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.65;
+        }
+        .feature-list {
+            list-style: none;
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .feature-list li {
+            font-size: 12.5px;
+            color: var(--text-dim);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .feature-list li::before {
+            content: '›';
+            color: var(--yellow);
+            font-weight: 900;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* QUICK WINS */
+        .quickwins {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .quickwin-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 100px 100px 120px;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: background 0.15s;
+        }
+        .quickwin-row:last-child { border-bottom: none; }
+        .quickwin-row:hover { background: rgba(255,255,255,0.02); }
+        .quickwin-row.header {
+            background: rgba(255,255,255,0.04);
+            padding: 10px 20px;
+        }
+        .quickwin-row.header span {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+        .qw-num {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            background: var(--yellow-dim);
+            border: 1px solid rgba(251,191,36,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--yellow);
+        }
+        .qw-action { font-size: 13.5px; font-weight: 600; color: #fff; }
+        .qw-esforco, .qw-impacto { font-size: 12px; font-weight: 700; }
+        .qw-impacto.muito-alto { color: var(--red); }
+        .qw-impacto.alto { color: var(--orange); }
+        .qw-impacto.medio { color: var(--yellow); }
+        .qw-esforco { color: var(--text-dim); }
+        .qw-tag { font-size: 10px; }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        footer strong { color: var(--text-dim); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero { padding: 40px 20px; }
+            .container { padding: 0 16px 60px; }
+            .score-bar { flex-direction: column; align-items: flex-start; }
+            .cards { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .quickwin-row { grid-template-columns: 40px 1fr 80px; }
+            .quickwin-row .qw-impacto, .quickwin-row .qw-tag { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-badge">📋 Revisão Técnica v1.0 — Abril 2026</div>
+    <h1>Revisão Completa<br><span>ControlEstaleiro</span></h1>
+    <p>Análise de erros, arquitetura, escalabilidade, manutenibilidade e roadmap de funcionalidades para um sistema de gestão de estaleiro naval de nível profissional.</p>
+    <div class="hero-meta">
+        <div class="hero-meta-item">
+            <span class="label">Nota Geral</span>
+            <span class="value">7.5/10</span>
+        </div>
+        <div class="hero-meta-item">
+            <span class="label">Modelos</span>
+            <span class="value blue">32</span>
+        </div>
+        <div class="hero-meta-item">
+            <span class="label">Componentes Livewire</span>
+            <span class="value blue">53</span>
+        </div>
+        <div class="hero-meta-item">
+            <span class="label">Rotas</span>
+            <span class="value blue">60+</span>
+        </div>
+        <div class="hero-meta-item">
+            <span class="label">Stack</span>
+            <span class="value green" style="font-size:14px;margin-top:3px;">Laravel 12 + Livewire 4 + Flux UI + Tailwind v4</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- SCORE -->
+    <div class="score-bar">
+        <div class="score-circle">
+            <span class="score-value">7.5</span>
+        </div>
+        <div class="score-info">
+            <h2>Base sólida, vários pontos de fragilidade identificados</h2>
+            <p>A aplicação cobre todos os domínios operacionais de um estaleiro naval (EPIs, frota, ferramentas, planeamento, incidentes, guias de transporte, segurança). O código é consistente e usa padrões modernos. O foco agora deve ser consolidar o que existe antes de expandir.</p>
+            <div class="score-pills">
+                <span class="pill green">✓ Observer pattern correto</span>
+                <span class="pill green">✓ RBAC funcional</span>
+                <span class="pill green">✓ SignatureService bem abstraído</span>
+                <span class="pill yellow">⚠ PIN em texto plano</span>
+                <span class="pill yellow">⚠ Timezone UTC</span>
+                <span class="pill red">✕ GeoIP síncrono</span>
+                <span class="pill red">✕ Assinaturas em DB</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUGS CRITICOS -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon red">🔴</div>
+            <div>
+                <h2>Bugs Críticos — Podem Causar Falhas em Produção</h2>
+                <p>Problemas que devem ser corrigidos antes de qualquer nova funcionalidade</p>
+            </div>
+        </div>
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-accent red"></div>
+                <div class="card-header">
+                    <span class="card-title">Geolocalização Síncrona no Middleware</span>
+                    <span class="card-badge critical">Crítico</span>
+                </div>
+                <p>Cada request autenticado faz uma chamada HTTP externa ao <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">ip-api.com</code> com timeout de 3 segundos. Se o serviço estiver lento, <strong>todos os utilizadores ficam bloqueados 3 segundos por request</strong>. Em produção com 20 utilizadores simultâneos, isto pode derrubar o servidor.</p>
+                <span class="card-file">📄 app/Http/Middleware/LogSessionActivity.php:64</span>
+                <div class="card-solution">
+                    <div class="label">✦ Solução</div>
+                    <code>// Mover para Job assíncrono
+GeolocateSessionJob::dispatch($sessionId, $ip)
+    ->onQueue('low');</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent red"></div>
+                <div class="card-header">
+                    <span class="card-title">Assinaturas Base64 na Base de Dados</span>
+                    <span class="card-badge critical">Crítico</span>
+                </div>
+                <p>Os campos <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">firma</code> e <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">firma_devolucion</code> são <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">longText</code>. Uma assinatura base64 ocupa ~50-80KB. Com 1000 entregas, são <strong>~80MB só nestes campos</strong>. A <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">SignatureService::store()</code> existe mas não está a ser usada consistentemente.</p>
+                <span class="card-file">📄 app/Models/EpiEntrega.php</span>
+                <span class="card-file">📄 app/Models/FerramentaLog.php</span>
+                <div class="card-solution">
+                    <div class="label">✦ Solução</div>
+                    <code>// Sempre usar SignatureService::store()
+// antes de persistir qualquer assinatura
+$path = SignatureService::store($base64Data);
+$entrega->firma = $path;</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent orange"></div>
+                <div class="card-header">
+                    <span class="card-title">Stock EPI Pode Ficar Negativo</span>
+                    <span class="card-badge warning">Aviso</span>
+                </div>
+                <p>O <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">applyDelta()</code> não valida se o resultado será negativo antes de persistir. A <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">validateStock()</code> existe mas só é chamada no formulário — não nos observers. Uma entrega criada via API ou Tinker pode quebrar o inventário.</p>
+                <span class="card-file">📄 app/Services/EpiStockService.php</span>
+                <div class="card-solution">
+                    <div class="label">✦ Solução</div>
+                    <code>// Adicionar no applyDelta() antes de save
+if ($item->stock_total + $delta &lt; 0) {
+    throw new StockInsuficienteException();
+}</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent orange"></div>
+                <div class="card-header">
+                    <span class="card-title">PIN do Colaborador em Texto Plano</span>
+                    <span class="card-badge warning">Segurança</span>
+                </div>
+                <p>O PIN de 4 dígitos dos colaboradores está armazenado sem hash na base de dados. Se a DB vazar, todos os PINs ficam imediatamente expostos. Deve usar <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">Hash::make()</code> tal como a password do <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">User</code>.</p>
+                <span class="card-file">📄 app/Models/Colaborador.php</span>
+                <div class="card-solution">
+                    <div class="label">✦ Solução</div>
+                    <code>// Cast no modelo
+protected $casts = ['pin' => 'hashed'];
+
+// Verificação no login
+Hash::check($inputPin, $colaborador->pin);</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent orange"></div>
+                <div class="card-header">
+                    <span class="card-title">Timezone UTC para Aplicação Portuguesa</span>
+                    <span class="card-badge warning">Aviso</span>
+                </div>
+                <p>O <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">config/app.php</code> define <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">timezone = UTC</code>. Todas as datas guardadas e exibidas estão desfasadas 1h (inverno) ou 2h (verão) em relação ao horário de Lisboa — afeta logs, timestamps de atribuições, datas de entregas e relatórios.</p>
+                <span class="card-file">📄 config/app.php</span>
+                <div class="card-solution">
+                    <div class="label">✦ Solução (5 minutos)</div>
+                    <code>'timezone' => 'Europe/Lisbon',</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent blue"></div>
+                <div class="card-header">
+                    <span class="card-title">Sem Policies de Recurso (Authorization)</span>
+                    <span class="card-badge info">Arquitetura</span>
+                </div>
+                <p>O middleware verifica se o utilizador tem o role <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">epi</code>, mas não verifica permissões sobre recursos específicos. Qualquer utilizador <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">epi</code> pode editar qualquer item do catálogo EPI. À medida que o sistema crescer, isto tornará o controlo de acesso impossível de auditar.</p>
+                <span class="card-file">📄 app/Http/Middleware/EnsureIsEpi.php</span>
+                <div class="card-solution">
+                    <div class="label">✦ Solução</div>
+                    <code>// php artisan make:policy EpiItemPolicy
+// Implementar can('update', $epiItem)
+// nos componentes Livewire</code>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ARQUITETURA -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon green">🏗</div>
+            <div>
+                <h2>Arquitetura — Análise por Área</h2>
+                <p>O que está bem e o que precisa de atenção</p>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="arch-table">
+                <thead>
+                    <tr>
+                        <th>Área</th>
+                        <th>Avaliação</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Observer Pattern (Stock EPI)</strong></td>
+                        <td><span class="arch-ok">✓</span> <span class="pill green" style="font-size:10px;">Excelente</span></td>
+                        <td>Lógica centralizada em EpiStockService, observers separados por domínio, saveQuietly() previne recursão</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SignatureService</strong></td>
+                        <td><span class="arch-ok">✓</span> <span class="pill green" style="font-size:10px;">Muito bom</span></td>
+                        <td>Polimórfico, abstrai file storage vs base64, usado em EpiEntrega e FerramentaLog</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RBAC com array de roles</strong></td>
+                        <td><span class="arch-ok">✓</span> <span class="pill green" style="font-size:10px;">Adequado</span></td>
+                        <td>Flexível, permite múltiplos roles por utilizador. Falta complementar com Policies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Migrations por domínio</strong></td>
+                        <td><span class="arch-ok">✓</span> <span class="pill green" style="font-size:10px;">Bom</span></td>
+                        <td>Numeradas por contexto (sistema, rrhh, planificacion, epis, logistica...). Dependências claras, FK bem definidas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Estrutura Livewire</strong></td>
+                        <td><span class="arch-ok">✓</span> <span class="pill green" style="font-size:10px;">Bom</span></td>
+                        <td>Pastas refletem domínios, padrão Form/Index consistente, #[Layout] e #[Title] bem usados</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Testes (EpiStockTest)</strong></td>
+                        <td><span class="arch-ok">✓</span> <span class="pill green" style="font-size:10px;">Excelente</span></td>
+                        <td>Cobertura completa do path crítico de stock. Factories com estado customizado (withStock)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cobertura de Testes Geral</strong></td>
+                        <td><span class="arch-warn">⚠</span> <span class="pill yellow" style="font-size:10px;">Fraco</span></td>
+                        <td>17 ficheiros de teste, nenhum testa Livewire diretamente. PhoneDisplay (caminho crítico mobile) sem testes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Strings Mágicas de Estado</strong></td>
+                        <td><span class="arch-warn">⚠</span> <span class="pill yellow" style="font-size:10px;">Risco</span></td>
+                        <td>'pendente', 'aprovado', 'entregue' espalhados em views, queries e componentes. Deve migrar para PHP Enums</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jobs Assíncronos</strong></td>
+                        <td><span class="arch-warn">⚠</span> <span class="pill yellow" style="font-size:10px;">Ausente</span></td>
+                        <td>Tabelas jobs e failed_jobs existem mas não há Jobs implementados. Tudo é síncrono — GeoIP, exportações, notificações</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PhoneDisplay (componente PHP)</strong></td>
+                        <td><span class="arch-warn">⚠</span> <span class="pill yellow" style="font-size:10px;">Pesado</span></td>
+                        <td>Agrega EPI requests, incidentes, guias, notificações, termos e segurança numa só classe. Candidato a sub-componentes Livewire</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ESCALABILIDADE -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon purple">📈</div>
+            <div>
+                <h2>Escalabilidade e Manutenibilidade</h2>
+                <p>Riscos a médio/longo prazo à medida que o volume de dados e utilizadores cresce</p>
+            </div>
+        </div>
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-accent purple"></div>
+                <div class="card-header">
+                    <span class="card-title">Enums para Estados de Processo</span>
+                    <span class="card-badge info">Manutenção</span>
+                </div>
+                <p>Os estados <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">'pendente'</code>, <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">'aprovado'</code>, <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">'entregue'</code>, <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">'rejeitado'</code> estão espalhados em vistas, componentes e queries. Se um estado mudar, há múltiplos pontos de falha silenciosa.</p>
+                <div class="card-solution">
+                    <div class="label">✦ Solução com PHP 8.1 Enums</div>
+                    <code>enum EpiPedidoEstado: string {
+    case Pendente  = 'pendente';
+    case Aprovado  = 'aprovado';
+    case Entregue  = 'entregue';
+    case Rejeitado = 'rejeitado';
+}</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent purple"></div>
+                <div class="card-header">
+                    <span class="card-title">Queue Worker para Operações Lentas</span>
+                    <span class="card-badge info">Performance</span>
+                </div>
+                <p>Não há Jobs assíncronos implementados. Quando o volume crescer — exportações Excel grandes, envio de notificações, processamento de imagens — tudo vai bloquear o request HTTP. As tabelas de jobs já existem na DB, só falta usar.</p>
+                <div class="card-solution">
+                    <div class="label">✦ Candidatos a Jobs</div>
+                    <code>GeolocateSessionJob
+SendPushNotificationJob
+ExportEpiHistoricoJob
+ProcessSignatureImageJob</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent purple"></div>
+                <div class="card-header">
+                    <span class="card-title">Archival Strategy para Logs</span>
+                    <span class="card-badge info">DB Growth</span>
+                </div>
+                <p>As tabelas <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">user_sessions</code>, <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">ferramenta_logs</code> e <code style="background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:4px;font-size:12px;">vehicle_driver_logs</code> crescem indefinidamente. Sem uma estratégia de arquivo (ex: purgar registos com mais de 2 anos), a DB vai degradar ao longo do tempo.</p>
+                <div class="card-solution">
+                    <div class="label">✦ Solução</div>
+                    <code>// Scheduled command (routes/console.php)
+Schedule::command('app:purge-old-sessions')
+    ->monthly();</code>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-accent purple"></div>
+                <div class="card-header">
+                    <span class="card-title">Testes de Componentes Livewire</span>
+                    <span class="card-badge info">Qualidade</span>
+                </div>
+                <p>O path crítico dos trabalhadores mobile (PhoneDisplay — login, aceitar termos, solicitar EPI, reportar incidente) não tem nenhum teste automatizado. Uma regressão neste fluxo pode passar despercebida indefinidamente.</p>
+                <div class="card-solution">
+                    <div class="label">✦ Exemplo com Pest + Livewire</div>
+                    <code>it('allows worker to request EPI', function () {
+    $colaborador = Colaborador::factory()->create();
+    Livewire::test(PhoneDisplay::class)
+        ->call('autenticar', $colaborador->pin)
+        ->assertSet('activeColaboradorId',
+            $colaborador->id);
+});</code>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NOVAS FUNCIONALIDADES -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon yellow">🚀</div>
+            <div>
+                <h2>Roadmap de Funcionalidades</h2>
+                <p>Módulos relevantes para um gestor de estaleiro naval, ordenados por impacto operacional</p>
+            </div>
+        </div>
+        <div class="features-grid">
+
+            <!-- PRIORIDADE ALTA -->
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">⏱</div>
+                    <div class="feature-meta">
+                        <h3>Controlo de Ponto Digital</h3>
+                        <span class="priority high">● Prioridade Alta</span>
+                    </div>
+                </div>
+                <p>O sistema já regista quem está em que PEP cada dia (Atribuicao), mas não regista horas de entrada/saída. A adição natural seria check-in/check-out no PhoneDisplay via PIN ou QR code do colaborador.</p>
+                <ul class="feature-list">
+                    <li>Check-in / check-out no ecrã mobile</li>
+                    <li>Relatório mensal de horas por colaborador</li>
+                    <li>Alertas de ausências não justificadas</li>
+                    <li>Exportação para folha de salários (CSV/Excel)</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-meta">
+                        <h3>Push Notifications Reais (PWA)</h3>
+                        <span class="priority high">● Prioridade Alta</span>
+                    </div>
+                </div>
+                <p>O sistema tem AppNotification e o PhoneDisplay funciona como PWA, mas as notificações são apenas in-app (polling a cada 20s). Com Web Push API, os trabalhadores receberiam alertas mesmo com o telemóvel fechado.</p>
+                <ul class="feature-list">
+                    <li>Service Worker + Web Push API</li>
+                    <li>Alertas de EPI aprovado / documento a vencer</li>
+                    <li>Urgências de segurança em tempo real</li>
+                    <li>Assinaturas pendentes</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">⚠️</div>
+                    <div class="feature-meta">
+                        <h3>Não-Conformidades e Ações Corretivas</h3>
+                        <span class="priority high">● Prioridade Alta</span>
+                    </div>
+                </div>
+                <p>Os IncidentReport existem mas são básicos. Um módulo CAPA completo (Corrective and Preventive Action) é obrigatório para certificações ISO 45001 em ambiente de estaleiro.</p>
+                <ul class="feature-list">
+                    <li>Criação mobile-first com foto e geolocalização</li>
+                    <li>Atribuição de responsável + prazo de resolução</li>
+                    <li>Workflow de aprovação e fecho</li>
+                    <li>Dashboard de KPIs de segurança (taxa acidentes/mês)</li>
+                    <li>Histórico auditável por não-conformidade</li>
+                </ul>
+            </div>
+
+            <!-- PRIORIDADE MÉDIA -->
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">📜</div>
+                    <div class="feature-meta">
+                        <h3>Validade de Certificações por Colaborador</h3>
+                        <span class="priority medium">● Prioridade Média</span>
+                    </div>
+                </div>
+                <p>Cada trabalhador de estaleiro tem certificados com prazo: trabalho em altura, soldadura, manobrador de grua, espaços confinados. O sistema deve alertar e bloquear atribuições quando um certificado está vencido.</p>
+                <ul class="feature-list">
+                    <li>Upload de documentos por colaborador</li>
+                    <li>Alertas automáticos 30/15/7 dias antes do vencimento</li>
+                    <li>Bloqueio de atribuição a PEPs que requeiram a certificação</li>
+                    <li>Relatório de conformidade da equipa</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-meta">
+                        <h3>Checklists Digitais de Inspeção</h3>
+                        <span class="priority medium">● Prioridade Média</span>
+                    </div>
+                </div>
+                <p>Além das ferramentas (FerramentaLog), um módulo genérico de checklists digitais para inspeções recorrentes com assinatura e foto integradas.</p>
+                <ul class="feature-list">
+                    <li>Inspeção diária de veículos (pre-trip check)</li>
+                    <li>Verificação de andaimes e EPC</li>
+                    <li>Checklists customizáveis por tipo de ativo</li>
+                    <li>Histórico com assinatura digital e timestamp</li>
+                    <li>Alertas de checklists em atraso</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">🏢</div>
+                    <div class="feature-meta">
+                        <h3>Gestão de Subempreiteiros</h3>
+                        <span class="priority medium">● Prioridade Média</span>
+                    </div>
+                </div>
+                <p>Em estaleiros, uma parte significativa da força de trabalho é subcontratada. O sistema atual só gere colaboradores internos, criando um ponto cego operacional.</p>
+                <ul class="feature-list">
+                    <li>Registo de empresas subcontratadas</li>
+                    <li>Colaboradores subcontratados com validade de contrato</li>
+                    <li>Atribuição aos mesmos PEPs que internos</li>
+                    <li>Controlo de documentação (seguros, certidões fiscais)</li>
+                    <li>Separação de EPIs internos vs. subempreiteiros</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-meta">
+                        <h3>Planeamento Visual de Recursos</h3>
+                        <span class="priority medium">● Prioridade Média</span>
+                    </div>
+                </div>
+                <p>O PepBoard existe mas é provavelmente uma visão de dia. Um Gantt por semana/mês com drag-and-drop seria muito valioso para chefes de equipa planearem alocações com antecedência.</p>
+                <ul class="feature-list">
+                    <li>Vista semanal e mensal de alocações</li>
+                    <li>Drag-and-drop para reagendamento</li>
+                    <li>Detecção de conflitos (mesmo colaborador em 2 PEPs)</li>
+                    <li>Exportação para PDF para reuniões de planeamento</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">🔗</div>
+                    <div class="feature-meta">
+                        <h3>API REST para Integração ERP</h3>
+                        <span class="priority low">● Prioridade Baixa</span>
+                    </div>
+                </div>
+                <p>Se a empresa usa SAP, Primavera, PHC ou similar, uma API de sincronização bidirecional elimina a duplicação de dados entre sistemas. O Laravel 12 tem suporte nativo a API Resources.</p>
+                <ul class="feature-list">
+                    <li>API de colaboradores (sincronizar com RH)</li>
+                    <li>API de EPIs (sincronizar com contabilidade/compras)</li>
+                    <li>Webhooks para eventos críticos</li>
+                    <li>Autenticação via API tokens (Sanctum)</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon">📉</div>
+                    <div class="feature-meta">
+                        <h3>Business Intelligence Self-Hosted</h3>
+                        <span class="priority low">● Prioridade Baixa</span>
+                    </div>
+                </div>
+                <p>Os módulos ResumoMensal e Estatisticas existem mas são básicos. Metabase (open-source, gratuito) conectado diretamente à mesma DB daria dashboards avançados sem desenvolvimento adicional.</p>
+                <ul class="feature-list">
+                    <li>Dashboards interativos para gestão</li>
+                    <li>KPIs de segurança (TIFR, TISR, etc.)</li>
+                    <li>Análise de consumo de EPIs por departamento</li>
+                    <li>Relatórios automáticos por email</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- QUICK WINS -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon blue">⚡</div>
+            <div>
+                <h2>Quick Wins — O Que Fazer Primeiro</h2>
+                <p>Ordenados por impacto vs. esforço de implementação</p>
+            </div>
+        </div>
+        <div class="quickwins">
+            <div class="quickwin-row header">
+                <span></span>
+                <span>Ação</span>
+                <span>Esforço</span>
+                <span>Impacto</span>
+                <span>Área</span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">1</div>
+                <div class="qw-action">Timezone → <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;font-size:12px;">Europe/Lisbon</code></div>
+                <div class="qw-esforco">5 min</div>
+                <div class="qw-impacto alto">Alto</div>
+                <span class="qw-tag"><span class="pill blue">Config</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">2</div>
+                <div class="qw-action">Hash do PIN do colaborador</div>
+                <div class="qw-esforco">~1 hora</div>
+                <div class="qw-impacto alto">Alto (Segurança)</div>
+                <span class="qw-tag"><span class="pill red">Segurança</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">3</div>
+                <div class="qw-action">GeoLocation → Job assíncrono</div>
+                <div class="qw-esforco">~2 horas</div>
+                <div class="qw-impacto alto">Alto (Performance)</div>
+                <span class="qw-tag"><span class="pill red">Crítico</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">4</div>
+                <div class="qw-action">Enums para estados de processo</div>
+                <div class="qw-esforco">~4 horas</div>
+                <div class="qw-impacto medio">Médio</div>
+                <span class="qw-tag"><span class="pill yellow">Manutenção</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">5</div>
+                <div class="qw-action">Migrar assinaturas para ficheiros</div>
+                <div class="qw-esforco">~1 dia</div>
+                <div class="qw-impacto alto">Alto (DB Size)</div>
+                <span class="qw-tag"><span class="pill red">Crítico</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">6</div>
+                <div class="qw-action">validateStock() nos observers EPI</div>
+                <div class="qw-esforco">~2 horas</div>
+                <div class="qw-impacto alto">Alto</div>
+                <span class="qw-tag"><span class="pill orange">Stock</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">7</div>
+                <div class="qw-action">Testes Livewire para PhoneDisplay</div>
+                <div class="qw-esforco">~2 dias</div>
+                <div class="qw-impacto alto">Alto (Qualidade)</div>
+                <span class="qw-tag"><span class="pill blue">Testes</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">8</div>
+                <div class="qw-action">Módulo de validade de certificações</div>
+                <div class="qw-esforco">~3 dias</div>
+                <div class="qw-impacto alto">Alto (Operacional)</div>
+                <span class="qw-tag"><span class="pill yellow">Novo módulo</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">9</div>
+                <div class="qw-action">Checklists digitais de viaturas</div>
+                <div class="qw-esforco">~3 dias</div>
+                <div class="qw-impacto alto">Alto (Operacional)</div>
+                <span class="qw-tag"><span class="pill yellow">Novo módulo</span></span>
+            </div>
+            <div class="quickwin-row">
+                <div class="qw-num">10</div>
+                <div class="qw-action">Controlo de ponto (check-in/check-out)</div>
+                <div class="qw-esforco">~5 dias</div>
+                <div class="qw-impacto muito-alto">Muito Alto</div>
+                <span class="qw-tag"><span class="pill green">Novo módulo</span></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <span><strong>ControlEstaleiro</strong> — Revisão Técnica Completa v1.0</span>
+    <span>Gerado em Abril 2026 &bull; Laravel 12 + Livewire 4 + Tailwind v4</span>
+</footer>
+
+</body>
+</html>

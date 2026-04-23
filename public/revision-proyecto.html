@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revisión Completa — ControlesTaleiro</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #fff;
+    }
+
+    /* ── PORTADA ── */
+    .cover {
+      height: 100vh;
+      min-height: 700px;
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #0f3460 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      page-break-after: always;
+    }
+    .cover-badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #a8d8ea;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .cover h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .cover h1 span { color: #e94560; }
+    .cover-sub {
+      font-size: 16px;
+      color: #a8d8ea;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    .cover-divider {
+      width: 60px;
+      height: 3px;
+      background: #e94560;
+      margin: 0 auto 36px;
+      border-radius: 2px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+      color: rgba(255,255,255,0.65);
+      font-size: 12px;
+    }
+    .cover-meta span strong { color: #fff; display: block; font-size: 13px; }
+    .cover-score {
+      margin-top: 50px;
+      background: rgba(233,69,96,0.15);
+      border: 1px solid rgba(233,69,96,0.4);
+      border-radius: 12px;
+      padding: 18px 36px;
+      color: #fff;
+    }
+    .cover-score .score-num { font-size: 48px; font-weight: 900; color: #e94560; line-height: 1; }
+    .cover-score .score-label { font-size: 12px; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+    /* ── LAYOUT ── */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 50px;
+    }
+
+    /* ── SECCIONES ── */
+    .section {
+      margin-bottom: 44px;
+      page-break-inside: avoid;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8eaf0;
+    }
+    .section-num {
+      background: #0f3460;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f3460;
+    }
+    .section-title span {
+      font-size: 13px;
+      font-weight: 400;
+      color: #888;
+      margin-left: 8px;
+    }
+
+    h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f3460;
+      margin: 20px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin: 14px 0 6px;
+    }
+
+    p { margin-bottom: 10px; color: #444; }
+
+    /* ── RESUMEN EJECUTIVO ── */
+    .exec-summary {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+      border-left: 4px solid #0f3460;
+      border-radius: 0 8px 8px 0;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+    }
+    .exec-summary p { margin: 0; font-size: 14px; color: #1a1a2e; }
+    .exec-summary strong { color: #0f3460; }
+
+    /* ── TECH PILLS ── */
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .pill {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .pill-blue   { background: #dbeafe; color: #1d4ed8; }
+    .pill-green  { background: #dcfce7; color: #15803d; }
+    .pill-orange { background: #ffedd5; color: #c2410c; }
+    .pill-purple { background: #ede9fe; color: #7c3aed; }
+    .pill-gray   { background: #f3f4f6; color: #374151; }
+
+    /* ── TABLAS ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12px;
+    }
+    thead tr {
+      background: #0f3460;
+      color: #fff;
+    }
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    tbody tr { border-bottom: 1px solid #e8eaf0; }
+    tbody tr:nth-child(even) { background: #f8f9fc; }
+    tbody td { padding: 9px 14px; color: #444; vertical-align: top; }
+    tbody td:first-child { font-weight: 600; color: #1a1a2e; }
+
+    /* ── SCORE TABLE ── */
+    .score-table tbody td.score-cell {
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .score-9, .score-8 { color: #15803d; }
+    .score-7, .score-6 { color: #d97706; }
+    .score-5, .score-4 { color: #dc2626; }
+    .score-2           { color: #dc2626; }
+    .score-total { background: #0f3460 !important; }
+    .score-total td    { color: #fff !important; font-weight: 700 !important; }
+
+    /* ── CARDS DE PRIORIDAD ── */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 14px 0;
+    }
+    .priority-card {
+      border-radius: 8px;
+      padding: 16px 18px;
+      border: 1px solid transparent;
+    }
+    .priority-high   { background: #fff1f2; border-color: #fecdd3; }
+    .priority-medium { background: #fffbeb; border-color: #fde68a; }
+    .priority-low    { background: #f0fdf4; border-color: #bbf7d0; }
+    .priority-card h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 8px;
+    }
+    .priority-high h4   { color: #be123c; }
+    .priority-medium h4 { color: #92400e; }
+    .priority-low h4    { color: #15803d; }
+    .priority-card ul   { padding-left: 16px; color: #555; }
+    .priority-card li   { margin-bottom: 4px; font-size: 12px; }
+
+    /* ── BADGES DE RIESGO ── */
+    .risk-high   { background: #fee2e2; color: #dc2626; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .risk-medium { background: #fef3c7; color: #d97706; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .risk-low    { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: #1e2235;
+      color: #a8d8ea;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    pre .comment { color: #6a7f9a; }
+    pre .keyword { color: #e94560; }
+    pre .string  { color: #a8d8ea; }
+
+    /* ── ALERT BOXES ── */
+    .alert {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .alert-icon { font-size: 18px; flex-shrink: 0; line-height: 1; }
+    .alert-danger  { background: #fff1f2; border-left: 4px solid #e94560; }
+    .alert-warning { background: #fffbeb; border-left: 4px solid #f59e0b; }
+    .alert-info    { background: #eff6ff; border-left: 4px solid #3b82f6; }
+    .alert-success { background: #f0fdf4; border-left: 4px solid #22c55e; }
+    .alert-body { font-size: 12px; color: #444; }
+    .alert-body strong { color: #1a1a2e; display: block; margin-bottom: 3px; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 16px 8px;
+      border-radius: 8px;
+      background: #f8f9fc;
+      border: 1px solid #e8eaf0;
+    }
+    .stat-num { font-size: 28px; font-weight: 800; color: #0f3460; line-height: 1; }
+    .stat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+    /* ── IDEAS GRID ── */
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .idea-card {
+      background: #f8f9fc;
+      border: 1px solid #e8eaf0;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .idea-card .idea-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 5px;
+    }
+    .idea-card .idea-desc {
+      font-size: 11px;
+      color: #666;
+      line-height: 1.5;
+    }
+    .idea-tag {
+      display: inline-block;
+      font-size: 10px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 1px 7px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .idea-tag.medium { background: #ede9fe; color: #7c3aed; }
+    .idea-tag.long   { background: #f0fdf4; color: #15803d; }
+
+    /* ── DEUDA TECNICA ── */
+    .debt-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      gap: 12px;
+    }
+    .debt-high   { background: #fff1f2; }
+    .debt-medium { background: #fffbeb; }
+    .debt-low    { background: #f0fdf4; }
+    .debt-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 50px;
+      text-align: center;
+      padding: 3px 0;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .debt-high   .debt-badge { background: #fecdd3; color: #be123c; }
+    .debt-medium .debt-badge { background: #fde68a; color: #92400e; }
+    .debt-low    .debt-badge { background: #bbf7d0; color: #15803d; }
+    .debt-text { font-size: 12px; color: #444; }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 60px;
+      padding: 24px 0 10px;
+      border-top: 2px solid #e8eaf0;
+      text-align: center;
+      color: #aaa;
+      font-size: 11px;
+    }
+    .footer strong { color: #0f3460; }
+
+    /* ── PAGE BREAK ── */
+    .page-break { page-break-before: always; }
+
+    /* ── TOC ── */
+    .toc {
+      background: #f8f9fc;
+      border: 1px solid #e8eaf0;
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+    .toc-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f3460;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .toc ol {
+      padding-left: 20px;
+    }
+    .toc li {
+      padding: 4px 0;
+      font-size: 12px;
+      color: #555;
+    }
+    .toc li strong { color: #1a1a2e; }
+
+    ul { padding-left: 18px; }
+    li { margin-bottom: 4px; color: #555; font-size: 12px; }
+
+    @media print {
+      body { font-size: 12px; }
+      .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .content { padding: 30px 40px; }
+      pre { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     PORTADA
+═══════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-badge">Informe Técnico</div>
+  <h1>Controles<span>Taleiro</span></h1>
+  <div class="cover-sub">Revisión Completa del Proyecto</div>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <span><strong>31 de Marzo, 2026</strong>Fecha del informe</span>
+    <span><strong>Laravel 12 + Livewire 4</strong>Stack tecnológico</span>
+    <span><strong>~1 mes</strong>Tiempo de desarrollo</span>
+    <span><strong>70 migraciones</strong>Complejidad DB</span>
+  </div>
+  <div class="cover-score">
+    <div class="score-num">6.3</div>
+    <div class="score-label">Puntuación General / 10</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     CONTENIDO
+═══════════════════════════════════════════════════ -->
+<div class="content">
+
+  <!-- TABLA DE CONTENIDOS -->
+  <div class="toc">
+    <div class="toc-title">Tabla de Contenidos</div>
+    <ol>
+      <li><strong>Resumen Ejecutivo</strong></li>
+      <li><strong>Estadísticas del Proyecto</strong></li>
+      <li><strong>Estructura y Arquitectura</strong> — Evaluación de la organización del código</li>
+      <li><strong>Escalabilidad</strong> — Riesgos y puntos de mejora para crecer</li>
+      <li><strong>Errores y Bugs Potenciales</strong> — Problemas técnicos detectados</li>
+      <li><strong>Mejoras Prioritarias</strong> — Plan de acción ordenado por impacto</li>
+      <li><strong>Ideas y Funcionalidades</strong> — Inspirado en apps similares del sector</li>
+      <li><strong>Deuda Técnica</strong> — Resumen de carga técnica acumulada</li>
+      <li><strong>Puntuación por Dimensión</strong> — Evaluación detallada</li>
+    </ol>
+  </div>
+
+
+  <!-- ─── 1. RESUMEN EJECUTIVO ─── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Resumen Ejecutivo</div>
+    </div>
+
+    <div class="exec-summary">
+      <p>
+        <strong>ControlesTaleiro</strong> es un sistema empresarial completo de gestión de recursos humanos,
+        activos y seguridad laboral orientado al sector de <strong>construcción y mantenimiento</strong>.
+        Construido sobre <strong>Laravel 12 + Livewire 4 + Flux 2.9</strong>, el proyecto lleva
+        aproximadamente <strong>1 mes de desarrollo activo</strong> con 70 migraciones y múltiples
+        interfaces: escritorio web, aplicación móvil PWA, panel de TV y monitor de estadísticas.
+      </p>
+    </div>
+
+    <div class="tech-pills">
+      <span class="pill pill-blue">Laravel 12</span>
+      <span class="pill pill-blue">Livewire 4</span>
+      <span class="pill pill-purple">Flux 2.9</span>
+      <span class="pill pill-green">Tailwind CSS 4</span>
+      <span class="pill pill-orange">PHP 8.2+</span>
+      <span class="pill pill-gray">SQLite / MySQL</span>
+      <span class="pill pill-gray">Maatwebsite Excel</span>
+      <span class="pill pill-gray">Laravel Fortify</span>
+      <span class="pill pill-green">PWA Ready</span>
+      <span class="pill pill-purple">2FA</span>
+    </div>
+
+    <p style="margin-top:14px;">
+      El proyecto es un <strong>MVP muy completo</strong> con funcionalidades avanzadas bien pensadas
+      (firmas digitales polimórficas, auditoría de sesiones, roles granulares, importación/exportación Excel).
+      Sin embargo, necesita <strong>hardening antes de entrar en producción</strong>, especialmente en
+      persistencia de datos, concurrencia y cobertura de tests.
+    </p>
+  </div>
+
+
+  <!-- ─── 2. ESTADÍSTICAS ─── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Estadísticas del Proyecto</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">32</div>
+        <div class="stat-label">Modelos Eloquent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">70</div>
+        <div class="stat-label">Migraciones</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">56</div>
+        <div class="stat-label">Componentes Livewire</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Controladores HTTP</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Importadores Excel</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Exportadores Excel</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Middlewares</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Seeders</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 3. ESTRUCTURA Y ARQUITECTURA ─── -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Estructura y Arquitectura</div>
+    </div>
+
+    <h3>Lo que está bien hecho</h3>
+
+    <div class="alert alert-success">
+      <div class="alert-icon">✓</div>
+      <div class="alert-body">
+        <strong>Separación por dominio correcta</strong>
+        Carpetas <code>Epis/</code>, <code>Ferramentas/</code>, <code>Veiculos/</code>, etc. con Form + Index + subcomponentes bien organizados.
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <div class="alert-icon">✓</div>
+      <div class="alert-body">
+        <strong>Relaciones polimórficas para firmas digitales</strong>
+        El modelo <code>SignatureRequest</code> usa <code>signable_type/signable_id</code> para conectar User, FerramentaLog y EpiEntrega de forma flexible y extensible.
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <div class="alert-icon">✓</div>
+      <div class="alert-body">
+        <strong>Sistema de roles con JSON array</strong>
+        Roles como <code>["admin","epi"]</code> en columna JSON permiten múltiples roles por usuario sin tabla pivot.
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <div class="alert-icon">✓</div>
+      <div class="alert-body">
+        <strong>Auditoría de sesiones desde el inicio</strong>
+        <code>LogSessionActivity</code> middleware + tabla <code>user_sessions</code> para cumplimiento RGPD bien implementado.
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <div class="alert-icon">✓</div>
+      <div class="alert-body">
+        <strong>Multi-interfaz bien diseñada</strong>
+        Layouts separados para desktop, móvil PWA, TV y monitor. Cada uno con su ciclo de vida propio.
+      </div>
+    </div>
+
+    <h3>Problemas estructurales detectados</h3>
+
+    <h4>A) Lógica de negocio mezclada en Livewire</h4>
+    <p>Componentes como <code>PhoneDisplay.php</code> (~30KB) y <code>GestaoEquipas.php</code> mezclan lógica de presentación con reglas de negocio. A medida que crezca, serán inmantenibles y difíciles de testear.</p>
+    <pre><span class="comment">// Problema: todo en el componente Livewire</span>
+<span class="comment">// PhoneDisplay.php = 30KB, GestaoEquipas.php = cientos de líneas</span>
+
+<span class="comment">// Solución: extraer a Services/Actions</span>
+app/Services/
+├── EpiStockService.php         <span class="comment">// lógica de stock</span>
+├── AtribuicaoService.php       <span class="comment">// planificación equipas</span>
+├── GuiaTransporteService.php   <span class="comment">// guías de transporte</span>
+└── SignatureService.php        <span class="comment">// firmas digitales</span></pre>
+
+    <h4>B) <code>ORDEM_PREDEFINIDA</code> con IDs hardcodeados</h4>
+    <p>Los IDs de base de datos en el código fuente son frágiles: romperán silenciosamente si la DB se resetea o migra a producción.</p>
+    <pre><span class="comment">// Actual — FRÁGIL</span>
+const ORDEM_PREDEFINIDA = [1, 3, 7, 12, 2, 18, 20, 13, 6, 4, 8, 14, 21, 5, 9, 15, 10, 19];
+
+<span class="comment">// Solución: agregar campo `ordem` a tabla peps</span>
+<span class="comment">// y ordenar por Pep::orderBy('ordem')->get()</span></pre>
+
+    <h4>C) Sin capa de Services/Actions</h4>
+    <p>No existe la carpeta <code>app/Services/</code> ni <code>app/Actions/</code> (excepto los de Fortify). Toda la lógica de negocio está dispersa entre modelos y componentes Livewire.</p>
+  </div>
+
+
+  <!-- ─── 4. ESCALABILIDAD ─── -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Escalabilidad</div>
+    </div>
+
+    <p>Análisis de los puntos que limitarán el crecimiento del sistema bajo carga real de producción.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Área de Riesgo</th>
+          <th>Descripción del Problema</th>
+          <th>Criticidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SQLite en producción</td>
+          <td>SQLite no soporta escrituras concurrentes. Con varios usuarios simultáneos, habrá errores de bloqueo de base de datos.</td>
+          <td><span class="risk-high">ALTA</span></td>
+        </tr>
+        <tr>
+          <td>Firmas base64 en DB</td>
+          <td>Cada firma digital puede ocupar 50–200KB en <code>longtext</code>. Con 1.000 entregas = hasta 200MB solo en firmas. Degrada enormemente el rendimiento de queries.</td>
+          <td><span class="risk-high">ALTA</span></td>
+        </tr>
+        <tr>
+          <td>Race condition en stock EPI</td>
+          <td>Decrementar <code>stock_total</code> sin transacción atómica permite que dos usuarios simultáneos entreguen el mismo último artículo.</td>
+          <td><span class="risk-high">ALTA</span></td>
+        </tr>
+        <tr>
+          <td>PhoneDisplay polling 20s</td>
+          <td>Con 50+ usuarios móviles activos, el servidor recibirá 150 requests/minuto solo de actualizaciones de pantalla. Sin caché, cada uno ejecuta N queries.</td>
+          <td><span class="risk-medium">MEDIA</span></td>
+        </tr>
+        <tr>
+          <td>Exports Excel síncronos</td>
+          <td>Generar un Excel grande (ferramentas + logs, colaboradores + estadísticas) puede tardar 10–30 segundos, bloqueando el proceso PHP del usuario.</td>
+          <td><span class="risk-medium">MEDIA</span></td>
+        </tr>
+        <tr>
+          <td>Sin caché en datos estáticos</td>
+          <td>Listas de PEPs, colaboradores, locaciones se consultan en cada request aunque cambien poco. Oportunidad clara de caché.</td>
+          <td><span class="risk-medium">MEDIA</span></td>
+        </tr>
+        <tr>
+          <td>SignatureRequests sin limpieza</td>
+          <td>Tokens expirados nunca se eliminan. La tabla crece indefinidamente, especialmente con uso intensivo de firmas móviles.</td>
+          <td><span class="risk-medium">MEDIA</span></td>
+        </tr>
+        <tr>
+          <td>Sin índices en todas las FK</td>
+          <td>Algunas migraciones posteriores pueden carecer de índices en columnas de búsqueda frecuente (e.g. <code>colaborador_id</code> en EPI entregas).</td>
+          <td><span class="risk-low">BAJA</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-danger">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <strong>Migración SQLite → MySQL es obligatoria antes de producción</strong>
+        El <code>.env.example</code> usa <code>DB_CONNECTION=sqlite</code>. Las migraciones son compatibles con MySQL, pero hay que verificar columnas <code>longtext</code> y el comportamiento de campos JSON antes de migrar.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 5. ERRORES Y BUGS ─── -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Errores y Bugs Potenciales</div>
+    </div>
+
+    <h4>Bug #1 — Race Condition en Stock EPI</h4>
+    <div class="alert alert-danger">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <strong>Criticidad: Alta | Afecta: EpiEntregas/Form.php</strong>
+        Si dos usuarios entregan el último artículo simultáneamente, el stock puede quedar negativo sin que el sistema lo detecte.
+      </div>
+    </div>
+    <pre><span class="comment">// PROBLEMA ACTUAL</span>
+EpiItem::where('id', $id)->decrement('stock_total');
+
+<span class="comment">// SOLUCIÓN: DB::transaction + lockForUpdate</span>
+DB::transaction(function() use ($id, $cantidad) {
+    $item = EpiItem::lockForUpdate()->findOrFail($id);
+    if ($item->stock_total < $cantidad) {
+        throw new \Exception('Stock insuficiente');
+    }
+    $item->decrement('stock_total', $cantidad);
+});</pre>
+
+    <h4>Bug #2 — IDs hardcodeados en <code>ORDEM_PREDEFINIDA</code></h4>
+    <div class="alert alert-warning">
+      <div class="alert-icon">!</div>
+      <div class="alert-body">
+        <strong>Criticidad: Media | Afecta: GestaoEquipas.php</strong>
+        Los IDs <code>[1, 3, 7, 12, 2, 18...]</code> son IDs de base de datos. En producción, después de un <code>migrate:fresh</code> o una migración real, estos IDs no corresponderán a los PEPs correctos y el orden será incorrecto sin error visible.
+      </div>
+    </div>
+
+    <h4>Bug #3 — SignatureRequests sin limpieza automática</h4>
+    <div class="alert alert-warning">
+      <div class="alert-icon">!</div>
+      <div class="alert-body">
+        <strong>Criticidad: Media | Afecta: signature_requests tabla</strong>
+        Los tokens expirados (>24h) nunca se eliminan. La tabla acumulará registros inactivos indefinidamente.
+      </div>
+    </div>
+    <pre><span class="comment">// Solución: Command artisan + schedule diario</span>
+<span class="comment">// app/Console/Commands/CleanExpiredSignatures.php</span>
+SignatureRequest::where('status', 'expired')
+    ->where('expires_at', '<', now()->subDays(30))
+    ->delete();
+
+<span class="comment">// routes/console.php</span>
+Schedule::command('signatures:cleanup')->daily();</pre>
+
+    <h4>Bug #4 — Polling sin manejo de sesión expirada</h4>
+    <div class="alert alert-warning">
+      <div class="alert-icon">!</div>
+      <div class="alert-body">
+        <strong>Criticidad: Media | Afecta: PhoneDisplay.php</strong>
+        El <code>poll(20000ms)</code> continúa después de que la sesión del colaborador expire, generando requests de error silenciosos en bucle que consumen recursos del servidor.
+      </div>
+    </div>
+
+    <h4>Bug #5 — Importadores sin validación robusta</h4>
+    <div class="alert alert-warning">
+      <div class="alert-icon">!</div>
+      <div class="alert-body">
+        <strong>Criticidad: Media | Afecta: app/Imports/*</strong>
+        Si el Excel subido tiene formato incorrecto, columnas faltantes o tipos de datos erróneos, puede crear registros inválidos silenciosamente. Verificar que todos los Imports implementen <code>WithValidation</code>.
+      </div>
+    </div>
+
+    <h4>Bug #6 — Sin tests de regresión</h4>
+    <div class="alert alert-danger">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <strong>Criticidad: Alta (a largo plazo)</strong>
+        Los directorios <code>tests/Feature/</code> y <code>tests/Unit/</code> están esencialmente vacíos. Cualquier refactor futuro puede romper flujos críticos (stock, firmas, entregas) sin que el sistema lo detecte automáticamente.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 6. MEJORAS PRIORITARIAS ─── -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Mejoras Prioritarias</div>
+    </div>
+
+    <h3>Prioridad Alta — Antes de producción</h3>
+
+    <div class="priority-grid">
+      <div class="priority-card priority-high">
+        <h4>A) Migrar a MySQL/PostgreSQL</h4>
+        <ul>
+          <li>SQLite no soporta concurrencia real</li>
+          <li>Cambiar <code>DB_CONNECTION=mysql</code></li>
+          <li>Verificar compatibilidad de migraciones</li>
+          <li>Impacto: elimina bloqueos concurrentes</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-high">
+        <h4>B) Firmas en storage, no en DB</h4>
+        <ul>
+          <li>Guardar base64 en <code>storage/app/signatures/</code></li>
+          <li>Solo guardar la ruta en DB</li>
+          <li>Reducción drástica del tamaño de DB</li>
+          <li>Queries de consulta 10x más rápidas</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-high">
+        <h4>C) Transacciones en stock EPI</h4>
+        <ul>
+          <li>Wrappear entregas/devoluciones en <code>DB::transaction</code></li>
+          <li>Usar <code>lockForUpdate()</code> en EpiItem</li>
+          <li>Validar stock antes de decrementar</li>
+          <li>Previene stock negativo por concurrencia</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-high">
+        <h4>D) Tests críticos básicos</h4>
+        <ul>
+          <li>Test de flujo EPI (entrega, devolución, stock)</li>
+          <li>Test de firmas digitales</li>
+          <li>Test de validación de importadores</li>
+          <li>Test de acceso por roles</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Prioridad Media — Próximas 2–4 semanas</h3>
+
+    <div class="priority-grid">
+      <div class="priority-card priority-medium">
+        <h4>E) Capa de Services/Actions</h4>
+        <ul>
+          <li>Crear <code>app/Services/</code></li>
+          <li>Extraer lógica de Livewire components</li>
+          <li>Facilita testing y reutilización</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-medium">
+        <h4>F) Exports asíncronos con Queue</h4>
+        <ul>
+          <li>Dispatch jobs de Excel a queue</li>
+          <li>Notificar al usuario cuando esté listo</li>
+          <li>Evita timeouts en exports grandes</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-medium">
+        <h4>G) Caché para datos estáticos</h4>
+        <ul>
+          <li>PEPs, colaboradores, locaciones</li>
+          <li><code>Cache::remember('peps', 3600, ...)</code></li>
+          <li>Invalidar al crear/editar</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-medium">
+        <h4>H) Orden dinámica de PEPs</h4>
+        <ul>
+          <li>Campo <code>ordem</code> en tabla <code>peps</code></li>
+          <li>UI drag-and-drop para reordenar</li>
+          <li>Eliminar IDs hardcodeados del código</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Prioridad Baja — Mejoras de calidad</h3>
+
+    <div class="priority-grid">
+      <div class="priority-card priority-low">
+        <h4>I) Rate limiting en rutas móviles</h4>
+        <ul>
+          <li>Throttle en <code>PhoneDisplay</code></li>
+          <li>Proteger endpoints de importación</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-low">
+        <h4>J) Notificaciones automáticas</h4>
+        <ul>
+          <li>Email cuando EPI en stock crítico</li>
+          <li>Mail a Logi cuando verificación vencida</li>
+          <li>Job diario de verificación</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-low">
+        <h4>K) Limpieza de tokens expirados</h4>
+        <ul>
+          <li>Command + Schedule diario</li>
+          <li>Eliminar SignatureRequests >30 días</li>
+        </ul>
+      </div>
+      <div class="priority-card priority-low">
+        <h4>L) Logging mejorado</h4>
+        <ul>
+          <li>Log de operaciones críticas de stock</li>
+          <li>Log de importaciones con resultados</li>
+          <li>Alertas de errores en exports</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 7. IDEAS Y FUNCIONALIDADES ─── -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">Ideas y Funcionalidades</div>
+      <span>inspirado en SafetyCulture, Sitedocs, Assignar, Fieldwire y EcoOnline</span>
+    </div>
+
+    <h3>Corto Plazo — Alto impacto inmediato</h3>
+    <div class="ideas-grid">
+      <div class="idea-card">
+        <div><span class="idea-tag">Corto plazo</span></div>
+        <div class="idea-title">QR en EPIs individuales</div>
+        <div class="idea-desc">Cada artículo de EPI lleva un QR. El colaborador escanea desde móvil para ver su historial completo de entregas y devoluciones sin necesidad de login de escritorio.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag">Corto plazo</span></div>
+        <div class="idea-title">Recordatorios automáticos</div>
+        <div class="idea-desc">Job diario que envía notificación al Logi cuando una herramienta tiene verificación vencida o dentro de los próximos 7 días. Reduce riesgo de olvidar mantenimientos.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag">Corto plazo</span></div>
+        <div class="idea-title">Dashboard con KPIs visuales</div>
+        <div class="idea-desc">Gráficos de % EPIs entregados vs pendientes, herramientas conformes vs atrasadas, incidentes por mes, tendencias de actividad de equipas.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag">Corto plazo</span></div>
+        <div class="idea-title">Foto en reportes de incidentes</div>
+        <div class="idea-desc">El campo <code>IncidentReport</code> acepta imagen desde la cámara del móvil. El colaborador puede documentar visualmente el incidente en el momento.</div>
+      </div>
+    </div>
+
+    <h3>Medio Plazo — Valor añadido diferencial</h3>
+    <div class="ideas-grid">
+      <div class="idea-card">
+        <div><span class="idea-tag medium">Medio plazo</span></div>
+        <div class="idea-title">Planificación semanal de equipas</div>
+        <div class="idea-desc">Vista tipo Gantt simplificada para planificar asignaciones no solo día a día sino para la semana completa. Reduce tiempo de gestión diaria.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag medium">Medio plazo</span></div>
+        <div class="idea-title">Check-in / Check-out con GPS</div>
+        <div class="idea-desc">El colaborador confirma llegada a obra desde el móvil con geolocalización. Registro automático de horas presenciales y ubicación en campo.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag medium">Medio plazo</span></div>
+        <div class="idea-title">Certificaciones y formaciones</div>
+        <div class="idea-desc">Tracking de formaciones obligatorias por colaborador: licencias, certificaciones de seguridad, fechas de caducidad con alertas automáticas de renovación.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag medium">Medio plazo</span></div>
+        <div class="idea-title">Coste de EPIs por colaborador</div>
+        <div class="idea-desc">Módulo de costes: precio unitario por EPI × cantidad entregada. Informe mensual de gasto por colaborador, equipa y locación.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag medium">Medio plazo</span></div>
+        <div class="idea-title">Mapa de locaciones activas</div>
+        <div class="idea-desc">Integración con Google Maps / Leaflet para visualizar en un mapa dónde están trabajando las equipas hoy. Vista en tiempo real para supervisores.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag medium">Medio plazo</span></div>
+        <div class="idea-title">Calendario de mantenimiento preventivo</div>
+        <div class="idea-desc">Vista calendario unificada de todas las revisiones programadas: vehículos, herramientas, extintores, kits de salud. Una sola pantalla para el Logi.</div>
+      </div>
+    </div>
+
+    <h3>Largo Plazo — Diferenciación estratégica</h3>
+    <div class="ideas-grid">
+      <div class="idea-card">
+        <div><span class="idea-tag long">Largo plazo</span></div>
+        <div class="idea-title">App nativa con Capacitor.js</div>
+        <div class="idea-desc">La PWA actual es buena, pero una app nativa daría offline-first real: trabajar sin internet y sincronizar cuando vuelva la conexión. Crítico en obras con cobertura limitada.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag long">Largo plazo</span></div>
+        <div class="idea-title">Integración AT Portugal</div>
+        <div class="idea-desc">Envío automático de guías de transporte a la Autoridade Tributária via API. Eliminación del proceso manual actual y cumplimiento legal automatizado.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag long">Largo plazo</span></div>
+        <div class="idea-title">Portal de proveedores EPIs</div>
+        <div class="idea-desc">Los proveedores acceden a un portal externo donde ven los pedidos de EPIs pendientes, confirman entregas y suben facturas. Integración directa con el módulo de recepciones.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag long">Largo plazo</span></div>
+        <div class="idea-title">Análisis predictivo de incidentes</div>
+        <div class="idea-desc">Con histórico de incidentes, identificar patrones: tipos de obra con más accidentes, EPIs más frecuentemente olvidados, correlaciones con condiciones climáticas.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag long">Largo plazo</span></div>
+        <div class="idea-title">Módulo RGPD completo</div>
+        <div class="idea-desc">Gestión automatizada de consentimientos, ejercicio de derecho al olvido, exportación de datos personales, registro de actividades de tratamiento. Más allá del <code>terms_accepted_at</code> actual.</div>
+      </div>
+      <div class="idea-card">
+        <div><span class="idea-tag long">Largo plazo</span></div>
+        <div class="idea-title">API REST pública</div>
+        <div class="idea-desc">Exponer endpoints REST para integración con SAP, ERP corporativos, sistemas de nómina. Permite que ControlesTaleiro sea el núcleo de un ecosistema de herramientas.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 8. DEUDA TECNICA ─── -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">Deuda Técnica</div>
+    </div>
+
+    <p>Resumen de la carga técnica acumulada que deberá abordarse para garantizar la salud a largo plazo del proyecto.</p>
+
+    <div style="margin-top: 16px;">
+      <div class="debt-row debt-high">
+        <span class="debt-badge">Alta</span>
+        <span class="debt-text"><strong>SQLite en uso</strong> — No apto para producción con múltiples usuarios concurrentes. Requiere migración a MySQL antes del lanzamiento.</span>
+      </div>
+      <div class="debt-row debt-high">
+        <span class="debt-badge">Alta</span>
+        <span class="debt-text"><strong>Firmas base64 en base de datos</strong> — Crecimiento exponencial del tamaño de DB. Mover a <code>storage/</code> con urgencia.</span>
+      </div>
+      <div class="debt-row debt-high">
+        <span class="debt-badge">Alta</span>
+        <span class="debt-text"><strong>Sin transacciones en operaciones de stock</strong> — Race condition real en uso concurrente de entregas de EPIs.</span>
+      </div>
+      <div class="debt-row debt-high">
+        <span class="debt-badge">Alta</span>
+        <span class="debt-text"><strong>Sin cobertura de tests</strong> — Tests Feature y Unit prácticamente vacíos. Todo cambio futuro es un riesgo no controlado.</span>
+      </div>
+      <div class="debt-row debt-medium">
+        <span class="debt-badge">Media</span>
+        <span class="debt-text"><strong>PhoneDisplay.php monolítico</strong> — Componente de 30KB con lógica de negocio mezclada. Difícil de mantener y testear.</span>
+      </div>
+      <div class="debt-row debt-medium">
+        <span class="debt-badge">Media</span>
+        <span class="debt-text"><strong>Exports Excel síncronos</strong> — Bloquean el proceso PHP. Deben moverse a queues con notificación al usuario.</span>
+      </div>
+      <div class="debt-row debt-medium">
+        <span class="debt-badge">Media</span>
+        <span class="debt-text"><strong>Sin capa de Services</strong> — Lógica de negocio dispersa en componentes Livewire. Dificulta reutilización y testing.</span>
+      </div>
+      <div class="debt-row debt-medium">
+        <span class="debt-badge">Media</span>
+        <span class="debt-text"><strong>Polling sin gestión de sesión expirada</strong> — PhoneDisplay puede generar errores silenciosos en bucle tras expirar la sesión.</span>
+      </div>
+      <div class="debt-row debt-low">
+        <span class="debt-badge">Baja</span>
+        <span class="debt-text"><strong>IDs hardcodeados en ORDEM_PREDEFINIDA</strong> — Frágil ante resets de DB o migración a producción.</span>
+      </div>
+      <div class="debt-row debt-low">
+        <span class="debt-badge">Baja</span>
+        <span class="debt-text"><strong>Sin caché para datos estáticos</strong> — PEPs, locaciones y colaboradores consultados en cada request sin necesidad.</span>
+      </div>
+      <div class="debt-row debt-low">
+        <span class="debt-badge">Baja</span>
+        <span class="debt-text"><strong>SignatureRequests sin limpieza automática</strong> — Tokens expirados acumulados indefinidamente en la tabla.</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 9. PUNTUACION ─── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div class="section-title">Puntuación por Dimensión</div>
+    </div>
+
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Dimensión</th>
+          <th style="width:80px; text-align:center;">Nota</th>
+          <th>Comentario</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Funcionalidades</td>
+          <td style="text-align:center;"><span class="score-9">9/10</span></td>
+          <td>Cobertura funcional muy completa para el dominio. Multi-interfaz, firmas, EPIs, herramientas, guías, TV, PWA — todo bien pensado.</td>
+        </tr>
+        <tr>
+          <td>UX / UI</td>
+          <td style="text-align:center;"><span class="score-8">8/10</span></td>
+          <td>Multi-dispositivo bien diseñado (desktop, móvil, TV, monitor). Tailwind + Flux da una interfaz coherente. El PhoneDisplay es el punto más débil en UX.</td>
+        </tr>
+        <tr>
+          <td>Arquitectura</td>
+          <td style="text-align:center;"><span class="score-7">7/10</span></td>
+          <td>Estructura por dominio sólida. Falta capa de Services para separar lógica de negocio. Componentes Livewire demasiado grandes.</td>
+        </tr>
+        <tr>
+          <td>Seguridad</td>
+          <td style="text-align:center;"><span class="score-7">7/10</span></td>
+          <td>2FA, roles granulares, auditoría de sesiones bien implementados. Falta rate limiting en endpoints críticos y validación robusta en importadores.</td>
+        </tr>
+        <tr>
+          <td>Escalabilidad</td>
+          <td style="text-align:center;"><span class="score-5">5/10</span></td>
+          <td>SQLite y firmas base64 en DB son bloqueantes serios. Sin resolver estos dos puntos, el sistema no escala a producción real.</td>
+        </tr>
+        <tr>
+          <td>Testing</td>
+          <td style="text-align:center;"><span class="score-2">2/10</span></td>
+          <td>Tests prácticamente inexistentes. El framework Pest está configurado pero los directorios Feature y Unit están vacíos. Riesgo alto en cualquier refactor.</td>
+        </tr>
+        <tr class="score-total">
+          <td>PUNTUACIÓN TOTAL</td>
+          <td style="text-align:center; font-size:17px;">6.3/10</td>
+          <td>Excelente MVP con funcionalidades avanzadas. Necesita hardening de infraestructura y cobertura de tests antes de producción.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ─── CONCLUSIÓN ─── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:#e94560;">!</div>
+      <div class="section-title" style="color:#e94560;">Acciones Inmediatas Recomendadas</div>
+    </div>
+
+    <div class="alert alert-danger">
+      <div class="alert-icon">1</div>
+      <div class="alert-body">
+        <strong>Migrar SQLite → MySQL antes de cualquier despliegue</strong>
+        Cambiar <code>DB_CONNECTION=mysql</code> y verificar compatibilidad de todas las migraciones.
+      </div>
+    </div>
+    <div class="alert alert-danger">
+      <div class="alert-icon">2</div>
+      <div class="alert-body">
+        <strong>Mover firmas base64 a storage/</strong>
+        Guardar en disco y referenciar solo la ruta en DB. Evita crecimiento exponencial de la base de datos.
+      </div>
+    </div>
+    <div class="alert alert-danger">
+      <div class="alert-icon">3</div>
+      <div class="alert-body">
+        <strong>Wrappear operaciones de stock en DB::transaction + lockForUpdate</strong>
+        Previene race conditions en entregas concurrentes de EPIs.
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <div class="alert-icon">4</div>
+      <div class="alert-body">
+        <strong>Escribir al menos los tests de flujos críticos</strong>
+        EPI stock, firmas, importación de datos. Asegurar que futuros cambios no rompan lo que ya funciona.
+      </div>
+    </div>
+    <div class="alert alert-info">
+      <div class="alert-icon">5</div>
+      <div class="alert-body">
+        <strong>Planificar la capa de Services</strong>
+        Para la siguiente iteración, extraer lógica de negocio de Livewire a <code>app/Services/</code>. Hace el código más testeable y mantenible.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Informe generado el <strong>31 de Marzo de 2026</strong> · Proyecto <strong>ControlesTaleiro</strong></p>
+    <p style="margin-top:6px;">Laravel 12 · Livewire 4 · Flux 2.9 · PHP 8.2+</p>
+  </div>
+
+</div>
+</body>
+</html>

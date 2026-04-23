@@ -1,0 +1,6 @@
+<?php
+// Backup del componente original de entrega de EPI (una sola entrega por vez)
+// Fecha: 2026-03-10
+
+// Copia exacta del archivo original antes de modificar para entregas múltiples.
+

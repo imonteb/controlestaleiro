@@ -1,0 +1,201 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Ocultar elementos Alpine antes de la inicialización */
+[x-cloak] { display: none !important; }
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    --color-accent: var(--color-neutral-800);
+    --color-accent-content: var(--color-neutral-800);
+    --color-accent-foreground: var(--color-white);
+
+        /* CME Corporate Colors */
+        --cme-blue: #09143B;
+        --cme-yellow: #FFD300;
+        --cme-white: #FFFFFF;
+        --cme-gray-light: #F4F6F8;
+        --cme-gray-medium: #E0E3E7;
+        --cme-gray-dark: #333333;
+        --cme-green: #39B54A;
+        --cme-red: #D32F2F;
+        --cme-yellow-accent: #FFC107;
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-white);
+        --color-accent-content: var(--color-white);
+        --color-accent-foreground: var(--color-neutral-800);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+/* -------------------------------------------------------
+   Sidebar text contrast — dark blue background override
+   Reassign zinc tokens only within the sidebar scope so
+   all Flux item/heading/icon utilities render lighter.
+------------------------------------------------------- */
+[data-flux-sidebar] {
+    --color-zinc-400: #d4d4d8; /* group headings */
+    --color-zinc-500: #e4e4e7; /* default item text */
+    --color-zinc-700: #f4f4f5;
+    --color-zinc-800: #fafafa;
+}
+
+/* Logo box in sidebar — remove Flux's h-6 cap so the logo can breathe */
+[data-flux-sidebar-brand] > div:first-child {
+    height: auto !important;
+    min-width: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+}
+
+/* Logo image: no background, natural SVG colors */
+.sidebar-logo {
+    height: 44px;
+    width: auto;
+    display: block;
+}
+
+/* White pill wrapper so navy+yellow logo is visible on dark blue sidebar */
+.sidebar-logo-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 4px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Hamburger toggle icon — white, yellow on hover */
+[data-flux-sidebar-toggle],
+[data-flux-sidebar-toggle] button {
+    color: #ffffff !important;
+}
+
+[data-flux-sidebar-toggle]:hover,
+[data-flux-sidebar-toggle]:hover button {
+    color: var(--cme-yellow) !important;
+    background-color: transparent !important;
+}
+
+/* Profile button inside sidebar — yellow-600 background */
+[data-flux-sidebar] [data-flux-profile] {
+    background-color: #ca8a04 !important; /* yellow-600 */
+    color: #ffffff !important;
+}
+
+[data-flux-sidebar] [data-flux-profile]:hover {
+    background-color: #a16207 !important; /* yellow-700 on hover */
+}
+
+[data-flux-sidebar] [data-flux-profile] [data-flux-avatar] {
+    background-color: #ffffff !important;
+    color: #ca8a04 !important;
+}
+
+[data-flux-sidebar] [data-flux-profile] svg {
+    color: #ffffff !important;
+}
+[data-flux-sidebar] [data-flux-avatar],
+[data-flux-header] [data-flux-avatar] {
+    background-color: #ca8a04 !important; /* yellow-600 */
+    color: #ffffff !important;
+}
+[data-flux-sidebar] [data-flux-menu] {
+    background-color: #1e3a8a !important; /* blue-800 */
+    border-color: #1d4ed8 !important;     /* blue-700 */
+    color: #e2e8f0;
+}
+
+[data-flux-sidebar] [data-flux-menu] [data-active] {
+    background-color: #1d4ed8 !important; /* blue-700 on hover/active */
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply mb-0! leading-tight!;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* Improve placeholder contrast */
+::placeholder {
+    color: #FFFFFF !important; /* White for dark backdrop */
+    opacity: 0.7 !important;
+}
+
+/* Improve subtitles on dark backgrounds */
+.text-white\/70, 
+.text-gray-400 {
+    font-weight: 500;
+}
+
+[data-flux-sidebar] .text-white\/70 {
+    color: #FFFFFF !important; /* Full White for maximum contrast */
+}
+
+.epi-dropdown-item {
+    color: #FFFFFF !important;
+}
+
+.epi-dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* -------------------------------------------------------
+   Datepicker / datetime-local / month / time inputs:
+   Force light color-scheme so the native calendar/clock
+   icon is always visible regardless of Flux dark mode.
+   The TV layout uses its own inline color-scheme:dark;
+   overrides where needed (blue banner input).
+------------------------------------------------------- */
+input[type="date"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="time"],
+input[type="week"] {
+    color-scheme: light;
+}
+
+/* \[:where(&)\]:size-4 {
+    @apply size-4;
+} */
