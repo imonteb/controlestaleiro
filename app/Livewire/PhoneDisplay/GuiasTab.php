@@ -241,13 +241,19 @@ class GuiasTab extends Component
             return [];
         }
 
-        return Material::where('activo', true)
-            ->where(function ($query) use ($q) {
-                $query->where('nome', 'like', "%{$q}%")
-                    ->orWhere('codigo', 'like', "%{$q}%");
-            })
-            ->orderBy('nome')
-            ->limit(8)
+        $words = array_filter(explode(' ', mb_strtolower(trim($q))));
+
+        $query = Material::where('activo', true);
+
+        foreach ($words as $word) {
+            $query->where(function ($sub) use ($word) {
+                $sub->where('nome', 'like', "%{$word}%")
+                    ->orWhere('codigo', 'like', "%{$word}%");
+            });
+        }
+
+        return $query->orderBy('nome')
+            ->limit(15)
             ->get()
             ->map(fn ($m) => [
                 'codigo' => $m->codigo,
