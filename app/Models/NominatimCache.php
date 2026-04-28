@@ -68,9 +68,26 @@ class NominatimCache extends Model
      */
     private const ROAD_KEYS = ['road', 'path', 'footway', 'pedestrian', 'residential', 'cycleway', 'track', 'service'];
 
+    /**
+     * Neighbourhood-like OSM keys used as fallback when no road is present.
+     * Allows users to confirm a zone and fill in the street manually.
+     */
+    private const NEIGHBOURHOOD_KEYS = ['neighbourhood', 'suburb', 'quarter', 'hamlet', 'isolated_dwelling'];
+
     private static function extractRoad(array $address): ?string
     {
         foreach (self::ROAD_KEYS as $key) {
+            if (! empty($address[$key])) {
+                return $address[$key];
+            }
+        }
+
+        return null;
+    }
+
+    private static function extractNeighbourhood(array $address): ?string
+    {
+        foreach (self::NEIGHBOURHOOD_KEYS as $key) {
             if (! empty($address[$key])) {
                 return $address[$key];
             }
@@ -95,6 +112,12 @@ class NominatimCache extends Model
         foreach ($json as $place) {
             $address = $place['address'] ?? [];
             $road = self::extractRoad($address);
+            $isNeighbourhood = false;
+
+            if (! $road) {
+                $road = self::extractNeighbourhood($address);
+                $isNeighbourhood = true;
+            }
 
             if (! $road) {
                 continue;
@@ -108,7 +131,7 @@ class NominatimCache extends Model
 
             $item = [
                 'road' => $road,
-                'suburb' => $address['suburb'] ?? $address['quarter'] ?? null,
+                'suburb' => $isNeighbourhood ? null : ($address['suburb'] ?? $address['quarter'] ?? null),
                 'localidade' => $address['city'] ?? $address['town'] ?? $address['village'] ?? $address['municipality'] ?? null,
                 'postcode' => $address['postcode'] ?? null,
             ];
