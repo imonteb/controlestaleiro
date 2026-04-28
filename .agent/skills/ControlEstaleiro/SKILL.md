@@ -9,10 +9,13 @@ Este projeto é um sistema de gestão para estaleiros e logística, focado no co
 
 ## Arquitetura e Tech Stack
 - **Framework**: Laravel 12 + Livewire 4
-- **Painel Admin**: Filament 5 (Multitenancy habilitado)
+- **UI Components**: Flux UI v2 (`livewire/flux`) + Livewire Blaze
+- **Auth**: Laravel Fortify v1 (headless)
 - **Frontend Móvel**: PWA customizado via Livewire (`PhoneDisplay.php` / `resources/views/layouts/phone.blade.php`)
 - **Base de Dados**: MySQL (Laragon local)
-- **Estilos**: TailwindCSS em áreas Admin, Vanilla CSS customizado no painel móvel.
+- **Estilos**: TailwindCSS v4 + Vanilla CSS customizado no painel móvel
+- **Extras**: Maatwebsite/Excel (exportações), Web Push (notificações)
+- **Nota**: Filament NÃO está instalado. Não há multitenancy.
 
 ## Componentes Críticos
 - `app/Livewire/PhoneDisplay.php`: Cérebro do PWA móvel. Gere Login (Numero/PIN), SOS, pedidos de EPI e Guias.

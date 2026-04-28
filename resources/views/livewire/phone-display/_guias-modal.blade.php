@@ -114,7 +114,7 @@
                         </div>
                         @endif
                     </div>
-                    <button type="button" wire:click="$set('originTab', 'escolher')"
+                    <button type="button" wire:click="alterarOrigem"
                             class="text-white/40 hover:text-white/70 text-[0.65rem] font-bold border border-white/15 rounded-lg px-2 py-1 shrink-0 bg-transparent">
                         alterar
                     </button>
@@ -275,142 +275,45 @@
                         @endif
                     @endif
 
-                    {{-- Localidade --}}
-                    @if($originCC && count($localidades))
-                        @if($originLocalidade)
-                        <div class="{{ $ctBadge }}">
-                            <div>
-                                <div class="text-white/25 text-[0.5rem] font-bold uppercase leading-none mb-0.5">Localidade</div>
-                                <div class="text-emerald-200 text-[0.72rem] font-bold">{{ $originLocalidade }}</div>
-                            </div>
-                            <button type="button" wire:click="$set('originLocalidade', '')" class="{{ $ctReset }}">✕</button>
-                        </div>
-                        @else
-                        <div x-data="{
-                            open: true, search: '',
-                            items: @js($localidades->values()),
-                            norm(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); },
-                            get filtered() {
-                                if (!this.search) return this.items;
-                                const q = this.norm(this.search);
-                                return this.items.filter(l => this.norm(l).includes(q));
-                            }
-                        }">
-                            <button type="button" @click="open = !open"
-                                    class="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3 py-2 transition-colors"
-                                    :class="open ? 'border-emerald-500/30 bg-emerald-500/8' : ''">
-                                <span class="text-white/40 text-[0.72rem]" x-text="open ? 'Localidade' : 'Selecionar Localidade'"></span>
-                                <span class="text-white/25 text-[0.65rem]" x-text="open ? '▲' : '▼'"></span>
-                            </button>
-                            <div x-show="open" x-transition.duration.150ms class="mt-1">
-                                <input type="text" x-model="search" placeholder="Filtrar localidade..."
-                                       class="w-full bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-emerald-500/50 mb-1.5">
-                                <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
-                                    <template x-for="l in filtered" :key="l">
-                                        <button type="button" @click="$wire.set('originLocalidade', l)"
-                                                class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-emerald-500/15 active:bg-emerald-500/25 border border-white/8 hover:border-emerald-500/30 rounded-xl px-3 py-2 transition-colors group">
-                                            <span class="text-white text-[0.72rem] font-semibold" x-text="l"></span>
-                                            <span class="text-white/20 group-hover:text-emerald-400 text-[0.65rem] shrink-0">→</span>
-                                        </button>
-                                    </template>
-                                    <template x-if="filtered.length === 0">
-                                        <div class="text-white/25 text-[0.65rem] text-center py-3">Sem resultados</div>
-                                    </template>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                    @endif
-
-                    {{-- Sublocal / Freguesia --}}
-                    @if($originLocalidade && count($artLocals))
-                        @if($originArtLocal)
-                        <div class="{{ $ctBadge }}">
-                            <div>
-                                <div class="text-white/25 text-[0.5rem] font-bold uppercase leading-none mb-0.5">Freguesia</div>
-                                <div class="text-emerald-200 text-[0.72rem] font-bold">{{ $originArtLocal }}</div>
-                            </div>
-                            <button type="button" wire:click="$set('originArtLocal', '')" class="{{ $ctReset }}">✕</button>
-                        </div>
-                        @else
-                        <div x-data="{
-                            open: true, search: '',
-                            items: @js($artLocals->values()),
-                            norm(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); },
-                            get filtered() {
-                                if (!this.search) return this.items;
-                                const q = this.norm(this.search);
-                                return this.items.filter(l => this.norm(l).includes(q));
-                            }
-                        }">
-                            <button type="button" @click="open = !open"
-                                    class="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3 py-2 transition-colors"
-                                    :class="open ? 'border-emerald-500/30 bg-emerald-500/8' : ''">
-                                <span class="text-white/40 text-[0.72rem]" x-text="open ? 'Freguesia' : 'Selecionar Freguesia'"></span>
-                                <span class="text-white/25 text-[0.65rem]" x-text="open ? '▲' : '▼'"></span>
-                            </button>
-                            <div x-show="open" x-transition.duration.150ms class="mt-1">
-                                <input type="text" x-model="search" placeholder="Filtrar freguesia..."
-                                       class="w-full bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-emerald-500/50 mb-1.5">
-                                <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
-                                    <template x-for="l in filtered" :key="l">
-                                        <button type="button" @click="$wire.set('originArtLocal', l)"
-                                                class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-emerald-500/15 active:bg-emerald-500/25 border border-white/8 hover:border-emerald-500/30 rounded-xl px-3 py-2 transition-colors group">
-                                            <span class="text-white text-[0.72rem] font-semibold" x-text="l"></span>
-                                            <span class="text-white/20 group-hover:text-emerald-400 text-[0.65rem] shrink-0">→</span>
-                                        </button>
-                                    </template>
-                                    <template x-if="filtered.length === 0">
-                                        <div class="text-white/25 text-[0.65rem] text-center py-3">Sem resultados</div>
-                                    </template>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                    @endif
-
-                    {{-- Rua (server-side search con debounce) --}}
-                    @if($originLocalidade)
-                        @if($originRua)
-                        <div class="{{ $ctBadge }}">
-                            <div>
-                                <div class="text-white/25 text-[0.5rem] font-bold uppercase leading-none mb-0.5">Rua (opcional)</div>
-                                <div class="text-emerald-200 text-[0.72rem] font-bold">{{ $originRua }}</div>
-                            </div>
-                            <button type="button" wire:click="$set('originRua', '')" class="{{ $ctReset }}">✕</button>
-                        </div>
-                        @else
-                        <div x-data="{ q: '', res: [] }">
-                            <span class="{{ $ctLbl }}">Rua (opcional)</span>
+                    {{-- Rua — busca Nominatim con botón --}}
+                    @if($originCC)
+                    <div x-data="{ q: '', res: [], loading: false, searched: false }">
+                        <span class="{{ $ctLbl }}">Rua / Local</span>
+                        <div class="flex gap-1.5 mb-1.5">
                             <input type="text" x-model="q"
-                                   @input.debounce.350ms="if (q.length >= 2) { $wire.call('searchRuas', q).then(r => { res = r; }); } else { res = []; }"
+                                   @keydown.enter.prevent="if (q.length >= 3) { loading = true; searched = true; $wire.call('searchRuas', q).then(r => { res = r; loading = false; }); }"
                                    placeholder="Ex: Caminho Novo de Santana..."
-                                   class="w-full bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-emerald-500/50 mb-1.5"
+                                   class="flex-1 bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-emerald-500/50"
                                    autocomplete="off">
-                            <template x-if="q.length < 2">
-                                <div class="text-white/20 text-[0.62rem] text-center py-2">Escreva 2+ letras para pesquisar</div>
-                            </template>
-                            <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
-                                <template x-for="r in res" :key="r">
-                                    <button type="button" @click="$wire.set('originRua', r)"
-                                            class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-emerald-500/15 active:bg-emerald-500/25 border border-white/8 hover:border-emerald-500/30 rounded-xl px-3 py-2 transition-colors group">
-                                        <span class="text-white text-[0.72rem] font-semibold" x-text="r"></span>
-                                        <span class="text-white/20 group-hover:text-emerald-400 text-[0.65rem] shrink-0">→</span>
-                                    </button>
-                                </template>
-                                <template x-if="q.length >= 2 && res.length === 0">
-                                    <div class="text-white/25 text-[0.65rem] text-center py-3">Sem resultados</div>
-                                </template>
-                            </div>
+                            <button type="button"
+                                    @click="if (q.length >= 3) { loading = true; searched = true; $wire.call('searchRuas', q).then(r => { res = r; loading = false; }); }"
+                                    :disabled="q.length < 3 || loading"
+                                    class="bg-emerald-500/20 hover:bg-emerald-500/30 disabled:opacity-30 text-emerald-300 border border-emerald-500/40 rounded-xl px-3 py-2 text-[0.7rem] font-bold transition-colors shrink-0">
+                                <span x-show="!loading">🔍</span>
+                                <span x-show="loading" class="animate-pulse">⟳</span>
+                            </button>
                         </div>
-                        @endif
-                    @endif
-
-                    @if($originLocalidade)
-                    <button type="button" wire:click="aplicarPesquisaOrigem"
-                            class="w-full bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-xl py-2 text-[0.72rem] font-bold transition-colors">
-                        ✓ Usar esta localização
-                    </button>
+                        <template x-if="!searched">
+                            <div class="text-white/20 text-[0.62rem] text-center py-2">Escreva e prima 🔍 para pesquisar</div>
+                        </template>
+                        <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
+                            <template x-for="r in res" :key="r.road">
+                                <button type="button"
+                                        @click="$wire.call('selecionarRuaOrigem', r.road, r.localidade ?? '', r.postcode ?? '')"
+                                        class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-emerald-500/15 active:bg-emerald-500/25 border border-white/8 hover:border-emerald-500/30 rounded-xl px-3 py-2 transition-colors group">
+                                    <div class="min-w-0 flex-1">
+                                        <div class="text-white text-[0.72rem] font-semibold truncate" x-text="r.road"></div>
+                                        <div class="text-white/35 text-[0.58rem] truncate"
+                                             x-text="[r.suburb, r.localidade, r.postcode].filter(Boolean).join(' · ')"></div>
+                                    </div>
+                                    <span class="text-white/20 group-hover:text-emerald-400 text-[0.65rem] shrink-0 ml-2">→</span>
+                                </button>
+                            </template>
+                            <template x-if="searched && !loading && res.length === 0">
+                                <div class="text-white/25 text-[0.65rem] text-center py-3">Sem resultados</div>
+                            </template>
+                        </div>
+                    </div>
                     @endif
 
                 </div>
@@ -449,79 +352,208 @@
             <div class="bg-red-500/5 border border-red-500/20 rounded-2xl p-3.5">
                 <div class="text-red-400 text-[0.65rem] font-black uppercase mb-3">↓ DESTINO / DESCARGA</div>
 
-                {{-- Localidade autocomplete (CT) --}}
-                <div class="mb-2.5"
-                     x-data="{ q: @js($destinoLocalidade), res: [], open: false }"
-                     @click.outside="open = false">
-                    <label class="{{ $lblB }}">Localidade</label>
-                    <div class="relative">
-                        <input type="text" x-model="q"
-                               @input.debounce.350ms="if (q.length >= 2) { $wire.call('searchLocalidades', q).then(r => { res = r; open = r.length > 0; }); } else { res = []; open = false; }"
-                               placeholder="ex: Funchal, Machico, Caniçal..."
-                               class="w-full bg-red-500/10 border border-red-500/25 rounded-xl px-3 py-2.5 text-white text-[0.82rem] placeholder-red-400/40 focus:outline-none"
-                               autocomplete="off">
-                        <div x-show="open" x-transition
-                             class="absolute z-30 left-0 right-0 mt-1 bg-slate-800 border border-white/20 rounded-xl shadow-xl overflow-hidden max-h-44 overflow-y-auto">
-                            <template x-for="r in res" :key="r.localidade">
-                                <button type="button"
-                                        @click="$wire.call('selecionarLocalidade', r.localidade, r.cp); q = r.localidade; open = false;"
-                                        class="w-full text-left px-3 py-2.5 hover:bg-white/10 flex justify-between items-center gap-2 border-b border-white/5 last:border-0">
-                                    <span class="text-white text-[0.82rem] font-semibold" x-text="r.localidade"></span>
-                                    <span class="text-white/40 text-[0.65rem] font-mono shrink-0" x-text="r.cp"></span>
-                                </button>
-                            </template>
+                @if($destinoTab === 'confirmado')
+                {{-- Confirmado --}}
+                <div class="flex items-center justify-between bg-red-500/10 border border-red-500/30 rounded-xl px-3 py-2.5 mb-2.5">
+                    <div>
+                        <div class="text-white text-[0.82rem] font-bold">{{ $destinoNome }}</div>
+                        @if($destinoMorada || $destinoLocalidade)
+                        <div class="text-red-300/70 text-[0.65rem]">
+                            {{ implode(' · ', array_filter([$destinoMorada, $destinoLocalidade, $destinoCpostal])) }}
+                        </div>
+                        @endif
+                    </div>
+                    <button type="button" wire:click="alterarDestino"
+                            class="text-white/40 hover:text-white/70 text-[0.65rem] font-bold border border-white/15 rounded-lg px-2 py-1 shrink-0 bg-transparent">
+                        alterar
+                    </button>
+                </div>
+
+                @else
+                {{-- Tabs de modo --}}
+                <div class="flex gap-1 bg-black/20 p-1 rounded-xl mb-3">
+                    @foreach(['frequente' => '⭐ Freq.', 'pesquisa' => '🔍 Pesquisa', 'manual' => '✏️ Manual'] as $m => $label)
+                    <button type="button" wire:click="$set('destinoModo', '{{ $m }}')"
+                            class="flex-1 py-1.5 rounded-lg text-[0.58rem] font-bold border-none transition-colors
+                                   {{ $destinoModo === $m ? 'bg-red-500/30 text-red-300' : 'bg-transparent text-white/40' }}">
+                        {{ $label }}
+                    </button>
+                    @endforeach
+                </div>
+
+                @if($destinoModo === 'frequente')
+                @if(count($locaisFrequentes))
+                <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
+                    @foreach($locaisFrequentes as $lf)
+                    <button type="button" wire:click="selecionarLocalDestino({{ $lf['id'] }})"
+                            class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-red-500/15 active:bg-red-500/25 border border-white/8 hover:border-red-500/30 rounded-xl px-3 py-2 transition-colors group">
+                        <div class="min-w-0 flex-1">
+                            <div class="text-white text-[0.72rem] font-semibold leading-tight truncate">{{ $lf['nome'] }}</div>
+                            @if($lf['localidade'])
+                            <div class="text-white/35 text-[0.58rem] leading-tight truncate">{{ $lf['localidade'] }}@if($lf['cp']) · {{ $lf['cp'] }}@endif</div>
+                            @endif
+                        </div>
+                        <span class="text-white/20 group-hover:text-red-400 text-[0.65rem] ml-2 shrink-0">→</span>
+                    </button>
+                    @endforeach
+                </div>
+                @else
+                <p class="text-white/30 text-[0.65rem] text-center py-4">Sem locais frequentes registados.</p>
+                @endif
+                @endif
+
+                @if($destinoModo === 'pesquisa')
+                @php
+                    $ctBadgeD = 'flex items-center justify-between px-2.5 py-1.5 bg-red-500/12 border border-red-500/25 rounded-xl';
+                    $ctResetD = 'text-white/25 text-[0.65rem] border border-white/10 rounded-lg px-1.5 py-0.5 bg-transparent hover:text-white/50 shrink-0';
+                @endphp
+                <div class="flex flex-col gap-2.5">
+                    {{-- Distrito --}}
+                    @if($destinoDD)
+                    <div class="{{ $ctBadgeD }}">
+                        <div>
+                            <div class="text-white/25 text-[0.5rem] font-bold uppercase leading-none mb-0.5">Distrito</div>
+                            <div class="text-red-200 text-[0.72rem] font-bold">{{ $distritos->firstWhere('dd', $destinoDD)?->desig }}</div>
+                        </div>
+                        <button type="button" wire:click="$set('destinoDD', '')" class="{{ $ctResetD }}">✕</button>
+                    </div>
+                    @else
+                    <div x-data="{
+                        open: false, search: '',
+                        items: @js($distritos->map(fn($d) => ['dd' => $d->dd, 'desig' => $d->desig])->values()),
+                        norm(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); },
+                        get filtered() { if (!this.search) return this.items; const q = this.norm(this.search); return this.items.filter(i => this.norm(i.desig).includes(q)); }
+                    }">
+                        <button type="button" @click="open = !open"
+                                class="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3 py-2 transition-colors"
+                                :class="open ? 'border-red-500/30 bg-red-500/8' : ''">
+                            <span class="text-white/40 text-[0.72rem]" x-text="open ? 'Distrito' : 'Selecionar Distrito'"></span>
+                            <span class="text-white/25 text-[0.65rem]" x-text="open ? '▲' : '▼'"></span>
+                        </button>
+                        <div x-show="open" x-transition.duration.150ms class="mt-1">
+                            <input type="text" x-model="search" placeholder="Filtrar distrito..."
+                                   class="w-full bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-red-500/50 mb-1.5">
+                            <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
+                                <template x-for="d in filtered" :key="d.dd">
+                                    <button type="button" @click="$wire.set('destinoDD', d.dd)"
+                                            class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-red-500/15 border border-white/8 hover:border-red-500/30 rounded-xl px-3 py-2 transition-colors group">
+                                        <span class="text-white text-[0.72rem] font-semibold" x-text="d.desig"></span>
+                                        <span class="text-white/20 group-hover:text-red-400 text-[0.65rem] shrink-0">→</span>
+                                    </button>
+                                </template>
+                            </div>
                         </div>
                     </div>
-                    @if($destinoLocalidade)
-                    <div class="flex items-center gap-2 mt-1.5">
-                        <span class="text-emerald-300 text-[0.65rem]">✓ {{ $destinoLocalidade }}@if($destinoCpostal) · {{ $destinoCpostal }}@endif</span>
+                    @endif
+
+                    {{-- Concelho --}}
+                    @if($destinoDD && count($destinoConcelhos))
+                        @if($destinoCC)
+                        <div class="{{ $ctBadgeD }}">
+                            <div>
+                                <div class="text-white/25 text-[0.5rem] font-bold uppercase leading-none mb-0.5">Concelho</div>
+                                <div class="text-red-200 text-[0.72rem] font-bold">{{ $destinoConcelhos->firstWhere('cc', $destinoCC)?->desig }}</div>
+                            </div>
+                            <button type="button" wire:click="$set('destinoCC', '')" class="{{ $ctResetD }}">✕</button>
+                        </div>
+                        @else
+                        <div x-data="{
+                            open: true, search: '',
+                            items: @js($destinoConcelhos->map(fn($c) => ['cc' => $c->cc, 'desig' => $c->desig])->values()),
+                            norm(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); },
+                            get filtered() { if (!this.search) return this.items; const q = this.norm(this.search); return this.items.filter(i => this.norm(i.desig).includes(q)); }
+                        }">
+                            <button type="button" @click="open = !open"
+                                    class="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3 py-2 transition-colors"
+                                    :class="open ? 'border-red-500/30 bg-red-500/8' : ''">
+                                <span class="text-white/40 text-[0.72rem]" x-text="open ? 'Concelho' : 'Selecionar Concelho'"></span>
+                                <span class="text-white/25 text-[0.65rem]" x-text="open ? '▲' : '▼'"></span>
+                            </button>
+                            <div x-show="open" x-transition.duration.150ms class="mt-1">
+                                <input type="text" x-model="search" placeholder="Filtrar concelho..."
+                                       class="w-full bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-red-500/50 mb-1.5">
+                                <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
+                                    <template x-for="c in filtered" :key="c.cc">
+                                        <button type="button" @click="$wire.set('destinoCC', c.cc)"
+                                                class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-red-500/15 border border-white/8 hover:border-red-500/30 rounded-xl px-3 py-2 transition-colors group">
+                                            <span class="text-white text-[0.72rem] font-semibold" x-text="c.desig"></span>
+                                            <span class="text-white/20 group-hover:text-red-400 text-[0.65rem] shrink-0">→</span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    @endif
+
+                    {{-- Rua Nominatim --}}
+                    @if($destinoCC)
+                    <div x-data="{ q: '', res: [], loading: false, searched: false }">
+                        <span class="text-white/30 text-[0.55rem] font-bold uppercase mb-1 ml-0.5 block">Rua / Local</span>
+                        <div class="flex gap-1.5 mb-1.5">
+                            <input type="text" x-model="q"
+                                   @keydown.enter.prevent="if (q.length >= 3) { loading = true; searched = true; $wire.call('searchRuasDestino', q).then(r => { res = r; loading = false; }); }"
+                                   placeholder="Ex: Rua João de Deus..."
+                                   class="flex-1 bg-black/20 border border-white/10 rounded-xl px-2.5 py-2 text-white text-[0.72rem] placeholder-white/20 focus:outline-none focus:border-red-500/50"
+                                   autocomplete="off">
+                            <button type="button"
+                                    @click="if (q.length >= 3) { loading = true; searched = true; $wire.call('searchRuasDestino', q).then(r => { res = r; loading = false; }); }"
+                                    :disabled="q.length < 3 || loading"
+                                    class="bg-red-500/20 hover:bg-red-500/30 disabled:opacity-30 text-red-300 border border-red-500/40 rounded-xl px-3 py-2 text-[0.7rem] font-bold transition-colors shrink-0">
+                                <span x-show="!loading">🔍</span>
+                                <span x-show="loading" class="animate-pulse">⟳</span>
+                            </button>
+                        </div>
+                        <template x-if="!searched">
+                            <div class="text-white/20 text-[0.62rem] text-center py-2">Escreva e prima 🔍 para pesquisar</div>
+                        </template>
+                        <div class="flex flex-col gap-1 max-h-44 overflow-y-auto pr-0.5">
+                            <template x-for="r in res" :key="r.road">
+                                <button type="button"
+                                        @click="$wire.call('selecionarRuaDestino', r.road, r.localidade ?? '', r.postcode ?? '')"
+                                        class="flex items-center justify-between w-full text-left bg-white/5 hover:bg-red-500/15 active:bg-red-500/25 border border-white/8 hover:border-red-500/30 rounded-xl px-3 py-2 transition-colors group">
+                                    <div class="min-w-0 flex-1">
+                                        <div class="text-white text-[0.72rem] font-semibold truncate" x-text="r.road"></div>
+                                        <div class="text-white/35 text-[0.58rem] truncate"
+                                             x-text="[r.suburb, r.localidade, r.postcode].filter(Boolean).join(' · ')"></div>
+                                    </div>
+                                    <span class="text-white/20 group-hover:text-red-400 text-[0.65rem] shrink-0 ml-2">→</span>
+                                </button>
+                            </template>
+                            <template x-if="searched && !loading && res.length === 0">
+                                <div class="text-white/25 text-[0.65rem] text-center py-3">Sem resultados</div>
+                            </template>
+                        </div>
                     </div>
                     @endif
                 </div>
+                @endif
 
-                {{-- Local frequente --}}
-                <div class="mb-2.5"
-                     x-data="{ q: '', res: [], open: false }"
-                     @click.outside="open = false">
-                    <label class="{{ $lbl }}">ou escolher local frequente</label>
-                    <div class="relative">
-                        <input type="text" x-model="q"
-                               @input.debounce.300ms="if (q.length >= 1) { $wire.call('searchLocaisFrequentes', q).then(r => { res = r; open = r.length > 0; }); } else { res = []; open = false; }"
-                               placeholder="⭐ Pesquisar local frequente..."
-                               class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white/70 text-[0.78rem] placeholder-white/25 focus:outline-none"
-                               autocomplete="off">
-                        <div x-show="open" x-transition
-                             class="absolute z-30 left-0 right-0 mt-1 bg-slate-800 border border-white/20 rounded-xl shadow-xl overflow-hidden">
-                            <template x-for="l in res" :key="l.id">
-                                <button type="button"
-                                        @click="$wire.call('selecionarLocalDestino', l.id); q = l.nome; open = false;"
-                                        class="w-full text-left px-3 py-2.5 hover:bg-white/10 flex justify-between items-center gap-2 border-b border-white/5 last:border-0">
-                                    <div>
-                                        <div class="text-white text-[0.78rem] font-semibold" x-text="l.nome"></div>
-                                        <div class="text-white/40 text-[0.65rem]" x-text="l.localidade"></div>
-                                    </div>
-                                    <span class="text-white/40 text-[0.65rem] font-mono shrink-0" x-text="l.cp"></span>
-                                </button>
-                            </template>
-                        </div>
-                    </div>
+                @if($destinoModo === 'manual')
+                <div class="flex flex-col gap-2">
+                    <input wire:model.blur="destinoNome" type="text" placeholder="Nome do local..."
+                           class="{{ $inp }}">
+                    <input wire:model.blur="destinoMorada" type="text" placeholder="Morada / Rua..."
+                           class="{{ $inp }}">
+                    <input wire:model.blur="destinoLocalidade" type="text" placeholder="Localidade..."
+                           class="{{ $inp }}">
+                    <button type="button" wire:click="$set('destinoTab', 'confirmado')"
+                            class="w-full bg-white/5 hover:bg-white/10 text-white/60 border border-white/10 rounded-xl py-2 text-[0.7rem] font-bold transition-colors">
+                        Confirmar
+                    </button>
                 </div>
+                @endif
+                @endif
 
-                <div class="flex flex-col gap-2.5">
-                    <div>
-                        <label class="{{ $lbl }}">Morada / Rua</label>
-                        <input wire:model="destinoMorada" type="text" placeholder="Rua, número..."
-                               class="{{ $inp }}">
+                {{-- Data/Hora descarga --}}
+                <div class="flex gap-2 mt-2.5">
+                    <div class="flex-1">
+                        <label class="{{ $lbl }}">Data descarga</label>
+                        <input wire:model="dataFim" type="date" class="{{ $inp }}">
                     </div>
-                    <div class="flex gap-2">
-                        <div class="flex-1">
-                            <label class="{{ $lbl }}">Data descarga</label>
-                            <input wire:model="dataFim" type="date" class="{{ $inp }}">
-                        </div>
-                        <div class="w-24 shrink-0">
-                            <label class="{{ $lbl }}">Hora</label>
-                            <input wire:model="horaFim" type="time" class="{{ $inp }}">
-                        </div>
+                    <div class="w-24 shrink-0">
+                        <label class="{{ $lbl }}">Hora</label>
+                        <input wire:model="horaFim" type="time" class="{{ $inp }}">
                     </div>
                 </div>
             </div>

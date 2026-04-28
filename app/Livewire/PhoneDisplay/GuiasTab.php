@@ -2,8 +2,6 @@
 
 namespace App\Livewire\PhoneDisplay;
 
-use App\Jobs\NominatimLookupJob;
-use App\Models\CtCodigoPostal;
 use App\Models\CtConcelho;
 use App\Models\CtDistrito;
 use App\Models\GuiaTransporte;
@@ -43,9 +41,9 @@ class GuiasTab extends Component
     // Origin UI state
     public string $originTab = 'confirmado';  // 'escolher' | 'confirmado'
 
-    public string $originModo = 'gps';        // 'gps' | 'frequente' | 'pesquisa' | 'manual'
+    public string $originModo = 'pesquisa';   // 'gps' | 'frequente' | 'pesquisa' | 'manual'
 
-    // Origin CT cascade
+    // Origin cascade
     public string $originDD = '';
 
     public string $originCC = '';
@@ -68,6 +66,16 @@ class GuiasTab extends Component
     public string $dataFim = '';
 
     public string $horaFim = '';
+
+    // Destination UI state
+    public string $destinoTab = 'escolher';   // 'escolher' | 'confirmado'
+
+    public string $destinoModo = 'pesquisa';  // 'frequente' | 'pesquisa' | 'manual'
+
+    // Destination cascade
+    public string $destinoDD = '';
+
+    public string $destinoCC = '';
 
     // Items
     public array $items = [];
@@ -103,83 +111,23 @@ class GuiasTab extends Component
     public function updatedOriginDD(): void
     {
         $this->originCC = '';
-        $this->originLocalidade = '';
-        $this->originRua = '';
     }
 
-    public function updatedOriginCC(): void
+    public function updatedDestinDD(): void
     {
-        $this->originLocalidade = '';
-        $this->originRua = '';
+        $this->destinoCC = '';
     }
 
-    public function updatedOriginLocalidade(): void
+    public function alterarOrigem(): void
     {
-        $this->originArtLocal = '';
-        $this->originRua = '';
+        $this->originTab = 'escolher';
+        $this->originModo = 'pesquisa';
     }
 
-    public function updatedOriginArtLocal(): void
+    public function alterarDestino(): void
     {
-        $this->originRua = '';
-    }
-
-    public function aplicarPesquisaOrigem(): void
-    {
-        if (! $this->originLocalidade) {
-            return;
-        }
-
-        $query = CtCodigoPostal::where('dd', $this->originDD)
-            ->where('cc', $this->originCC)
-            ->where('localidade', $this->originLocalidade);
-
-        if ($this->originArtLocal) {
-            $query->where('art_local', $this->originArtLocal);
-        }
-
-        if ($this->originRua) {
-            $query->where('nome_arteria', $this->originRua);
-        }
-
-        $row = $query->first();
-
-        $this->localCargaMorada = $this->originRua ?: '';
-        $this->localCargaLocalidade = $this->originLocalidade;
-        $this->localCargaCpostal = $row ? "{$row->cp4}-{$row->cp3}" : '';
-
-        if (! $this->localCargaNome || $this->localCargaNome === 'ESTALEIRO CME') {
-            $this->localCargaNome = $this->originRua ?: $this->originLocalidade;
-        }
-
-        $this->originTab = 'confirmado';
-    }
-
-    // ── Localidade search for destination (CT) ────────────────
-
-    public function searchLocalidades(string $q): array
-    {
-        if (strlen($q) < 2) {
-            return [];
-        }
-
-        return CtCodigoPostal::select('localidade', DB::raw('MIN(cp4) as cp4'), DB::raw('MIN(cp3) as cp3'))
-            ->where('localidade', 'like', "{$q}%")
-            ->groupBy('localidade')
-            ->orderBy('localidade')
-            ->limit(8)
-            ->get()
-            ->map(fn ($r) => [
-                'localidade' => $r->localidade,
-                'cp' => "{$r->cp4}-{$r->cp3}",
-            ])
-            ->toArray();
-    }
-
-    public function selecionarLocalidade(string $localidade, string $cp): void
-    {
-        $this->destinoLocalidade = $localidade;
-        $this->destinoCpostal = $cp;
+        $this->destinoTab = 'escolher';
+        $this->destinoModo = 'pesquisa';
     }
 
     // ── Locais Frequentes ─────────────────────────────────────
@@ -224,9 +172,10 @@ class GuiasTab extends Component
         $this->destinoMorada = $local->morada ?? '';
         $this->destinoLocalidade = $local->localidade ?? '';
         $this->destinoCpostal = $local->codigoPostalCompleto();
+        $this->destinoTab = 'confirmado';
     }
 
-    // ── Rua search ───────────────────────────────────────────
+    // ── Nominatim search ─────────────────────────────────────
 
     public function searchRuas(string $q): array
     {
@@ -234,46 +183,54 @@ class GuiasTab extends Component
             return [];
         }
 
-        // 1. Buscar en el caché local (Nominatim ya consultado)
-        $cached = NominatimCache::searchLocal($q, $this->originDD, $this->originCC, 15);
+        $cached = NominatimCache::searchLocal($q, $this->originDD, $this->originCC, 10);
 
         if (! empty($cached)) {
-            return array_values(array_unique(array_filter(array_column($cached, 'road'))));
+            return $cached;
         }
 
-        // 2. Fallback a CT database (datos locales)
-        $normalized = preg_replace('/\b(de|da|do|das|dos|e|à|ao|a)\b/iu', ' ', $q);
-        $normalized = preg_replace('/\s+/', ' ', trim($normalized));
-        $words = array_filter(explode(' ', $normalized));
-
-        $query = CtCodigoPostal::where('dd', $this->originDD)
+        $concelhoDesig = CtConcelho::where('dd', $this->originDD)
             ->where('cc', $this->originCC)
-            ->when($this->originLocalidade, fn ($q2) => $q2->where('localidade', $this->originLocalidade))
-            ->when($this->originArtLocal, fn ($q2) => $q2->where(fn ($q3) => $q3->where('art_local', $this->originArtLocal)->orWhereNull('art_local')))
-            ->whereNotNull('nome_arteria')
-            ->where('nome_arteria', '!=', '');
+            ->value('desig') ?? '';
 
-        foreach ($words as $word) {
-            $query->where('nome_arteria', 'like', "%{$word}%");
+        return NominatimCache::searchNominatim($q, $this->originDD, $this->originCC, $concelhoDesig);
+    }
+
+    public function searchRuasDestino(string $q): array
+    {
+        if (strlen($q) < 2 || ! $this->destinoDD || ! $this->destinoCC) {
+            return [];
         }
 
-        $ctResults = $query->select('nome_arteria')
-            ->distinct()
-            ->orderBy('nome_arteria')
-            ->limit(30)
-            ->pluck('nome_arteria')
-            ->toArray();
+        $cached = NominatimCache::searchLocal($q, $this->destinoDD, $this->destinoCC, 10);
 
-        // 3. Encolar búsqueda en Nominatim en background para futuras consultas
-        if ($this->originDD && $this->originCC) {
-            $concelhoDesig = CtConcelho::where('dd', $this->originDD)
-                ->where('cc', $this->originCC)
-                ->value('desig') ?? '';
-
-            NominatimLookupJob::dispatch($q, $this->originDD, $this->originCC, $concelhoDesig);
+        if (! empty($cached)) {
+            return $cached;
         }
 
-        return $ctResults;
+        $concelhoDesig = CtConcelho::where('dd', $this->destinoDD)
+            ->where('cc', $this->destinoCC)
+            ->value('desig') ?? '';
+
+        return NominatimCache::searchNominatim($q, $this->destinoDD, $this->destinoCC, $concelhoDesig);
+    }
+
+    public function selecionarRuaOrigem(string $road, string $localidade, string $postcode): void
+    {
+        $this->localCargaNome = $road;
+        $this->localCargaMorada = $road;
+        $this->localCargaLocalidade = $localidade;
+        $this->localCargaCpostal = $postcode;
+        $this->originTab = 'confirmado';
+    }
+
+    public function selecionarRuaDestino(string $road, string $localidade, string $postcode): void
+    {
+        $this->destinoNome = $road;
+        $this->destinoMorada = $road;
+        $this->destinoLocalidade = $localidade;
+        $this->destinoCpostal = $postcode;
+        $this->destinoTab = 'confirmado';
     }
 
     // ── Material search ───────────────────────────────────────
@@ -327,7 +284,7 @@ class GuiasTab extends Component
         $this->dataInicio = now()->format('Y-m-d');
         $this->horaInicio = now()->format('H:i');
         $this->originTab = 'confirmado';
-        $this->originModo = 'gps';
+        $this->originModo = 'pesquisa';
         $this->originDD = '';
         $this->originCC = '';
         $this->originLocalidade = '';
@@ -337,6 +294,10 @@ class GuiasTab extends Component
         $this->destinoMorada = '';
         $this->destinoLocalidade = '';
         $this->destinoCpostal = '';
+        $this->destinoTab = 'escolher';
+        $this->destinoModo = 'pesquisa';
+        $this->destinoDD = '';
+        $this->destinoCC = '';
         $this->dataFim = now()->format('Y-m-d');
         $this->horaFim = now()->addHour()->format('H:i');
         $this->items = [['descricao' => '', 'quantidade' => 1, 'unidade' => 'UN']];
@@ -356,10 +317,15 @@ class GuiasTab extends Component
         $this->dataInicio = now()->format('Y-m-d');
         $this->horaInicio = now()->format('H:i');
         $this->originTab = 'confirmado';
+        $this->originDD = '';
+        $this->originCC = '';
         $this->destinoNome = $guia->destino_nome ?? '';
         $this->destinoMorada = $guia->destino_morada ?? '';
         $this->destinoLocalidade = $guia->destino_localidade ?? '';
         $this->destinoCpostal = $guia->destino_cpostal ?? '';
+        $this->destinoTab = $this->destinoNome ? 'confirmado' : 'escolher';
+        $this->destinoDD = '';
+        $this->destinoCC = '';
         $this->dataFim = now()->format('Y-m-d');
         $this->horaFim = now()->addHour()->format('H:i');
 
@@ -446,26 +412,8 @@ class GuiasTab extends Component
             ? CtConcelho::where('dd', $this->originDD)->orderBy('desig')->get()
             : collect();
 
-        $localidades = $this->originCC
-            ? CtCodigoPostal::where('dd', $this->originDD)
-                ->where('cc', $this->originCC)
-                ->select('localidade')
-                ->groupBy('localidade')
-                ->orderBy('localidade')
-                ->get()
-                ->pluck('localidade')
-            : collect();
-
-        $artLocals = $this->originLocalidade
-            ? CtCodigoPostal::where('dd', $this->originDD)
-                ->where('cc', $this->originCC)
-                ->where('localidade', $this->originLocalidade)
-                ->whereNotNull('art_local')
-                ->where('art_local', '!=', '')
-                ->select('art_local')
-                ->distinct()
-                ->orderBy('art_local')
-                ->pluck('art_local')
+        $destinoConcelhos = $this->destinoDD
+            ? CtConcelho::where('dd', $this->destinoDD)->orderBy('desig')->get()
             : collect();
 
         return view('livewire.phone-display.guias-tab', [
@@ -473,8 +421,7 @@ class GuiasTab extends Component
             'locaisFrequentes' => $locaisFrequentes,
             'distritos' => $distritos,
             'concelhos' => $concelhos,
-            'localidades' => $localidades,
-            'artLocals' => $artLocals,
+            'destinoConcelhos' => $destinoConcelhos,
         ]);
     }
 }
