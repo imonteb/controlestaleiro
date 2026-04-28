@@ -576,7 +576,8 @@
                             <div class="relative">
                                 <input
                                     x-model="q{{ $index }}"
-                                    @input.debounce.300ms="$wire.set('items.{{ $index }}.descricao', q{{ $index }}); if (q{{ $index }}.length >= 2) { $wire.call('searchMateriais', q{{ $index }}).then(r => { res{{ $index }} = r; show{{ $index }} = r.length > 0; }); } else { res{{ $index }} = []; show{{ $index }} = false; }"
+                                    @input.debounce.300ms="if (q{{ $index }}.length >= 2) { $wire.call('searchMateriais', q{{ $index }}).then(r => { res{{ $index }} = r; show{{ $index }} = r.length > 0; }); } else { res{{ $index }} = []; show{{ $index }} = false; }"
+                                    @blur="$wire.set('items.{{ $index }}.descricao', q{{ $index }})"
                                     @focus="if (q{{ $index }}.length >= 2 && res{{ $index }}.length > 0) show{{ $index }} = true"
                                     type="text"
                                     placeholder="Descrição do bem..."
