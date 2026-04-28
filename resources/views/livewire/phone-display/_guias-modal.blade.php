@@ -570,30 +570,30 @@
                 <div class="flex flex-col gap-2.5">
                     @foreach($items as $index => $item)
                     <div class="bg-black/20 p-2.5 rounded-xl"
-                         x-data="{ q{{ $index }}: @js($item['descricao']), res{{ $index }}: [], show{{ $index }}: false }"
-                         @click.outside="show{{ $index }} = false">
+                         x-data="{ q{{ $index }}: @js($item['descricao']) }">
                         <div class="flex flex-col gap-2">
                             <div class="relative">
                                 <input
                                     x-model="q{{ $index }}"
-                                    @input.debounce.300ms="if (q{{ $index }}.length >= 2) { $wire.call('searchMateriais', q{{ $index }}).then(r => { res{{ $index }} = r; show{{ $index }} = r.length > 0; }); } else { res{{ $index }} = []; show{{ $index }} = false; }"
+                                    @input.debounce.400ms="$wire.call('searchMateriais', q{{ $index }}, {{ $index }})"
                                     @blur="$wire.set('items.{{ $index }}.descricao', q{{ $index }})"
-                                    @focus="if (q{{ $index }}.length >= 2 && res{{ $index }}.length > 0) show{{ $index }} = true"
                                     type="text"
                                     placeholder="Descrição do bem..."
                                     class="w-full bg-white/5 border {{ $errors->has('items.'.$index.'.descricao') ? 'border-red-500/60' : 'border-white/10' }} rounded-lg px-2.5 py-2 text-white text-[0.82rem] placeholder-white/25 focus:outline-none"
                                     autocomplete="off">
-                                <div x-show="show{{ $index }}" x-transition
-                                     class="absolute z-30 left-0 right-0 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl overflow-hidden">
-                                    <template x-for="m in res{{ $index }}" :key="m.codigo">
-                                        <button type="button"
-                                                @click="$wire.set('items.{{ $index }}.descricao', m.nome); $wire.set('items.{{ $index }}.unidade', m.unidade); q{{ $index }} = m.nome; show{{ $index }} = false"
-                                                class="w-full text-left px-3 py-2 hover:bg-white/10 flex justify-between items-center gap-2 border-b border-white/5 last:border-0">
-                                            <span class="text-white text-[0.78rem] font-semibold" x-text="m.nome"></span>
-                                            <span class="text-white/40 text-[0.65rem] font-mono shrink-0" x-text="m.codigo + ' · ' + m.unidade"></span>
-                                        </button>
-                                    </template>
+                                @if(!empty($materiaisResults[$index]))
+                                <div class="absolute z-30 left-0 right-0 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl overflow-hidden">
+                                    @foreach($materiaisResults[$index] as $m)
+                                    <button type="button"
+                                            wire:click="selecionarMaterial({{ $index }}, @js($m['nome']), @js($m['unidade']))"
+                                            x-on:click="q{{ $index }} = @js($m['nome'])"
+                                            class="w-full text-left px-3 py-2 hover:bg-white/10 flex justify-between items-center gap-2 border-b border-white/5 last:border-0">
+                                        <span class="text-white text-[0.78rem] font-semibold">{{ $m['nome'] }}</span>
+                                        <span class="text-white/40 text-[0.65rem] font-mono shrink-0">{{ $m['codigo'] }} · {{ $m['unidade'] }}</span>
+                                    </button>
+                                    @endforeach
                                 </div>
+                                @endif
                             </div>
                             <div class="flex gap-2 items-center">
                                 <input wire:model.blur="items.{{ $index }}.quantidade"

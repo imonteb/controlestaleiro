@@ -80,6 +80,8 @@ class GuiasTab extends Component
     // Items
     public array $items = [];
 
+    public array $materiaisResults = [];
+
     // State
     public bool $sucesso = false;
 
@@ -235,10 +237,12 @@ class GuiasTab extends Component
 
     // ── Material search ───────────────────────────────────────
 
-    public function searchMateriais(string $q): array
+    public function searchMateriais(string $q, int $index): void
     {
         if (strlen($q) < 2) {
-            return [];
+            unset($this->materiaisResults[$index]);
+
+            return;
         }
 
         $words = array_filter(explode(' ', mb_strtolower(trim($q))));
@@ -252,7 +256,7 @@ class GuiasTab extends Component
             });
         }
 
-        return $query->orderBy('nome')
+        $this->materiaisResults[$index] = $query->orderBy('nome')
             ->limit(15)
             ->get()
             ->map(fn ($m) => [
@@ -261,6 +265,13 @@ class GuiasTab extends Component
                 'unidade' => $m->unidade_padrao ?? 'UN',
             ])
             ->toArray();
+    }
+
+    public function selecionarMaterial(int $index, string $nome, string $unidade): void
+    {
+        $this->items[$index]['descricao'] = $nome;
+        $this->items[$index]['unidade'] = $unidade;
+        unset($this->materiaisResults[$index]);
     }
 
     // ── Items ─────────────────────────────────────────────────
@@ -272,8 +283,9 @@ class GuiasTab extends Component
 
     public function removeItem(int $index): void
     {
-        unset($this->items[$index]);
+        unset($this->items[$index], $this->materiaisResults[$index]);
         $this->items = array_values($this->items);
+        $this->materiaisResults = array_values($this->materiaisResults);
     }
 
     // ── Form helpers ──────────────────────────────────────────
@@ -307,6 +319,7 @@ class GuiasTab extends Component
         $this->dataFim = now()->format('Y-m-d');
         $this->horaFim = now()->addHour()->format('H:i');
         $this->items = [['descricao' => '', 'quantidade' => 1, 'unidade' => 'UN']];
+        $this->materiaisResults = [];
         $this->sucesso = false;
     }
 
