@@ -165,8 +165,7 @@ class NominatimCache extends Model
                 }
             }
 
-            // Fallback: drop county context — catches streets that span multiple concelhos
-            // or are tagged differently in OSM.
+            // Fallback 1: drop county context — catches streets tagged under a different concelho in OSM.
             $fallback = self::nominatimRequest()->get('https://nominatim.openstreetmap.org/search', [
                 'street' => $query,
                 'state' => 'Madeira',
@@ -178,7 +177,25 @@ class NominatimCache extends Model
             ]);
 
             if ($fallback->successful()) {
-                return self::parseNominatimResults($fallback->json(), $query, $dd, $cc);
+                $results = self::parseNominatimResults($fallback->json(), $query, $dd, $cc);
+
+                if (! empty($results)) {
+                    return $results;
+                }
+            }
+
+            // Fallback 2: freeform q= search — structured search can miss partial name matches
+            // e.g. "penteada" not finding "Estrada da Penteada".
+            $freeform = self::nominatimRequest()->get('https://nominatim.openstreetmap.org/search', [
+                'q' => "{$query}, {$concelhoDesig}, Madeira, Portugal",
+                'format' => 'jsonv2',
+                'addressdetails' => 1,
+                'limit' => 10,
+                'countrycodes' => 'pt',
+            ]);
+
+            if ($freeform->successful()) {
+                return self::parseNominatimResults($freeform->json(), $query, $dd, $cc);
             }
 
             return [];
