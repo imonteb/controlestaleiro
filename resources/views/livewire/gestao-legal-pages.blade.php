@@ -56,7 +56,35 @@
 
             {{-- Form Area --}}
             <div class="p-6 md:p-10">
-                <form wire:submit="guardar" class="space-y-8">
+                <form @submit.prevent="saveForm()" class="space-y-8"
+                      x-data="{
+                          quill: null,
+                          initEditor(content) {
+                              if (this.quill) {
+                                  this.quill.root.innerHTML = content || '';
+                                  return;
+                              }
+                              this.quill = new Quill(this.$refs.editorEl, {
+                                  theme: 'snow',
+                                  modules: {
+                                      toolbar: [
+                                          [{ header: [1, 2, 3, false] }],
+                                          ['bold', 'italic', 'underline'],
+                                          [{ list: 'ordered' }, { list: 'bullet' }],
+                                          ['link', 'blockquote'],
+                                          [{ color: [] }],
+                                          ['clean']
+                                      ]
+                                  }
+                              });
+                              this.quill.root.innerHTML = content || '';
+                          },
+                          async saveForm() {
+                              await $wire.set('conteudo', this.quill ? this.quill.root.innerHTML : '');
+                              $wire.call('guardar');
+                          }
+                      }"
+                      x-init="$nextTick(() => initEditor($wire.conteudo)); $watch(() => $wire.conteudo, v => { if (v !== (this.quill?.root.innerHTML ?? '')) initEditor(v); })">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {{-- Título --}}
@@ -76,7 +104,7 @@
                         {{-- Última Revisão --}}
                         <div class="space-y-2">
                             <label class="text-blue-300 text-xs font-bold uppercase tracking-widest pl-1">Data da Revisão</label>
-                            <input type="date" wire:model="ultima_revisao" class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all [color-scheme:dark]">
+                            <input type="date" wire:model="ultima_revisao" class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all scheme-dark">
                             @error('ultima_revisao') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -85,7 +113,7 @@
                     <div class="flex items-center gap-4 bg-blue-950/30 p-4 rounded-xl border border-blue-800/30">
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" wire:model="publicada" class="sr-only peer">
-                            <div class="w-11 h-6 bg-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500"></div>
+                            <div class="w-11 h-6 bg-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500"></div>
                         </label>
                         <div>
                             <span class="text-white font-bold text-sm block">Página Publicada</span>
@@ -93,22 +121,19 @@
                         </div>
                     </div>
 
-                    {{-- Conteúdo --}}
+                    {{-- Conteúdo WYSIWYG --}}
                     <div class="space-y-2">
-                        <div class="flex items-center justify-between pl-1 pr-2">
-                            <label class="text-blue-300 text-xs font-bold uppercase tracking-widest">Conteúdo (HTML)</label>
-                            <span class="text-[10px] text-yellow-500/70 uppercase tracking-widest font-black flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                                Aceita tags HTML
-                            </span>
+                        <label class="text-blue-300 text-xs font-bold uppercase tracking-widest pl-1">Conteúdo</label>
+                        <div wire:ignore class="rounded-2xl overflow-hidden border border-blue-800/50">
+                            <div x-ref="editorEl" style="min-height: 420px; background: #050A1F; color: white; font-size: 0.9rem;"></div>
                         </div>
-                        <textarea wire:model="conteudo" rows="20" class="w-full bg-[#050A1F] border border-blue-800/50 text-white/90 rounded-2xl p-6 font-mono text-sm leading-relaxed focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all shadow-inner resize-y"></textarea>
                         @error('conteudo') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
                     </div>
 
                     {{-- Botão Guardar --}}
                     <div class="flex justify-end pt-4 border-t border-blue-800/30">
-                        <button type="submit" class="flex items-center gap-2 px-8 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-[#09143B] font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:shadow-[0_0_30px_rgba(234,179,8,0.5)] active:scale-95">
+                        <button type="submit"
+                                class="flex items-center gap-2 px-8 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-[#09143B] font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:shadow-[0_0_30px_rgba(234,179,8,0.5)] active:scale-95">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                             </svg>
@@ -121,3 +146,20 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<style>
+    .ql-toolbar { background: #0f172a; border-color: rgba(59,130,246,0.3) !important; border-radius: 1rem 1rem 0 0; }
+    .ql-toolbar .ql-stroke { stroke: rgba(255,255,255,0.6); }
+    .ql-toolbar .ql-fill { fill: rgba(255,255,255,0.6); }
+    .ql-toolbar .ql-picker { color: rgba(255,255,255,0.6); }
+    .ql-toolbar .ql-picker-options { background: #1e3a5f; border-color: rgba(59,130,246,0.3); }
+    .ql-toolbar button:hover .ql-stroke, .ql-toolbar button.ql-active .ql-stroke { stroke: #eab308; }
+    .ql-toolbar button:hover .ql-fill, .ql-toolbar button.ql-active .ql-fill { fill: #eab308; }
+    .ql-container { border-color: rgba(59,130,246,0.3) !important; border-radius: 0 0 1rem 1rem; font-family: inherit; }
+    .ql-editor { color: rgba(255,255,255,0.9); min-height: 420px; }
+    .ql-editor.ql-blank::before { color: rgba(255,255,255,0.25); font-style: normal; }
+</style>
+@endpush
