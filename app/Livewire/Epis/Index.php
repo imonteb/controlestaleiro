@@ -132,10 +132,7 @@ class Index extends Component
                 $q->where('nombre', 'like', $s)
                     ->orWhere('codigo', 'like', $s)
                     ->orWhere('ca_numero', 'like', $s)
-                    ->orWhere('marca', 'like', $s)
-                    ->orWhere('modelo', 'like', $s)
-                    ->orWhere('numero_serie', 'like', $s)
-                    ->orWhere('familia', 'like', $s);
+                    ->orWhere('talla', 'like', $s);
             });
         }
 
