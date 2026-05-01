@@ -12,17 +12,28 @@
                 </h2>
                 <p class="text-blue-300 text-sm mt-1 font-medium pl-14">Gestão do conteúdo jurídico e termos de utilização</p>
             </div>
-            <a href="{{ route('legal') }}" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-blue-800/50 hover:bg-blue-700/50 text-white rounded-lg transition-colors border border-blue-600/30 text-sm font-bold shadow-lg">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                Pré-visualizar
-            </a>
+            <div class="flex items-center gap-3">
+                <button wire:click="$set('showVars', true)"
+                        class="flex items-center gap-2 px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 rounded-lg transition-colors border border-yellow-500/30 text-sm font-bold shadow-lg">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Variáveis Globais
+                </button>
+                <a href="{{ route('legal') }}" target="_blank"
+                   class="flex items-center gap-2 px-4 py-2 bg-blue-800/50 hover:bg-blue-700/50 text-white rounded-lg transition-colors border border-blue-600/30 text-sm font-bold shadow-lg">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Pré-visualizar
+                </a>
+            </div>
         </div>
     </x-slot>
 
     <div class="max-w-7xl mx-auto py-8 lg:py-12 px-4 sm:px-6 lg:px-8 animate-in fade-in duration-500">
-        
+
         @if (session()->has('success'))
             <div class="mb-8 p-4 bg-green-500/10 border-l-4 border-green-500 rounded-r-xl flex items-center gap-3 animate-in slide-in-from-top-4">
                 <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400">
@@ -35,16 +46,60 @@
             </div>
         @endif
 
+        {{-- ── VARIÁVEIS GLOBAIS ──────────────────────────────────── --}}
+        @if($showVars)
+        <div class="mb-8 bg-yellow-500/5 backdrop-blur-xl rounded-3xl border border-yellow-500/30 shadow-2xl overflow-hidden">
+            <div class="bg-yellow-500/10 border-b border-yellow-500/20 px-8 py-5 flex items-center justify-between">
+                <div>
+                    <h3 class="text-yellow-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        Variáveis Globais das Páginas Legais
+                    </h3>
+                    <p class="text-yellow-300/60 text-xs mt-1">Utilize <code class="bg-yellow-500/20 px-1 rounded">{nome_variavel}</code> no conteúdo para inserir estes valores automaticamente.</p>
+                </div>
+                <button wire:click="$set('showVars', false)" class="text-yellow-400/60 hover:text-yellow-400 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <form wire:submit="guardarVariaveis" class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    @foreach($labels as $key => $label)
+                    <div class="space-y-1.5">
+                        <label class="text-yellow-300/80 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                            <code class="bg-yellow-500/20 text-yellow-400 px-1.5 py-0.5 rounded font-mono text-[10px]">{!! '{' . $key . '}' !!}</code>
+                            {{ $label }}
+                        </label>
+                        <input type="{{ str_contains($key, 'email') ? 'email' : 'text' }}"
+                               wire:model="variaveis.{{ $key }}"
+                               placeholder="{{ $label }}"
+                               class="w-full bg-yellow-500/5 border border-yellow-500/20 text-white rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all placeholder-white/20">
+                        @error('variaveis.'.$key) <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    @endforeach
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <p class="text-white/30 text-xs">Campos de DPO: deixar vazios se a empresa não tiver DPO designado (art. 37.º RGPD).</p>
+                    <button type="submit"
+                            class="flex items-center gap-2 px-6 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-[#09143B] font-black uppercase tracking-widest text-xs rounded-xl transition-all active:scale-95">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                        Guardar Variáveis
+                    </button>
+                </div>
+            </form>
+        </div>
+        @endif
+
+        {{-- ── EDITOR DE PÁGINAS ──────────────────────────────────── --}}
         <div class="bg-blue-900/40 backdrop-blur-xl rounded-3xl border border-blue-700/50 shadow-2xl overflow-hidden">
-            
+
             {{-- Tabs --}}
             <div class="bg-blue-950/50 border-b border-blue-800/50 p-2 flex space-x-2 overflow-x-auto">
                 @foreach([
                     'privacidade' => ['Declaração de Privacidade', 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'],
-                    'termos' => ['Condições de Utilização', 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
-                    'cookies' => ['Política de Cookies', 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z']
+                    'termos'      => ['Condições de Utilização', 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
+                    'cookies'     => ['Política de Cookies', 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z'],
                 ] as $slug => $data)
-                    <button wire:click="$set('tab', '{{ $slug }}')" 
+                    <button wire:click="$set('tab', '{{ $slug }}')"
                             class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap {{ $tab === $slug ? 'bg-blue-600 text-white shadow-lg' : 'text-blue-300/70 hover:bg-blue-800/30 hover:text-white' }}">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $data[1] }}" />
@@ -54,7 +109,7 @@
                 @endforeach
             </div>
 
-            {{-- Form Area --}}
+            {{-- Form --}}
             <div class="p-6 md:p-10">
                 <form @submit.prevent="saveForm()" class="space-y-8"
                       x-data="{
@@ -85,26 +140,29 @@
                           }
                       }"
                       x-init="$nextTick(() => initEditor($wire.conteudo)); $watch(() => $wire.conteudo, v => { if (v !== (this.quill?.root.innerHTML ?? '')) initEditor(v); })">
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {{-- Título --}}
                         <div class="lg:col-span-2 space-y-2">
                             <label class="text-blue-300 text-xs font-bold uppercase tracking-widest pl-1">Título da Página</label>
-                            <input type="text" wire:model="titulo" class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all">
+                            <input type="text" wire:model="titulo"
+                                   class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all">
                             @error('titulo') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
                         </div>
 
                         {{-- Versão --}}
                         <div class="space-y-2">
                             <label class="text-blue-300 text-xs font-bold uppercase tracking-widest pl-1">Versão</label>
-                            <input type="text" wire:model="versao" placeholder="ex: v1.0.0" class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all">
+                            <input type="text" wire:model="versao" placeholder="ex: v1.0.0"
+                                   class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all">
                             @error('versao') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
                         </div>
 
                         {{-- Última Revisão --}}
                         <div class="space-y-2">
                             <label class="text-blue-300 text-xs font-bold uppercase tracking-widest pl-1">Data da Revisão</label>
-                            <input type="date" wire:model="ultima_revisao" class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all scheme-dark">
+                            <input type="date" wire:model="ultima_revisao"
+                                   class="w-full bg-blue-950/50 border border-blue-800/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all scheme-dark">
                             @error('ultima_revisao') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -123,7 +181,10 @@
 
                     {{-- Conteúdo WYSIWYG --}}
                     <div class="space-y-2">
-                        <label class="text-blue-300 text-xs font-bold uppercase tracking-widest pl-1">Conteúdo</label>
+                        <div class="flex items-center justify-between pl-1">
+                            <label class="text-blue-300 text-xs font-bold uppercase tracking-widest">Conteúdo</label>
+                            <span class="text-[10px] text-yellow-400/60 font-mono">Use <code class="bg-yellow-500/10 px-1 rounded">{empresa_nome}</code>, <code class="bg-yellow-500/10 px-1 rounded">{empresa_email}</code>, etc.</span>
+                        </div>
                         <div wire:ignore class="rounded-2xl overflow-hidden border border-blue-800/50">
                             <div x-ref="editorEl" style="min-height: 420px; background: #050A1F; color: white; font-size: 0.9rem;"></div>
                         </div>

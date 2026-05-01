@@ -44,9 +44,28 @@
             </div>
 
             {{-- Body Section --}}
-            <div class="p-10 md:p-16 space-y-12">
+            <div class="legal-content p-10 md:p-16">
                 {!! $pagina->conteudo !!}
             </div>
+            <style>
+                .legal-content { color: rgba(255,255,255,0.75); font-size: 0.875rem; line-height: 1.75; }
+                .legal-content h1,.legal-content h2 { color: #fff; font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin: 2.5rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+                .legal-content h3 { color: #93c5fd; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin: 1.75rem 0 0.5rem; }
+                .legal-content p { margin: 0.75rem 0; }
+                .legal-content ul,.legal-content ol { margin: 0.75rem 0 0.75rem 1.5rem; }
+                .legal-content ul { list-style-type: disc; }
+                .legal-content ol { list-style-type: decimal; }
+                .legal-content li { margin: 0.4rem 0; }
+                .legal-content strong { color: #fff; font-weight: 700; }
+                .legal-content a { color: #60a5fa; text-decoration: underline; }
+                .legal-content a:hover { color: #93c5fd; }
+                .legal-content code { background: rgba(255,255,255,0.08); color: #93c5fd; padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.8em; font-family: monospace; }
+                .legal-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.8rem; }
+                .legal-content th { background: rgba(255,255,255,0.05); color: #fff; font-weight: 800; text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.15); }
+                .legal-content td { padding: 0.55rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+                .legal-content tr:last-child td { border-bottom: none; }
+                .legal-content blockquote { border-left: 3px solid #3b82f6; padding-left: 1rem; margin: 1rem 0; color: rgba(255,255,255,0.5); font-style: italic; }
+            </style>
             
             {{-- Card Footer --}}
             <div class="bg-blue-950/50 px-10 py-6 border-t border-blue-800/50 text-center flex flex-col md:flex-row items-center justify-between gap-4">
