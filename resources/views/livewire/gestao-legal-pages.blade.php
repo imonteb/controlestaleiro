@@ -212,15 +212,74 @@
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <style>
-    .ql-toolbar { background: #0f172a; border-color: rgba(59,130,246,0.3) !important; border-radius: 1rem 1rem 0 0; }
-    .ql-toolbar .ql-stroke { stroke: rgba(255,255,255,0.6); }
-    .ql-toolbar .ql-fill { fill: rgba(255,255,255,0.6); }
-    .ql-toolbar .ql-picker { color: rgba(255,255,255,0.6); }
+    /* ── Toolbar ── */
+    .ql-toolbar { background: #0d1b3e; border-color: rgba(59,130,246,0.3) !important; border-radius: 1rem 1rem 0 0; padding: 0.6rem 1rem; }
+    .ql-toolbar .ql-stroke { stroke: rgba(255,255,255,0.5); }
+    .ql-toolbar .ql-fill { fill: rgba(255,255,255,0.5); }
+    .ql-toolbar .ql-picker { color: rgba(255,255,255,0.5); }
     .ql-toolbar .ql-picker-options { background: #1e3a5f; border-color: rgba(59,130,246,0.3); }
+    .ql-toolbar .ql-picker-label { border-color: rgba(59,130,246,0.3); }
     .ql-toolbar button:hover .ql-stroke, .ql-toolbar button.ql-active .ql-stroke { stroke: #eab308; }
     .ql-toolbar button:hover .ql-fill, .ql-toolbar button.ql-active .ql-fill { fill: #eab308; }
+    .ql-toolbar .ql-picker-label:hover, .ql-toolbar .ql-picker-label.ql-active { color: #eab308; }
+    .ql-toolbar .ql-picker-label:hover .ql-stroke { stroke: #eab308; }
+
+    /* ── Container ── */
     .ql-container { border-color: rgba(59,130,246,0.3) !important; border-radius: 0 0 1rem 1rem; font-family: inherit; }
-    .ql-editor { color: rgba(255,255,255,0.9); min-height: 420px; }
-    .ql-editor.ql-blank::before { color: rgba(255,255,255,0.25); font-style: normal; }
+
+    /* ── Editor — mesma aparência que a vista pública ── */
+    .ql-editor {
+        background: #050d2e;
+        color: rgba(255,255,255,0.75);
+        font-size: 0.875rem;
+        line-height: 1.75;
+        min-height: 520px;
+        padding: 2.5rem 3rem;
+    }
+    .ql-editor.ql-blank::before { color: rgba(255,255,255,0.2); font-style: normal; left: 3rem; }
+
+    .ql-editor h1, .ql-editor h2 {
+        color: #fff; font-size: 1rem; font-weight: 900;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        margin: 2.5rem 0 0.75rem; padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .ql-editor h3 {
+        color: #93c5fd; font-size: 0.8rem; font-weight: 800;
+        text-transform: uppercase; letter-spacing: 0.08em;
+        margin: 1.75rem 0 0.5rem;
+    }
+    .ql-editor p { margin: 0.75rem 0; }
+    .ql-editor ul, .ql-editor ol { margin: 0.75rem 0 0.75rem 1.5rem; }
+    .ql-editor ul { list-style-type: disc; }
+    .ql-editor ol { list-style-type: decimal; }
+    .ql-editor li { margin: 0.4rem 0; }
+    .ql-editor li::before { color: rgba(255,255,255,0.4); }
+    .ql-editor strong { color: #fff; font-weight: 700; }
+    .ql-editor em { color: rgba(255,255,255,0.6); }
+    .ql-editor a { color: #60a5fa; text-decoration: underline; }
+    .ql-editor a:hover { color: #93c5fd; }
+    .ql-editor code {
+        background: rgba(255,255,255,0.08); color: #93c5fd;
+        padding: 0.1em 0.4em; border-radius: 4px;
+        font-size: 0.8em; font-family: monospace;
+    }
+    .ql-editor blockquote {
+        border-left: 3px solid #3b82f6; padding-left: 1rem;
+        margin: 1rem 0; color: rgba(255,255,255,0.5); font-style: italic;
+        border-right: none; /* override Quill default */
+    }
+    .ql-editor table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.8rem; }
+    .ql-editor th {
+        background: rgba(255,255,255,0.05); color: #fff; font-weight: 800;
+        text-align: left; padding: 0.6rem 0.9rem;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .ql-editor td { padding: 0.55rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+    .ql-editor tr:last-child td { border-bottom: none; }
+
+    /* Quill list override — evita bullets duplos */
+    .ql-editor .ql-indent-1 { padding-left: 2rem; }
+    .ql-editor li.ql-indent-1 { padding-left: 2rem; }
 </style>
 @endpush
