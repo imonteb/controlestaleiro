@@ -27,7 +27,7 @@
         <div class="flex flex-col md:flex-row items-center gap-4 w-full">
             {{-- Filter --}}
             <div class="flex-none">
-                <select wire:model.live="filtro_veiculo" class="w-48 rounded-lg border-gray-300 text-sm focus:border-yellow-500 focus:ring-yellow-500 bg-white text-gray-900">
+                <select wire:model.live="filtro_veiculo" class="w-48 rounded-lg border-white/15 text-sm focus:border-yellow-500 focus:ring-yellow-500 bg-white/8 text-white/80">
                     <option value="">Todos os Veículos</option>
                     @foreach($veiculos as $v)
                         <option value="{{ $v->id }}">{{ $v->matricula }}</option>
@@ -70,7 +70,7 @@
                         <tr class="hover:bg-red-50/10 transition-colors">
                             <td class="px-6 py-4 font-bold text-gray-900">{{ $item->num_serie }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-2 py-0.5 rounded bg-gray-200 text-[10px] font-black text-gray-800 uppercase">{{ $item->tipo_agente }}</span>
+                                <span class="px-2 py-0.5 rounded bg-white/8 text-[10px] font-black text-white/80 border border-white/15 uppercase">{{ $item->tipo_agente }}</span>
                                 <span class="text-gray-700 font-bold ml-1">{{ $item->tamanho }}</span>
                             </td>
                             <td class="px-6 py-4">

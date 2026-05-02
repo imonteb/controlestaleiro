@@ -109,6 +109,12 @@
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
+                <flux:sidebar.group heading="Transporte" expandable :open="request()->routeIs('guias.*')" class="grid">
+                    <flux:sidebar.item icon="document-text" :href="route('guias.index')" :current="request()->routeIs('guias.*')" wire:navigate>
+                        Guias de Transporte
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+
                 <flux:sidebar.group heading="Logística e Segurança" expandable class="grid">
                     <flux:sidebar.item icon="wrench" :href="route('ferramentas.index')" :current="request()->routeIs('ferramentas.*')" wire:navigate>
                         Ferramentas
@@ -118,9 +124,6 @@
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="fire" :href="route('extintores.index')" :current="request()->routeIs('extintores.*')" wire:navigate>
                         Extintores
-                    </flux:sidebar.item>
-                    <flux:sidebar.item icon="document-text" :href="route('guias.index')" :current="request()->routeIs('guias.*')" wire:navigate>
-                        Guias de Transporte
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="archive-box" :href="route('materiais.index')" :current="request()->routeIs('materiais.*') || request()->routeIs('material-categorias.*')" wire:navigate>
                         Catálogo de Materiais

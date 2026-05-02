@@ -35,18 +35,18 @@
 
     {{-- Search results dropdown --}}
     @if ($resultados->isNotEmpty())
-        <div class="max-w-md -mt-4 bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="max-w-md -mt-4 bg-blue-950 rounded-xl shadow-xl overflow-hidden border border-white/10">
             @foreach ($resultados as $r)
                 <button wire:click="selectColaborador({{ $r->id }})"
-                        class="w-full flex items-center gap-3 px-4 py-3 hover:bg-blue-50 text-left border-b border-gray-100 last:border-0 transition-colors">
-                    <div class="bg-blue-100 rounded-lg p-1.5">
-                        <svg class="h-4 w-4 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        class="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-left border-b border-white/8 last:border-0 transition-colors">
+                    <div class="bg-white/10 rounded-lg p-1.5">
+                        <svg class="h-4 w-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                     </div>
                     <div>
-                        <div class="font-semibold text-gray-900 text-sm">{{ $r->nombre }} {{ $r->apellido }}</div>
-                        <div class="text-xs text-gray-400">
+                        <div class="font-semibold text-white/90 text-sm">{{ $r->nombre }} {{ $r->apellido }}</div>
+                        <div class="text-xs text-white/45">
                             @if($r->numero_colaborador) Nº {{ $r->numero_colaborador }} · @endif
                             {{ $r->denominacion_cargo ?? '' }}
                         </div>
@@ -58,7 +58,7 @@
 
     {{-- Selected colaborador card --}}
     @if ($colaborador)
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+        <div class="bg-blue-950 rounded-2xl shadow-lg overflow-hidden border border-white/10">
 
             {{-- Colaborador header --}}
             <div class="bg-(--cme-blue) px-6 py-4 flex items-center justify-between">
@@ -104,36 +104,36 @@
 
             {{-- Dotação table --}}
             @if ($dotacao->isEmpty())
-                <div class="p-12 text-center text-gray-400">
+                <div class="p-12 text-center text-white/45">
                     Nenhuma entrega de EPI registada para este colaborador.
                 </div>
             @else
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b border-gray-200 bg-gray-50">
-                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase">EPI</th>
-                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">Ref.</th>
-                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">Última Entrega</th>
-                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">Total Recebido</th>
-                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">Devolvido</th>
-                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">Em Seu Poder</th>
+                            <tr class="border-b border-white/8 bg-white/5">
+                                <th class="px-4 py-3 text-left text-xs font-bold text-white/60 uppercase">EPI</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-white/60 uppercase">Ref.</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-white/60 uppercase">Última Entrega</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-white/60 uppercase">Total Recebido</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-white/60 uppercase">Devolvido</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-white/60 uppercase">Em Seu Poder</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($dotacao as $d)
-                                <tr class="border-b border-gray-100 hover:bg-blue-50/30 {{ $d['en_poder'] > 0 ? 'bg-amber-50/60' : '' }}">
+                                <tr class="border-b border-white/5 hover:bg-yellow-400/5 {{ $d['en_poder'] > 0 ? 'bg-amber-400/5' : '' }}">
                                     <td class="px-4 py-3">
-                                        <div class="font-semibold text-gray-900">{{ $d['epi']->nombre ?? '—' }}</div>
+                                        <div class="font-semibold text-white/90">{{ $d['epi']->nombre ?? '—' }}</div>
                                         @if ($d['epi']->unidade ?? null)
-                                            <div class="text-xs text-gray-400">{{ $d['epi']->unidade }}</div>
+                                            <div class="text-xs text-white/45">{{ $d['epi']->unidade }}</div>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-3 text-center text-gray-500 font-mono text-xs">{{ $d['epi']->codigo ?? '—' }}</td>
-                                    <td class="px-4 py-3 text-center text-gray-600">
+                                    <td class="px-4 py-3 text-center text-white/55 font-mono text-xs">{{ $d['epi']->codigo ?? '—' }}</td>
+                                    <td class="px-4 py-3 text-center text-white/65">
                                         {{ $d['ultima_entrega'] ? \Carbon\Carbon::parse($d['ultima_entrega'])->format('d/m/Y') : '—' }}
                                     </td>
-                                    <td class="px-4 py-3 text-center font-semibold text-gray-700">{{ $d['total_recibido'] }}</td>
+                                    <td class="px-4 py-3 text-center font-semibold text-white/75">{{ $d['total_recibido'] }}</td>
                                     <td class="px-4 py-3 text-center text-green-700 font-semibold">{{ $d['total_devuelto'] }}</td>
                                     <td class="px-4 py-3 text-center">
                                         @if ($d['en_poder'] > 0)
@@ -152,9 +152,9 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-                            <tr class="bg-gray-100 border-t-2 border-gray-300">
-                                <td colspan="3" class="px-4 py-3 font-bold text-gray-700 uppercase text-xs tracking-wider">Total</td>
-                                <td class="px-4 py-3 text-center font-bold text-gray-700">{{ $dotacao->sum('total_recibido') }}</td>
+                            <tr class="bg-white/8 border-t-2 border-white/15">
+                                <td colspan="3" class="px-4 py-3 font-bold text-white/75 uppercase text-xs tracking-wider">Total</td>
+                                <td class="px-4 py-3 text-center font-bold text-white/75">{{ $dotacao->sum('total_recibido') }}</td>
                                 <td class="px-4 py-3 text-center font-bold text-green-700">{{ $dotacao->sum('total_devuelto') }}</td>
                                 <td class="px-4 py-3 text-center">
                                     @php $totalPendente = $dotacao->sum('en_poder'); @endphp
