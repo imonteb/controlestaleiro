@@ -216,9 +216,9 @@
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tighter
-                                {{ $item->tipo === 'epi' ? 'bg-blue-100 text-blue-800' : 
-                                   ($item->tipo === 'saude' ? 'bg-green-100 text-green-800' : 
+                            <span class="inline-flex items-center justify-center min-w-22.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tighter
+                                {{ $item->tipo === 'epi' ? 'bg-blue-100 text-blue-800' :
+                                   ($item->tipo === 'saude' ? 'bg-green-100 text-green-800' :
                                    ($item->tipo === 'incendio' ? 'bg-red-100 text-red-800' : 'bg-orange-100 text-orange-800')) }}">
                                 {{ $item->tipo === 'epi' ? 'EPI' : 
                                    ($item->tipo === 'saude' ? 'Saúde' : 

@@ -131,26 +131,26 @@
 
             {{-- Widget: Stock Crítico --}}
             <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-blue-950/10">
-                <div class="bg-red-50 border-b border-red-100 px-6 py-4 flex items-center justify-between">
-                    <span class="text-red-700 font-black uppercase tracking-widest text-xs">Stock Crítico / Alerta</span>
+                <div class="bg-blue-900 border-b border-red-500/40 px-6 py-4 flex items-center justify-between">
+                    <span class="text-red-400 font-black uppercase tracking-widest text-xs">Stock Crítico / Alerta</span>
                     <span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full font-bold uppercase">{{ count($stockCritico) }} Itens</span>
                 </div>
                 <div class="p-2">
                     @foreach($stockCritico as $item)
-                    <div class="flex items-center justify-between p-4 hover:bg-gray-50 rounded-2xl transition-all border-b border-gray-50 last:border-0">
+                    <div class="flex items-center justify-between p-4 hover:bg-blue-800/30 rounded-2xl transition-all border-b border-white/5 last:border-0">
                         <div class="min-w-0">
-                            <p class="text-xs font-bold text-gray-900 truncate">{{ $item->nombre }}</p>
-                            <p class="text-xs text-gray-600 font-bold uppercase">{{ $item->talla ?: 'S/T' }}</p>
+                            <p class="text-xs font-bold text-white truncate">{{ $item->nombre }}</p>
+                            <p class="text-xs text-blue-200 font-bold uppercase">{{ $item->talla ?: 'S/T' }}</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="text-right">
-                                <span class="block text-xs font-black {{ $item->stock_total <= 0 ? 'text-red-600' : 'text-orange-600' }}">{{ $item->stock_total }} {{ $item->unidade ?: 'UN' }}</span>
-                                <span class="text-xs text-gray-600 uppercase">Mín. {{ $item->stock_minimo }}</span>
+                                <span class="block text-xs font-black {{ $item->stock_total <= 0 ? 'text-red-400' : 'text-orange-400' }}">{{ $item->stock_total }} {{ $item->unidade ?: 'UN' }}</span>
+                                <span class="text-xs text-blue-200 uppercase">Mín. {{ $item->stock_minimo }}</span>
                             </div>
                         </div>
                     </div>
                     @endforeach
-                    <a href="{{ route('epis.index') }}" wire:navigate class="block w-full text-center py-3 text-xs font-black text-gray-600 uppercase hover:text-blue-600 transition-colors">Ver catálogo completo</a>
+                    <a href="{{ route('epis.index') }}" wire:navigate class="block w-full text-center py-3 text-xs font-black text-blue-300 uppercase hover:text-yellow-400 transition-colors">Ver catálogo completo</a>
                 </div>
             </div>
             @endif
@@ -158,9 +158,9 @@
             @if(auth()->user()->hasRole('logi') || auth()->user()->isAdmin())
             {{-- Widget: Inspeções Urgentes --}}
             <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-blue-950/10">
-                <div class="bg-orange-50 border-b border-orange-100 px-6 py-4 flex items-center justify-between">
-                    <span class="text-orange-700 font-black uppercase tracking-widest text-xs">Segurança e Conformidade</span>
-                    <svg class="h-4 w-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <div class="bg-blue-900 border-b border-orange-500/40 px-6 py-4 flex items-center justify-between">
+                    <span class="text-orange-400 font-black uppercase tracking-widest text-xs">Segurança e Conformidade</span>
+                    <svg class="h-4 w-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div class="p-2 space-y-1">
                     @foreach($inspecoesProximas['extintores'] as $ext)
@@ -193,5 +193,7 @@
         </div>
 
     </div>
+
+    <x-global-footer />
 
 </div>

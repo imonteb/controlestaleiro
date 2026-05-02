@@ -164,7 +164,13 @@
             <flux:spacer />
 
             <x-desktop-user-menu class="block" :name="auth()->user()->name" />
-        </flux:sidebar>
+
+            <div style="padding: 6px 12px 8px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 4px;">
+                <span style="font-size: 0.65rem; color: rgba(255,255,255,0.25); font-weight: 500; letter-spacing: 0.04em;">
+                    v1.0.0 &middot; CME C016
+                </span>
+            </div>
+</flux:sidebar>
 
         <!-- Top navigation bar -->
         <flux:header>

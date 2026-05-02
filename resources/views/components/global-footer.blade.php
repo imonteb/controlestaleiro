@@ -1,24 +1,14 @@
-<footer class="mt-auto py-4 px-4 border-t border-white/5 bg-black/40 backdrop-blur-md self-stretch">
-    <div class="max-w-7xl mx-auto flex flex-col items-center gap-2 text-center">
-        <div>
-            <p class="text-white/60 text-xs font-medium tracking-wide">
-                © 2024–2026 <span class="text-white font-bold">CME</span>
-                <span class="mx-2 text-white/20">·</span>
-                v1.0.0
-                <span class="mx-2 text-white/20">·</span>
-            </p>
-        </div>
-        <div class="text-white/60 text-xs font-medium tracking-wide">
-            Desenvolvido por <span class="text-white font-bold">Israel Montesino Barreto</span>
-        </div>
-        <div class="flex items-center gap-4 text-xs uppercase  tracking-tighter text-white/30">
-            <a href="{{ route('legal', ['tab' => 'privacidade']) }}"
-                class="hover:text-white transition-colors">Políticas de Privacidade</a>
-            <span class="h-1 w-1 bg-white/10 rounded-full"></span>
-            <a href="{{ route('legal', ['tab' => 'termos']) }}" class="hover:text-white transition-colors">Termos e
-                Condições</a>
-            <span class="h-1 w-1 bg-white/10 rounded-full"></span>
-            <a href="{{ route('legal', ['tab' => 'cookies']) }}" class="hover:text-white transition-colors">Cookies</a>
-        </div>
+<footer class="mt-8 pt-4 pb-2 border-t border-white/5">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-[0.65rem] text-white/35 leading-relaxed">
+        <span>
+            © 2024–{{ date('Y') }} <span class="text-white/50 font-medium">CME C016</span>
+            &middot; Desenvolvido por Israel Montesino Barreto
+        </span>
+        <span class="flex items-center gap-3">
+            <a href="/politicas-privacidade" class="hover:text-white/35 transition-colors">Privacidade</a>
+            <a href="/termos-condicoes" class="hover:text-white/35 transition-colors">Termos</a>
+            <a href="/cookies" class="hover:text-white/35 transition-colors">Cookies</a>
+            <span class="text-white/25">v1.0.0</span>
+        </span>
     </div>
 </footer>

@@ -20,7 +20,7 @@
                         Monitor de Equipas &mdash; Unidade C016
                     </div>
                     <div style="color:rgba(255,255,255,0.85);font-size:1.2rem;font-weight:700;text-transform:capitalize;">
-                        {{ $dataFormato ?? '' }}
+                        <span id="monitor-fecha-real">{{ $dataFormato ?? '' }}</span>
                     </div>
                 </div>
             </div>
@@ -201,6 +201,21 @@
             Pressione F11 para ecrã inteiro.
         </span>
     </div>
+
+    <script>
+    (function() {
+        var dias = ['Domingo','Segunda-Feira','Terça-Feira','Quarta-Feira','Quinta-Feira','Sexta-Feira','Sábado'];
+        var meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        function updateFecha() {
+            var el = document.getElementById('monitor-fecha-real');
+            if (!el) return;
+            var now = new Date();
+            el.textContent = dias[now.getDay()] + ', ' + now.getDate() + ' De ' + meses[now.getMonth()] + ' De ' + now.getFullYear();
+        }
+        updateFecha();
+        setInterval(updateFecha, 60000);
+    })();
+    </script>
 
     @endif
 </div>

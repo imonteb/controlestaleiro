@@ -106,20 +106,30 @@
                         </td>
                         <td class="px-5 py-3">{{ $user->email }}</td>
                         <td class="px-5 py-3">
-                            <div class="flex flex-wrap gap-1">
-                                @foreach(($user->role ?? [App\Models\User::ROLE_OPERARIO]) as $r)
-                                    @if($r === App\Models\User::ROLE_SUPER_ADMIN)
-                                        <span class="inline-flex items-center gap-1 bg-red-500/20 text-red-300 border border-red-500/40 rounded-full px-2.5 py-0.5 text-xs font-medium">👑 Super Admin</span>
-                                    @elseif($r === App\Models\User::ROLE_ADMIN)
-                                        <span class="inline-flex items-center gap-1 bg-purple-500/20 text-purple-300 border border-purple-500/40 rounded-full px-2.5 py-0.5 text-xs font-medium">🛡️ Admin</span>
-                                    @elseif($r === App\Models\User::ROLE_LOGI)
-                                        <span class="inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full px-2.5 py-0.5 text-xs font-medium">📦 Logística</span>
-                                    @elseif($r === App\Models\User::ROLE_EPI)
-                                        <span class="inline-flex items-center gap-1 bg-green-500/20 text-green-300 border border-green-500/40 rounded-full px-2.5 py-0.5 text-xs font-medium">🧤 EPI</span>
-                                    @else
-                                        <span class="inline-flex items-center gap-1 bg-blue-500/20 text-blue-300 border border-blue-500/40 rounded-full px-2.5 py-0.5 text-xs font-medium">👷 Operário</span>
-                                    @endif
-                                @endforeach
+                            @php
+                                $roles = $user->role ?? [App\Models\User::ROLE_OPERARIO];
+                                $roleLabels = [
+                                    'super_admin' => ['emoji' => '👑', 'label' => 'Super Admin', 'class' => 'bg-purple-900 text-purple-200'],
+                                    'admin'       => ['emoji' => '🛡', 'label' => 'Admin',       'class' => 'bg-blue-900 text-blue-200'],
+                                    'logistica'   => ['emoji' => '🚛', 'label' => 'Logística',   'class' => 'bg-orange-900 text-orange-200'],
+                                    'epi'         => ['emoji' => '🧤', 'label' => 'EPI',         'class' => 'bg-green-900 text-green-200'],
+                                    'operario'    => ['emoji' => '👷', 'label' => 'Operário',    'class' => 'bg-gray-700 text-gray-200'],
+                                ];
+                                $primary = $roles[0];
+                                $extra = count($roles) - 1;
+                            @endphp
+                            <div class="flex items-center gap-1 flex-wrap">
+                                @if(isset($roleLabels[$primary]))
+                                    <span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full {{ $roleLabels[$primary]['class'] }}">
+                                        {{ $roleLabels[$primary]['emoji'] }} {{ $roleLabels[$primary]['label'] }}
+                                    </span>
+                                @endif
+                                @if($extra > 0)
+                                    <span class="text-xs text-blue-300 font-medium cursor-default"
+                                          title="{{ collect($roles)->skip(1)->map(fn($r) => $roleLabels[$r]['label'] ?? $r)->join(', ') }}">
+                                        +{{ $extra }}
+                                    </span>
+                                @endif
                             </div>
                         </td>
                         <td class="px-5 py-3 text-blue-400">{{ $user->created_at->format('d/m/Y') }}</td>

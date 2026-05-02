@@ -106,7 +106,10 @@
                                     {{ strtoupper(substr($colaborador->nombre, 0, 1)) }}{{ strtoupper(substr($colaborador->apellido, 0, 1)) }}
                                 </div>
                                 <div>
-                                    <div class="font-semibold text-gray-800">{{ $colaborador->nombre }} {{ $colaborador->apellido }}</div>
+                                    <div class="font-semibold text-gray-800 truncate max-w-45"
+                                         title="{{ $colaborador->nombre }} {{ $colaborador->apellido }}">
+                                        {{ $colaborador->nombre }} {{ $colaborador->apellido }}
+                                    </div>
                                     @if($colaborador->motivo_baja)
                                         <div class="text-xs text-red-500 mt-0.5">{{ $colaborador->motivo_baja }}</div>
                                     @endif

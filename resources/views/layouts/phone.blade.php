@@ -27,8 +27,6 @@
 <body class="antialiased" style="padding-bottom: 80px;">
     {{ $slot }}
 
-    <x-global-footer />
-
     <script>
         // ── SERVICE WORKER + WEB PUSH ─────────────────────────────
         if ('serviceWorker' in navigator && 'PushManager' in window) {
