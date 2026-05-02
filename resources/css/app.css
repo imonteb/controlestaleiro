@@ -240,3 +240,165 @@ input[type="week"] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* ===============================================================
+   PALETA CME — Sistema de color unificado
+   6 colores: 4 azules jerarquía + amarillo acento + 3 semánticos
+   =============================================================== */
+
+/* --- Fondos de tablas y contenedores --- */
+/* Elimina fondos blancos/claros en tablas dentro de la app */
+[data-flux-main] table,
+[data-flux-main] .bg-white,
+[data-flux-main] .bg-gray-50,
+[data-flux-main] .bg-slate-50,
+[data-flux-main] .bg-zinc-50 {
+    background-color: #0f2057 !important;
+}
+
+/* Filas de tabla */
+[data-flux-main] tr {
+    border-color: rgba(255,255,255,0.06) !important;
+}
+
+[data-flux-main] thead tr,
+[data-flux-main] .table-header {
+    background-color: #162880 !important;
+}
+
+[data-flux-main] tbody tr:hover {
+    background-color: rgba(255,255,255,0.04) !important;
+}
+
+/* Textos oscuros dentro de tablas → blancos */
+[data-flux-main] table .text-gray-900,
+[data-flux-main] table .text-gray-800,
+[data-flux-main] table .text-gray-700,
+[data-flux-main] table .text-slate-900,
+[data-flux-main] table .text-zinc-900 {
+    color: rgba(255,255,255,0.90) !important;
+}
+
+[data-flux-main] table .text-gray-600,
+[data-flux-main] table .text-gray-500,
+[data-flux-main] table .text-slate-500,
+[data-flux-main] table .text-zinc-500 {
+    color: rgba(255,255,255,0.50) !important;
+}
+
+/* Bordes de tabla */
+[data-flux-main] table th,
+[data-flux-main] table td {
+    border-color: rgba(255,255,255,0.06) !important;
+}
+
+/* --- Contenedores card con bg blanco --- */
+[data-flux-main] .rounded-xl.bg-white,
+[data-flux-main] .rounded-2xl.bg-white,
+[data-flux-main] .rounded-3xl.bg-white,
+[data-flux-main] .rounded-lg.bg-white {
+    background-color: #0f2057 !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Textos oscuros en cards → blancos */
+[data-flux-main] .text-gray-900:not(button):not(a),
+[data-flux-main] .text-gray-800:not(button):not(a),
+[data-flux-main] .text-slate-900:not(button):not(a) {
+    color: rgba(255,255,255,0.90) !important;
+}
+
+[data-flux-main] .text-gray-600:not(button):not(a),
+[data-flux-main] .text-gray-500:not(button):not(a),
+[data-flux-main] .text-slate-600:not(button):not(a) {
+    color: rgba(255,255,255,0.55) !important;
+}
+
+/* --- Badges de categoría — tema oscuro --- */
+/* EPI */
+[data-flux-main] .bg-blue-100 { background-color: #1e3a8a !important; }
+[data-flux-main] .text-blue-800 { color: #bfdbfe !important; }
+
+/* Ferramenta */
+[data-flux-main] .bg-orange-100 { background-color: #78350f !important; }
+[data-flux-main] .text-orange-800 { color: #fed7aa !important; }
+
+/* Saúde */
+[data-flux-main] .bg-green-100 { background-color: #166534 !important; }
+[data-flux-main] .text-green-800 { color: #bbf7d0 !important; }
+
+/* Incêndio */
+[data-flux-main] .bg-red-100 { background-color: #7f1d1d !important; }
+[data-flux-main] .text-red-800 { color: #fca5a5 !important; }
+
+/* Stock OK */
+[data-flux-main] .bg-green-50 { background-color: rgba(22,101,52,0.3) !important; }
+[data-flux-main] .text-green-700 { color: #86efac !important; }
+
+/* Stock crítico */
+[data-flux-main] .bg-red-50 { background-color: rgba(127,29,29,0.3) !important; }
+[data-flux-main] .text-red-700,
+[data-flux-main] .text-red-600 { color: #fca5a5 !important; }
+
+/* Stock advertencia */
+[data-flux-main] .bg-yellow-50,
+[data-flux-main] .bg-amber-50 { background-color: rgba(120,53,15,0.3) !important; }
+[data-flux-main] .text-yellow-700,
+[data-flux-main] .text-amber-700 { color: #fde68a !important; }
+
+/* --- Inputs y selects dentro de tablas/cards --- */
+[data-flux-main] select,
+[data-flux-main] input[type="text"],
+[data-flux-main] input[type="search"] {
+    background-color: #162880 !important;
+    border-color: rgba(255,255,255,0.15) !important;
+    color: rgba(255,255,255,0.90) !important;
+}
+
+/* --- Separadores y bordes generales --- */
+[data-flux-main] .border-gray-200,
+[data-flux-main] .border-gray-100,
+[data-flux-main] .border-slate-200,
+[data-flux-main] .divide-gray-200 > * {
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* -------------------------------------------------------
+   Columnas sticky en tablas de estadísticas
+   Las celdas sticky necesitan bg explícito para no mostrar
+   transparencia al hacer scroll horizontal
+------------------------------------------------------- */
+[data-flux-main] table th.sticky,
+[data-flux-main] table td.sticky,
+[data-flux-main] table th[class*="sticky"],
+[data-flux-main] table td[class*="sticky"] {
+    background-color: #0f2057 !important;
+    color: rgba(255,255,255,0.90) !important;
+}
+
+[data-flux-main] table tbody tr:nth-child(even) th.sticky,
+[data-flux-main] table tbody tr:nth-child(even) td.sticky {
+    background-color: #0f2057 !important;
+}
+
+[data-flux-main] table tbody tr:hover th.sticky,
+[data-flux-main] table tbody tr:hover td.sticky {
+    background-color: #162880 !important;
+}
+
+/* Texto secundario dentro de celdas sticky (subtítulo del vehículo/colaborador) */
+[data-flux-main] table td.sticky .text-gray-500,
+[data-flux-main] table td.sticky .text-gray-400,
+[data-flux-main] table td.sticky p:last-child,
+[data-flux-main] table td.sticky span:last-child {
+    color: rgba(255,255,255,0.45) !important;
+}
+
+/* Links azules dentro de celdas sticky → amarillo CME */
+[data-flux-main] table td.sticky a,
+[data-flux-main] table td.sticky .text-blue-600,
+[data-flux-main] table td.sticky .text-blue-700,
+[data-flux-main] table td.sticky .text-blue-800,
+[data-flux-main] table td.sticky .text-blue-900 {
+    color: rgba(255,255,255,0.90) !important;
+}
