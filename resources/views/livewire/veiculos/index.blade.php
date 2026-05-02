@@ -74,9 +74,9 @@
                             ];
                         @endphp
                         @foreach($cols as $col => $label)
-                        <th class="px-6 py-3.5 text-left">
+                        <th class="px-6 py-3.5 text-left border-b border-white/8">
                             <button wire:click="sort('{{ $col }}')"
-                                class="inline-flex items-center gap-1.5 text-xs font-bold text-(--cme-blue) uppercase tracking-wider hover:text-blue-400 transition-colors group">
+                                class="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 uppercase tracking-wider hover:text-white/90 transition-colors group">
                                 {{ $label }}
                                 <span class="flex flex-col leading-none">
                                     <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'asc' ? 'text-yellow-500' : 'text-gray-300 group-hover:text-gray-400' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4l4 6H4z"/></svg>
@@ -85,12 +85,12 @@
                             </button>
                         </th>
                         @endforeach
-                        <th class="px-6 py-3.5 text-right text-xs font-bold text-(--cme-blue) uppercase tracking-wider">Ações</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($veiculos as $veiculo)
-                    <tr class="{{ !$veiculo->activo ? 'opacity-60 bg-red-50/40' : ($loop->index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50') }} hover:bg-blue-50/60 transition-colors">
+                    <tr class="{{ !$veiculo->activo ? 'opacity-50' : ($loop->index % 2 === 0 ? 'bg-white/0' : 'bg-white/3') }} hover:bg-yellow-400/5 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex flex-col gap-1">
                                 <div class="flex items-center gap-2">
@@ -118,7 +118,7 @@
                                 <div class="text-xs text-red-500 mt-0.5">{{ $veiculo->motivo_baja }}</div>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-gray-600">{{ $veiculo->modelo }}</td>
+                        <td class="px-6 py-4 text-white/70">{{ $veiculo->modelo }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('veiculos.editar', $veiculo->id) }}" wire:navigate
@@ -227,6 +227,11 @@
                 </tbody>
             </table>
         </div>
+        @if($veiculos->hasPages())
+        <div class="px-4 py-3 border-t border-white/5">
+            {{ $veiculos->links() }}
+        </div>
+        @endif
     </div>
 
     {{-- Modal: Confirmar eliminación permanente --}}

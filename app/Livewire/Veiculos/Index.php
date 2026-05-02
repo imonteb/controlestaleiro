@@ -6,11 +6,14 @@ use App\Models\Veiculo;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 #[Title('Veículos')]
 class Index extends Component
 {
+    use WithPagination;
+
     public string $sortBy = 'marca';
 
     public string $sortDir = 'asc';
@@ -30,6 +33,16 @@ class Index extends Component
     public bool $confirmandoEliminar = false;
 
     public ?int $eliminandoId = null;
+
+    public function updatingPesquisa(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFiltro(): void
+    {
+        $this->resetPage();
+    }
 
     public function sort(string $column): void
     {
@@ -134,7 +147,7 @@ class Index extends Component
         }
 
         return view('livewire.veiculos.index', [
-            'veiculos' => $query->get(),
+            'veiculos' => $query->paginate(20),
         ]);
     }
 }
