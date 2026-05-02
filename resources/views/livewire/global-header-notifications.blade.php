@@ -1,6 +1,6 @@
 <div class="flex items-center gap-4 mr-4" wire:poll.20s>
     {{-- EPI Requests --}}
-    <a href="{{ route('epis.pedidos') }}" wire:navigate class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 hover:bg-yellow-500/20 transition-colors group" title="Pedidos de EPI Pendentes">
+    <a href="{{ route('epis.pedidos') }}" wire:navigate aria-label="Pedidos de EPI Pendentes" class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 hover:bg-yellow-500/20 transition-colors group" title="Pedidos de EPI Pendentes">
         <flux:icon.hand-raised variant="mini" />
         @if($epiCount > 0)
             <span class="absolute -top-1.5 -right-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white shadow-sm">
@@ -10,7 +10,7 @@
     </a>
 
     {{-- Transport Guides --}}
-    <a href="{{ route('guias.index') }}" wire:navigate class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-600 hover:bg-blue-500/20 transition-colors group" title="Guias de Transporte Pendentes">
+    <a href="{{ route('guias.index') }}" wire:navigate aria-label="Guias de Transporte Pendentes" class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-600 hover:bg-blue-500/20 transition-colors group" title="Guias de Transporte Pendentes">
         <flux:icon.truck variant="mini" />
         @if($guiaCount > 0)
             <span class="absolute -top-1.5 -right-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white shadow-sm">
@@ -20,7 +20,7 @@
     </a>
 
     {{-- Incident Reports --}}
-    <a href="{{ route('seguranca.index', ['tab' => 'incidentes']) }}" wire:navigate class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 hover:bg-red-500/20 transition-colors group" title="Novos Relatórios de Incidente / Alertas SOS">
+    <a href="{{ route('seguranca.index', ['tab' => 'incidentes']) }}" wire:navigate aria-label="Novos Relatórios de Incidente e Alertas SOS" class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 hover:bg-red-500/20 transition-colors group" title="Novos Relatórios de Incidente / Alertas SOS">
         <flux:icon.bell-alert variant="mini" />
         @if($incidentCount > 0)
             <span class="absolute -top-1.5 -right-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white shadow-sm">

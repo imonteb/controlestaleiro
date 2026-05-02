@@ -4,7 +4,7 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen antialiased bg-linear-to-b from-blue-800 to-blue-950 dark:from-blue-900 dark:to-(--cme-blue)">
-        <flux:sidebar sticky collapsible="mobile" breakpoint="99999" class="border-e border-blue-700 bg-blue-950 dark:border-blue-700 dark:bg-blue-950">
+        <flux:sidebar sticky collapsible class="border-e border-blue-700 bg-blue-950 dark:border-blue-700 dark:bg-blue-950">
             <flux:sidebar.header>
                 <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3 px-2 py-2">
                     <div class="sidebar-logo-wrapper">
@@ -178,6 +178,7 @@
                 <flux:profile
                     :initials="auth()->user()->initials()"
                     icon-trailing="chevron-down"
+                    :name="auth()->user()->name"
                 />
 
                 <flux:menu>

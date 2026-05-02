@@ -140,17 +140,17 @@
                     <div class="flex items-center justify-between p-4 hover:bg-gray-50 rounded-2xl transition-all border-b border-gray-50 last:border-0">
                         <div class="min-w-0">
                             <p class="text-xs font-bold text-gray-900 truncate">{{ $item->nombre }}</p>
-                            <p class="text-xs text-gray-400 font-bold uppercase">{{ $item->talla ?: 'S/T' }}</p>
+                            <p class="text-xs text-gray-600 font-bold uppercase">{{ $item->talla ?: 'S/T' }}</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="text-right">
                                 <span class="block text-xs font-black {{ $item->stock_total <= 0 ? 'text-red-600' : 'text-orange-600' }}">{{ $item->stock_total }} {{ $item->unidade ?: 'UN' }}</span>
-                                <span class="text-xs text-gray-400 uppercase">Mín. {{ $item->stock_minimo }}</span>
+                                <span class="text-xs text-gray-600 uppercase">Mín. {{ $item->stock_minimo }}</span>
                             </div>
                         </div>
                     </div>
                     @endforeach
-                    <a href="{{ route('epis.index') }}" wire:navigate class="block w-full text-center py-3 text-xs font-black text-gray-400 uppercase hover:text-blue-600 transition-colors">Ver catálogo completo</a>
+                    <a href="{{ route('epis.index') }}" wire:navigate class="block w-full text-center py-3 text-xs font-black text-gray-600 uppercase hover:text-blue-600 transition-colors">Ver catálogo completo</a>
                 </div>
             </div>
             @endif
@@ -184,7 +184,7 @@
                     @endforeach
 
                     @if(count($inspecoesProximas['extintores']) === 0 && count($inspecoesProximas['ferramentas']) === 0)
-                        <div class="p-8 text-center text-xs font-bold text-gray-400 uppercase italic">Tudo conforme para já.</div>
+                        <div class="p-8 text-center text-xs font-bold text-gray-600 uppercase italic">Tudo conforme para já.</div>
                     @endif
                 </div>
             </div>
