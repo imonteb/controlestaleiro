@@ -130,63 +130,38 @@
             </div>
 
             {{-- Widget: Stock Crítico --}}
-            <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-blue-950/10">
-                <div class="bg-blue-900 border-b border-red-500/40 px-6 py-4 flex items-center justify-between">
-                    <span class="text-red-400 font-black uppercase tracking-widest text-xs">Stock Crítico / Alerta</span>
-                    <span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full font-bold uppercase">{{ count($stockCritico) }} Itens</span>
+            @if(!empty($stockCritico))
+            <div class="relative overflow-hidden rounded-3xl bg-red-950/60 border border-red-500/30 p-5">
+                <div class="absolute top-3 right-4 opacity-10">
+                    <svg class="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+                    </svg>
                 </div>
-                <div class="p-2">
-                    @foreach($stockCritico as $item)
-                    <div class="flex items-center justify-between p-4 hover:bg-blue-800/30 rounded-2xl transition-all border-b border-white/5 last:border-0">
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-white truncate">{{ $item->nombre }}</p>
-                            <p class="text-xs text-blue-200 font-bold uppercase">{{ $item->talla ?: 'S/T' }}</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="text-right">
-                                <span class="block text-xs font-black {{ $item->stock_total <= 0 ? 'text-red-400' : 'text-orange-400' }}">{{ $item->stock_total }} {{ $item->unidade ?: 'UN' }}</span>
-                                <span class="text-xs text-blue-200 uppercase">Mín. {{ $item->stock_minimo }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    <a href="{{ route('epis.index') }}" wire:navigate class="block w-full text-center py-3 text-xs font-black text-blue-300 uppercase hover:text-yellow-400 transition-colors">Ver catálogo completo</a>
-                </div>
+                <p class="text-red-400 text-xs font-bold uppercase tracking-widest mb-1">Stock Crítico / Alerta</p>
+                <p class="text-5xl font-black text-white mb-1">{{ count($stockCritico) }}</p>
+                <p class="text-red-300/70 text-sm mb-4">{{ count($stockCritico) === 1 ? 'item abaixo do mínimo' : 'itens abaixo do mínimo' }}</p>
+                <a href="{{ route('epis.index') }}" wire:navigate class="block text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-colors">
+                    VER CATÁLOGO COMPLETO →
+                </a>
             </div>
+            @endif
             @endif
 
             @if(auth()->user()->hasRole('logi') || auth()->user()->isAdmin())
-            {{-- Widget: Inspeções Urgentes --}}
-            <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-blue-950/10">
-                <div class="bg-blue-900 border-b border-orange-500/40 px-6 py-4 flex items-center justify-between">
-                    <span class="text-orange-400 font-black uppercase tracking-widest text-xs">Segurança e Conformidade</span>
-                    <svg class="h-4 w-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            {{-- Widget: Segurança e Conformidade --}}
+            @php $totalAlertas = count($inspecoesProximas['extintores'] ?? []) + count($inspecoesProximas['ferramentas'] ?? []); @endphp
+            <div class="relative overflow-hidden rounded-3xl bg-orange-950/60 border border-orange-500/30 p-5">
+                <div class="absolute top-3 right-4 opacity-10">
+                    <svg class="w-16 h-16 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12V11c0 4.52-3.08 8.79-7 10.07C8.08 19.79 5 15.52 5 11V6.3l7-3.12zM11 7v6h2V7h-2zm0 8v2h2v-2h-2z"/>
+                    </svg>
                 </div>
-                <div class="p-2 space-y-1">
-                    @foreach($inspecoesProximas['extintores'] as $ext)
-                    <div class="flex items-center justify-between p-4 bg-red-50/50 rounded-2xl border border-red-100/30">
-                        <div>
-                            <p class="text-xs font-bold text-gray-900 uppercase">Extintor {{ $ext->num_serie }}</p>
-                            <p class="text-xs text-red-600 font-black uppercase">{{ $ext->proxima_revisao->translatedFormat('d F Y') }}</p>
-                        </div>
-                        <div class="h-2 w-2 rounded-full bg-red-500 shadow-sm animate-pulse"></div>
-                    </div>
-                    @endforeach
-
-                    @foreach($inspecoesProximas['ferramentas'] as $ferr)
-                    <div class="flex items-center justify-between p-4 bg-orange-50/30 rounded-2xl border border-orange-100/30">
-                        <div class="min-w-0 pr-4">
-                            <p class="text-xs font-bold text-gray-900 truncate uppercase">{{ $ferr->designacao }}</p>
-                            <p class="text-xs text-orange-600 font-black uppercase">Inspeção: {{ $ferr->ultimoLog?->proxima_verificacao?->format('d/m/Y') }}</p>
-                        </div>
-                        <svg class="h-4 w-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>
-                    </div>
-                    @endforeach
-
-                    @if(count($inspecoesProximas['extintores']) === 0 && count($inspecoesProximas['ferramentas']) === 0)
-                        <div class="p-8 text-center text-xs font-bold text-gray-600 uppercase italic">Tudo conforme para já.</div>
-                    @endif
-                </div>
+                <p class="text-orange-400 text-xs font-bold uppercase tracking-widest mb-1">Segurança e Conformidade</p>
+                <p class="text-5xl font-black text-white mb-1">{{ $totalAlertas }}</p>
+                <p class="text-orange-300/70 text-sm mb-4">{{ $totalAlertas === 1 ? 'equipamento a verificar' : 'equipamentos a verificar' }}</p>
+                <a href="{{ route('seguranca.index') }}" wire:navigate class="block text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-colors">
+                    VER EQUIPAMENTOS →
+                </a>
             </div>
             @endif
 
