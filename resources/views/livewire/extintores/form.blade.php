@@ -17,7 +17,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {{-- Nº Série --}}
                 <div class="md:col-span-2">
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Número de Série <span class="text-red-600">*</span></label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Número de Série <span class="text-red-600">*</span></label>
                     <input type="text" wire:model="num_serie" placeholder="Ex: ABC-12345"
                         class="w-full rounded-xl border-gray-200 focus:border-yellow-500 focus:ring-yellow-500 transition-all font-bold text-gray-900">
                     @error('num_serie') <span class="text-xs text-red-500 mt-1">{{ $message }}</span> @enderror
@@ -25,7 +25,7 @@
 
                 {{-- Tipo Agente --}}
                 <div>
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Tipo de Agente</label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Tipo de Agente</label>
                     <select wire:model="tipo_agente" class="w-full rounded-xl border-gray-200 focus:border-yellow-500 focus:ring-yellow-500 font-bold text-gray-900">
                         <option value="CO2">CO2 (Dióxido de Carbono)</option>
                         <option value="Pó Químico">Pó Químico (ABC)</option>
@@ -36,7 +36,7 @@
 
                 {{-- Tamanho --}}
                 <div>
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Tamanho (Peso)</label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Tamanho (Peso)</label>
                     <select wire:model="tamanho" class="w-full rounded-xl border-gray-200 focus:border-yellow-500 focus:ring-yellow-500 font-bold text-gray-900">
                         <option value="2kg">2 kg</option>
                         <option value="5kg">5 kg</option>
@@ -49,19 +49,19 @@
 
                 {{-- Data Verificação --}}
                 <div>
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Data de Verificação</label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Data de Verificação</label>
                     <input type="date" wire:model="data_verificacao" class="w-full rounded-xl border-gray-200 focus:border-yellow-500 focus:ring-yellow-500 text-gray-900 font-bold">
                 </div>
 
                 {{-- Próxima Revisão --}}
                 <div>
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Próxima Revisão</label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Próxima Revisão</label>
                     <input type="date" wire:model="proxima_revisao" class="w-full rounded-xl border-gray-200 focus:border-yellow-500 focus:ring-yellow-500 text-gray-900 font-bold">
                 </div>
 
                 {{-- Viatura --}}
                 <div class="md:col-span-2">
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Alocação (Viatura)</label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500">Alocação (Viatura)</label>
                     <select wire:model="veiculo_id" class="w-full rounded-xl border-gray-200 focus:border-yellow-500 focus:ring-yellow-500 font-bold text-gray-900">
                         <option value="">Permanecer em Armazém</option>
                         @foreach($veiculos as $v)
@@ -72,15 +72,15 @@
 
                 {{-- Estado --}}
                 <div class="md:col-span-2">
-                    <label class="block text-[11px] font-black text-(--cme-blue) mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500 text-center">Estado de Conservação</label>
+                    <label class="block text-[11px] font-black text-white/50 mb-1 uppercase tracking-widest bg-yellow-400/10 px-2 py-0.5 rounded border-l-2 border-yellow-500 text-center">Estado de Conservação</label>
                     <div class="flex gap-4 p-2 bg-gray-50 rounded-xl">
                         <label class="flex-1 flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all @if($estado === 'Conforme') bg-white shadow-sm ring-2 ring-green-500 @endif">
                             <input type="radio" wire:model.live="estado" value="Conforme" class="hidden">
-                            <span class="text-[10px] font-bold uppercase @if($estado === 'Conforme') text-green-600 @else text-gray-400 @endif">Conforme</span>
+                            <span class="text-[10px] font-bold uppercase @if($estado === 'Conforme') text-green-600 @else text-white/60 @endif">Conforme</span>
                         </label>
                         <label class="flex-1 flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all @if($estado === 'Não Conforme') bg-white shadow-sm ring-2 ring-red-500 @endif">
                             <input type="radio" wire:model.live="estado" value="Não Conforme" class="hidden">
-                            <span class="text-[10px] font-bold uppercase @if($estado === 'Não Conforme') text-red-600 @else text-gray-400 @endif">Crítico</span>
+                            <span class="text-[10px] font-bold uppercase @if($estado === 'Não Conforme') text-red-600 @else text-white/60 @endif">Crítico</span>
                         </label>
                     </div>
                 </div>
