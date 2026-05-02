@@ -37,7 +37,7 @@
                     Imprimir Folhas
                 </a>
                 <a href="{{ route('ferramentas.crear') }}" wire:navigate
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold text-sm transition-colors shadow-sm">
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-white/90 font-semibold text-sm transition-colors shadow-sm">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
@@ -49,26 +49,26 @@
             {{-- Filter --}}
             <div class="flex-none">
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center bg-white rounded-xl shadow-sm border border-gray-100 p-1">
+                    <div class="flex items-center bg-white/8 rounded-xl border border-white/10 p-1">
                         <select wire:model.live="filtro_familia"
-                            class="w-44 border-none bg-transparent text-[11px] font-bold uppercase tracking-wider text-gray-500 focus:ring-0 cursor-pointer">
+                            class="w-44 border-none bg-transparent text-[11px] font-bold uppercase tracking-wider text-white/80 focus:ring-0 cursor-pointer">
                             <option value="">Famílias</option>
                             @foreach ($familias as $f)
                                 <option value="{{ $f }}">{{ $f }}</option>
                             @endforeach
                         </select>
-                        <div class="h-4 w-px bg-gray-100 mx-1"></div>
+                        <div class="h-4 w-px bg-white/10 mx-1"></div>
                         <select wire:model.live="filtro_estado_operacional"
-                            class="w-44 border-none bg-transparent text-[11px] font-bold uppercase tracking-wider text-gray-500 focus:ring-0 cursor-pointer">
+                            class="w-44 border-none bg-transparent text-[11px] font-bold uppercase tracking-wider text-white/80 focus:ring-0 cursor-pointer">
                             <option value="">Estados</option>
                             <option value="Apto">Apto</option>
                             <option value="Não Apto">Não Apto</option>
                             <option value="Condicionado">Condicionado</option>
                             <option value="Abate">Abate</option>
                         </select>
-                        <div class="h-4 w-px bg-gray-100 mx-1"></div>
+                        <div class="h-4 w-px bg-white/10 mx-1"></div>
                         <select wire:model.live="filtro_preventivo"
-                            class="w-44 border-none bg-transparent text-[11px] font-bold uppercase tracking-wider text-gray-500 focus:ring-0 cursor-pointer">
+                            class="w-44 border-none bg-transparent text-[11px] font-bold uppercase tracking-wider text-white/80 focus:ring-0 cursor-pointer">
                             <option value="">Tempo/Verif.</option>
                             <option value="CONFORME">Em dia</option>
                             <option value="ATRASADO">Atrasados</option>
@@ -95,57 +95,57 @@
             </div>
         </div>
         {{-- Tools Table --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white/0 rounded-xl border border-white/8 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-center text-sm border-collapse">
                     <thead>
-                        <tr class="bg-gray-50 border-b border-gray-100">
+                        <tr class="bg-white/0 border-b border-white/8">
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Código</th>
                             <th
-                                class="px-4 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-4 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Designação</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Estado</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Verificação</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Próxima Ver.</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Última Ação</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Quem/Verif.</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Docum.</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Obs.</th>
                             <th
-                                class="px-3 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] border-r text-center">
+                                class="px-3 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] border-r text-center">
                                 Registo Ver.</th>
                             <th
-                                class="px-4 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] text-center border-r">
+                                class="px-4 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] text-center border-r">
                                 Tempo/Verif.</th>
-                            <th class="px-4 py-4 font-bold text-gray-700 uppercase tracking-wider text-[10px] text-center">
+                            <th class="px-4 py-4 font-bold text-white/60 uppercase tracking-wider text-[10px] text-center">
                                 Ações</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-50 text-gray-600">
+                    <tbody class="divide-y divide-white/5 text-white/80">
                         @forelse($ferramentas as $item)
                             <tr
-                                class="odd:bg-white even:bg-green-100 hover:bg-yellow-200/50 transition-colors border-b border-gray-50 text-center">
+                                class="odd:bg-white/0 even:bg-white/3 hover:bg-yellow-400/5 transition-colors border-b border-white/5 text-center">
                                 <td class="px-3 py-4 font-bold text-(--cme-blue) border-r">{{ $item->referencia ?: '—' }}
                                 </td>
                                 <td class="px-4 py-4 border-r text-left">
-                                    <div class="font-bold text-gray-900 leading-tight">{{ $item->designacao }}</div>
-                                    <div class="text-[9px] uppercase text-gray-500 font-bold mt-1 tracking-tight">
+                                    <div class="font-bold text-white/90 leading-tight">{{ $item->designacao }}</div>
+                                    <div class="text-[9px] uppercase text-white/55 font-bold mt-1 tracking-tight">
                                         {{ $item->familia }}</div>
                                 </td>
                                 <td class="px-3 py-4 border-r">
@@ -155,7 +155,7 @@
                                             'Não Apto' => 'bg-rose-50 text-rose-700 border-rose-100 ring-rose-500/10',
                                             'Condicionado' => 'bg-amber-50 text-amber-700 border-amber-100 ring-amber-500/10',
                                             'Abate' => 'bg-slate-800 text-slate-100 border-slate-700 ring-slate-500/10',
-                                            default => 'bg-gray-50 text-gray-600 border-gray-100',
+                                            default => 'bg-gray-50 text-white/65 border-gray-100',
                                         };
                                     @endphp
                                     <span
@@ -163,24 +163,24 @@
                                         {{ $item->estado_operacional }}
                                     </span>
                                 </td>
-                                <td class="px-3 py-4 border-r text-gray-900 font-bold whitespace-nowrap text-[11px]">
+                                <td class="px-3 py-4 border-r text-white/70 font-bold whitespace-nowrap text-[11px]">
                                     {{ $item->ultimoLog?->data_verificacao?->format('d/m/Y') ?: '—' }}
                                 </td>
-                                <td class="px-3 py-4 border-r text-(--cme-blue) font-black whitespace-nowrap text-[11px]">
+                                <td class="px-3 py-4 border-r text-white/70 font-bold whitespace-nowrap text-[11px]">
                                     {{ $item->ultimoLog?->proxima_verificacao?->format('d/m/Y') ?: '—' }}
                                 </td>
                                 <td
-                                    class="px-3 py-4 border-r text-gray-500 text-[10px] font-bold leading-tight uppercase">
+                                    class="px-3 py-4 border-r text-white/60 text-[10px] font-bold leading-tight uppercase">
                                     {{ $item->ultimoLog?->manutencao_tipo ?: '—' }}
                                 </td>
-                                <td class="px-3 py-4 border-r text-gray-700 font-bold text-[10px] uppercase">
+                                <td class="px-3 py-4 border-r text-white/70 font-bold text-[10px] uppercase">
                                     {{ $item->ultimoLog?->verificado_por ?: '—' }}
                                 </td>
                                 <td class="px-3 py-4 border-r">
                                     <span
-                                        class="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[9px] font-bold uppercase">{{ $item->tipo_documentacao ?: 'Manual' }}</span>
+                                        class="px-2 py-0.5 bg-white/8 text-white/70 border border-white/10 rounded text-[9px] font-bold uppercase">{{ $item->tipo_documentacao ?: 'Manual' }}</span>
                                 </td>
-                                <td class="px-3 py-4 border-r text-gray-500 text-[10px] font-medium max-w-[120px] truncate italic"
+                                <td class="px-3 py-4 border-r text-white/50 text-[10px] font-medium max-w-[120px] truncate italic"
                                     title="{{ $item->ultimoLog?->conclusao }}">
                                     {{ $item->ultimoLog?->conclusao ?: '—' }}
                                 </td>
@@ -249,7 +249,7 @@
                                 <td colspan="12" class="px-6 py-20 text-center">
                                     <div class="flex flex-col items-center gap-3">
                                         <div
-                                            class="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                                            class="h-16 w-16 rounded-full bg-white/8 flex items-center justify-center text-white/55">
                                             <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                                                 stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -257,7 +257,7 @@
                                                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                             </svg>
                                         </div>
-                                        <div class="text-gray-600 font-bold uppercase tracking-widest text-xs">Sem
+                                        <div class="text-white/65 font-bold uppercase tracking-widest text-xs">Sem
                                             ferramentas registadas</div>
                                     </div>
                                 </td>
@@ -267,7 +267,13 @@
                 </table>
             </div>
             @if ($ferramentas->hasPages())
-                <div class="px-6 py-4 border-t border-gray-50 bg-gray-50/50">
+                <div class="px-4 py-3 border-t border-white/5
+                            [&_nav]:text-white/50
+                            [&_a]:bg-white/5 [&_a]:border-white/10 [&_a]:text-white/70
+                            [&_a:hover]:bg-yellow-400/10 [&_a:hover]:text-yellow-400
+                            [&_[aria-current]>span]:bg-yellow-400
+                            [&_[aria-current]>span]:text-blue-950
+                            [&_[aria-current]>span]:border-yellow-400">
                     {{ $ferramentas->links() }}
                 </div>
             @endif
