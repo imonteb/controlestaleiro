@@ -63,8 +63,8 @@
         <table style="border-collapse:collapse;width:100%;min-width:{{  count($diasLaborais) * 52 + 280 }}px;">
 
             {{-- Cabecera --}}
-            <thead>
-                <tr>
+            <thead style="position:sticky;top:0;z-index:20;">
+                <tr style="position:sticky;top:0;z-index:20;">
                     {{-- Primera celda: etiqueta PEP --}}
                     <th style="position:sticky;left:0;top:0;z-index:12;background:#1e3a8a;color:white;font-size:0.75rem;font-weight:700;padding:10px 14px;text-align:left;white-space:nowrap;min-width:240px;border-right:2px solid #1e40af;">
                         PEP / Localização
