@@ -32,6 +32,30 @@ class Index extends Component
 
     public $importError = '';
 
+    public $confirmandoEliminar = false;
+
+    public $eliminandoId = null;
+
+    public function pedirEliminar($id)
+    {
+        $this->eliminandoId = $id;
+        $this->confirmandoEliminar = true;
+    }
+
+    public function cancelarEliminar()
+    {
+        $this->confirmandoEliminar = false;
+        $this->eliminandoId = null;
+    }
+
+    public function confirmarEliminar()
+    {
+        Extintor::findOrFail($this->eliminandoId)->delete();
+        $this->confirmandoEliminar = false;
+        $this->eliminandoId = null;
+        session()->flash('success', 'Extintor removido com sucesso!');
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();
