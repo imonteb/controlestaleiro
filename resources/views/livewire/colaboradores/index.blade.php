@@ -63,16 +63,16 @@
                     <tr class="bg-gray-50 border-b-2 border-(--cme-blue)/20">
                         @php
                             $cols = [
-                                'numero_colaborador' => 'Nº Colaborador',
+                                'numero_colaborador' => 'Nº',
                                 'nombre'             => 'Nome Completo',
                                 'denominacion_cargo' => 'Cargo',
                                 'telefono'           => 'Telefone',
                             ];
                         @endphp
                         @foreach($cols as $col => $label)
-                        <th class="px-6 py-3.5 text-left">
+                        <th class="px-6 py-3.5 text-left border-b border-white/8">
                             <button wire:click="sort('{{ $col }}')"
-                                class="inline-flex items-center gap-1.5 text-xs font-bold text-(--cme-blue) uppercase tracking-wider hover:text-blue-400 transition-colors group">
+                                class="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 uppercase tracking-wider hover:text-white/90 transition-colors group">
                                 {{ $label }}
                                 <span class="flex flex-col leading-none">
                                     <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'asc' ? 'text-yellow-500' : 'text-gray-300 group-hover:text-gray-400' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4l4 6H4z"/></svg>
@@ -81,12 +81,12 @@
                             </button>
                         </th>
                         @endforeach
-                        <th class="px-6 py-3.5 text-right text-xs font-bold text-(--cme-blue) uppercase tracking-wider">Ações</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($colaboradores as $colaborador)
-                    <tr class="{{ !$colaborador->activo ? 'opacity-60 bg-red-50/40' : ($loop->index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50') }} hover:bg-blue-50/60 transition-colors group">
+                    <tr class="{{ !$colaborador->activo ? 'opacity-50' : ($loop->index % 2 === 0 ? 'bg-white/0' : 'bg-white/3') }} hover:bg-yellow-400/5 transition-colors group">
                         <td class="px-6 py-4">
                             <div class="flex flex-col gap-1">
                                 <span class="inline-flex items-center gap-1.5 font-mono font-bold text-(--cme-blue) bg-blue-50 px-2.5 py-1 rounded-lg text-xs tracking-wider w-fit">
@@ -141,7 +141,7 @@
                                 {{-- Toggle visible en dashboard --}}
                                 <button wire:click="toggleVisibleDashboard({{ $colaborador->id }})"
                                     title="{{ $colaborador->visible_en_dashboard ? 'Visível no dashboard — clique para ocultar' : 'Oculto do dashboard — clique para mostrar' }}"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border {{ $colaborador->visible_en_dashboard ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-400 border-gray-200' }}">
+                                    class="w-28 flex items-center justify-center text-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border {{ $colaborador->visible_en_dashboard ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-400 border-gray-200' }}">
                                     @if($colaborador->visible_en_dashboard)
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                         Dashboard
@@ -216,6 +216,11 @@
                 </tbody>
             </table>
         </div>
+        @if($colaboradores->hasPages())
+        <div class="px-4 py-3 border-t border-white/5">
+            {{ $colaboradores->links() }}
+        </div>
+        @endif
     </div>
 
     {{-- Modal: Confirmar eliminação permanente --}}
