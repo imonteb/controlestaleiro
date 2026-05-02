@@ -177,12 +177,6 @@ body:has([data-flux-sidebar]) {
     min-width: 0;
 }
 
-[data-flux-main] > div:first-child {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-}
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
@@ -402,3 +396,129 @@ input[type="week"] {
 [data-flux-main] table td.sticky .text-blue-900 {
     color: rgba(255,255,255,0.90) !important;
 }
+
+/* Filas alternas — paleta CME */
+[data-flux-main] tbody tr:nth-child(even) {
+    background-color: rgba(30, 58, 138, 0.35) !important;
+}
+[data-flux-main] tbody tr:nth-child(odd) {
+    background-color: rgba(15, 32, 87, 0.5) !important;
+}
+[data-flux-main] tbody tr:hover {
+    background-color: rgba(255, 211, 0, 0.08) !important;
+}
+
+/* Headers de columna */
+[data-flux-main] table thead th {
+    color: rgba(255,255,255,0.55) !important;
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+}
+
+/* Badges de cargo en tablas — legibles */
+[data-flux-main] table span.rounded-full,
+[data-flux-main] table span.rounded-lg,
+[data-flux-main] table span.rounded-md {
+    background-color: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.85) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    font-size: 0.68rem !important;
+    font-weight: 500 !important;
+    padding: 2px 7px !important;
+    white-space: nowrap !important;
+    max-width: 140px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: inline-block !important;
+}
+
+/* Scroll interno solo en páginas de tablas anchas */
+.table-scroll-page {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-scroll-page > * {
+    min-height: 0;
+}
+
+/* -------------------------------------------------------
+   Tablas de datos — texto y densidad reducidos
+   Aplica a todas las tablas de la app excepto tablas
+   de estadísticas que tienen su propio sizing
+------------------------------------------------------- */
+[data-flux-main] table td,
+[data-flux-main] table th {
+    font-size: 0.8rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* Avatares — reducir tamaño */
+[data-flux-main] table td [class*="w-8"][class*="h-8"],
+[data-flux-main] table td [class*="w-9"][class*="h-9"],
+[data-flux-main] table td [class*="w-10"][class*="h-10"] {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    font-size: 0.65rem !important;
+}
+
+/* Badges de cargo — más compactos */
+[data-flux-main] table span.rounded-full,
+[data-flux-main] table span.rounded-lg {
+    font-size: 0.7rem !important;
+    padding: 2px 8px !important;
+}
+
+/* -------------------------------------------------------
+   Formularios de edición — inputs más compactos y menos redondos
+------------------------------------------------------- */
+[data-flux-main] input[data-flux-control],
+[data-flux-main] select[data-flux-control],
+[data-flux-main] textarea[data-flux-control],
+[data-flux-main] input:not([type="checkbox"]):not([type="radio"]):not([type="date"]):not([type="color"]),
+[data-flux-main] select,
+[data-flux-main] textarea {
+    border-radius: 6px !important;
+    padding-top: 0.45rem !important;
+    padding-bottom: 0.45rem !important;
+    font-size: 0.825rem !important;
+    min-height: unset !important;
+    height: auto !important;
+}
+
+/* Labels de formulario — más pequeños */
+[data-flux-main] label,
+[data-flux-main] [data-flux-label] {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* Labels oscuros → visibles en tema oscuro */
+[data-flux-main] label,
+[data-flux-main] [data-flux-label],
+[data-flux-main] .text-\(--cme-blue\) {
+    color: rgba(255,255,255,0.55) !important;
+}
+
+/* Específicamente los labels de Flux */
+[data-flux-field] [data-flux-label] {
+    color: rgba(255,255,255,0.55) !important;
+}
+
+/* Labels inline en formularios blade puros */
+[data-flux-main] form label,
+[data-flux-main] .form-label,
+[data-flux-main] label.block,
+[data-flux-main] label.text-sm,
+[data-flux-main] label.text-xs,
+[data-flux-main] label.font-medium,
+[data-flux-main] label.font-semibold,
+[data-flux-main] label.uppercase {
+    color: rgba(255,255,255,0.55) !important;
+}
+
