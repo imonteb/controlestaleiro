@@ -141,7 +141,7 @@
                         @forelse($ferramentas as $item)
                             <tr
                                 class="odd:bg-white/0 even:bg-white/3 hover:bg-yellow-400/5 transition-colors border-b border-white/5 text-center">
-                                <td class="px-3 py-4 font-bold text-(--cme-blue) border-r">{{ $item->referencia ?: '—' }}
+                                <td class="px-3 py-4 font-bold text-white/80 border-r">{{ $item->referencia ?: '—' }}
                                 </td>
                                 <td class="px-4 py-4 border-r text-left">
                                     <div class="font-bold text-white/90 leading-tight">{{ $item->designacao }}</div>
@@ -190,7 +190,7 @@
                                             class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50/50 border border-blue-100 rounded-lg hover:bg-blue-100 transition-colors group">
                                             <div class="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-blue-600"></div>
                                             <span
-                                                class="font-mono text-[10px] text-blue-800 font-black tracking-tight uppercase">{{ $item->ultimoLog->num_registo_verificacao }}</span>
+                                                class="font-mono text-[10px] text-white/75 font-black tracking-tight uppercase">{{ $item->ultimoLog->num_registo_verificacao }}</span>
                                         </a>
                                     @else
                                         <span class="text-gray-300">—</span>
