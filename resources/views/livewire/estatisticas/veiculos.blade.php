@@ -87,15 +87,15 @@
 
             <tbody>
                 @forelse($veiculos as $i => $veh)
-                @php $rowBg = $i % 2 === 0 ? '#ffffff' : '#f8fafc'; @endphp
-                <tr style="background:{{ $rowBg }};{{ !$veh->activo ? 'opacity:0.5;' : '' }}" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='{{ $rowBg }}'">
+                @php $rowBg = $i % 2 === 0 ? '#0f2057' : '#0d1c4a'; @endphp
+                <tr style="background:{{ $rowBg }};{{ !$veh->activo ? 'opacity:0.5;' : '' }}" onmouseover="this.style.background='#162880'" onmouseout="this.style.background='{{ $rowBg }}'">
                     {{-- Matrícula del vehículo --}}
-                    <td style="position:sticky;left:0;z-index:10;background:inherit;padding:8px 14px;border-right:2px solid #e5e7eb;min-width:220px;border-bottom:1px solid #f1f5f9;">
-                        <div style="font-size:0.82rem;font-weight:700;color:#1e3a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;" title="{{ $veh->matricula }} — {{ $veh->marca }} {{ $veh->modelo }}">
+                    <td style="position:sticky;left:0;z-index:10;background:#0f2057;padding:8px 14px;border-right:2px solid rgba(255,255,255,0.1);min-width:220px;border-bottom:1px solid rgba(255,255,255,0.06);">
+                        <div style="font-size:0.82rem;font-weight:700;color:rgba(255,255,255,0.90);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;" title="{{ $veh->matricula }} — {{ $veh->marca }} {{ $veh->modelo }}">
                             {{ $veh->matricula }}
                         </div>
                         @if($veh->marca || $veh->modelo)
-                        <div style="font-size:0.68rem;color:#6b7280;margin-top:1px;">{{ $veh->marca }} {{ $veh->modelo }}</div>
+                        <div style="font-size:0.68rem;color:rgba(255,255,255,0.45);margin-top:1px;">{{ $veh->marca }} {{ $veh->modelo }}</div>
                         @endif
                     </td>
 
@@ -132,7 +132,7 @@
                     @endforeach
 
                     {{-- Total dias --}}
-                    <td style="position:sticky;right:0;z-index:10;background:inherit;text-align:center;padding:6px 10px;border-left:2px solid #e5e7eb;border-bottom:1px solid #f1f5f9;font-size:0.85rem;font-weight:800;color:#1e3a8a;">
+                    <td style="position:sticky;right:0;z-index:10;background:#0f2057;text-align:center;padding:6px 10px;border-left:2px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.85rem;font-weight:800;color:rgba(255,255,255,0.90);">
                         {{ ($totalesVeiculos[$veh->id] ?? 0) > 0 ? $totalesVeiculos[$veh->id] : '–' }}
                     </td>
                 </tr>
