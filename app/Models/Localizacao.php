@@ -13,6 +13,11 @@ class Localizacao extends Model
 
     protected $fillable = ['nombre'];
 
+    public function peps()
+    {
+        return $this->hasMany(Pep::class, 'locacion_id');
+    }
+
     public function extintores()
     {
         return $this->hasMany(Extintor::class, 'locacion_id');
