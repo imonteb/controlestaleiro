@@ -45,7 +45,7 @@
     </div>
 
     {{-- Table Card --}}
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+    <div class="bg-white/0 rounded-2xl overflow-hidden border border-white/8">
 
         {{-- Table header bar --}}
         <div class="bg-(--cme-blue) px-6 py-4 flex items-center justify-between">
@@ -64,18 +64,18 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="bg-gray-50 border-b-2 border-(--cme-blue)/20">
-                        <th class="px-6 py-3.5 text-left text-xs font-bold text-(--cme-blue) uppercase tracking-wider">Nome / PEP</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-bold text-(--cme-blue) uppercase tracking-wider">Localização</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-bold text-(--cme-blue) uppercase tracking-wider">Tipo de Trabalho</th>
-                        <th class="px-6 py-3.5 text-right text-xs font-bold text-(--cme-blue) uppercase tracking-wider">Ações</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-white/60 uppercase tracking-wider">Nome / PEP</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-white/60 uppercase tracking-wider">Localização</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-white/60 uppercase tracking-wider">Tipo de Trabalho</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($peps as $pep)
-                    <tr class="{{ !$pep->activo ? 'opacity-60 bg-red-50/40' : ($loop->index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50') }} hover:bg-blue-50/60 transition-colors">
+                    <tr class="{{ !$pep->activo ? 'opacity-50' : ($loop->index % 2 === 0 ? 'bg-white/0' : 'bg-white/3') }} hover:bg-yellow-400/5 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex flex-col gap-1">
-                                <span class="font-semibold text-gray-800">{{ $pep->nombre }}</span>
+                                <span class="font-semibold text-white/90">{{ $pep->nombre }}</span>
                                 @if(!$pep->activo)
                                     <span class="inline-flex items-center gap-1 text-xs text-red-600 font-semibold">
                                         <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
@@ -89,7 +89,7 @@
                         </td>
                         <td class="px-6 py-4">
                             @if($pep->localizacao)
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-(--cme-blue)/10 text-(--cme-blue) border border-(--cme-blue)/20">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/8 text-white/70 border border-white/10">
                                     {{ $pep->localizacao->nombre ?? $pep->localizacao->name ?? '—' }}
                                 </span>
                             @else

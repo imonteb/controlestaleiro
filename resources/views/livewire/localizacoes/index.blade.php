@@ -27,7 +27,7 @@
     </div>
 
     {{-- Tabla --}}
-    <div class="bg-white rounded-xl border border-gray-200 shadow overflow-hidden">
+    <div class="bg-white/0 rounded-xl border border-white/8 overflow-hidden">
         @if($locaciones->isEmpty())
             <div class="flex flex-col items-center justify-center py-16 text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,33 +43,33 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-200">
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">Nome</th>
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">PEPs</th>
+                        <th class="text-left px-5 py-3 font-semibold text-white/60 uppercase text-xs tracking-wider">Nome</th>
+                        <th class="text-left px-5 py-3 font-semibold text-white/60 uppercase text-xs tracking-wider">PEPs</th>
                         <th class="px-5 py-3"></th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @foreach($locaciones as $locacion)
-                    <tr class="hover:bg-gray-50 transition-colors">
+                    <tr class="hover:bg-yellow-400/5 transition-colors">
                         <td class="px-5 py-3">
                             <div class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white/40 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                <span class="font-medium text-gray-800">{{ $locacion->nombre }}</span>
+                                <span class="font-medium text-white/90">{{ $locacion->nombre }}</span>
                             </div>
                         </td>
                         <td class="px-5 py-3">
-                            <span class="text-gray-500 font-medium">{{ $locacion->peps_count }}</span>
+                            <span class="text-white/50 font-medium">{{ $locacion->peps_count }}</span>
                             @if($locacion->peps_count > 0)
-                                <span class="text-gray-400 text-xs ml-1">PEP{{ $locacion->peps_count !== 1 ? 's' : '' }}</span>
+                                <span class="text-white/40 text-xs ml-1">PEP{{ $locacion->peps_count !== 1 ? 's' : '' }}</span>
                             @endif
                         </td>
                         <td class="px-5 py-3 text-right">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('localizacoes.editar', $locacion) }}" wire:navigate
-                                   class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition">
+                                   class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/8 text-white/80 hover:bg-white/15 transition">
                                     Editar
                                 </a>
                                 <button wire:click="pedirEliminar({{ $locacion->id }})"

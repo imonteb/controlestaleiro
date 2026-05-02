@@ -20,17 +20,17 @@
         <input wire:model.live.debounce.300ms="search"
                type="text"
                placeholder="Pesquisar por nome, localidade, morada..."
-               class="flex-1 min-w-[220px] bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+               class="flex-1 min-w-[220px] bg-white/8 border border-white/15 text-white/90 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400/50 placeholder:text-white/30">
 
         <select wire:model.live="filtroTipo"
-                class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                class="bg-white/8 border border-white/15 text-white/90 rounded-lg px-3 py-2 text-sm focus:outline-none">
             <option value="">Todos os tipos</option>
             <option value="portugal">Portugal</option>
             <option value="internacional">Internacional</option>
         </select>
 
         <select wire:model.live="filtroActivo"
-                class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                class="bg-white/8 border border-white/15 text-white/90 rounded-lg px-3 py-2 text-sm focus:outline-none">
             <option value="activos">Activos</option>
             <option value="inactivos">Inactivos</option>
             <option value="">Todos</option>
@@ -38,56 +38,56 @@
     </div>
 
     {{-- Tabla --}}
-    <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+    <div class="bg-white/0 rounded-2xl border border-white/8 overflow-hidden">
         <table class="w-full text-sm">
-            <thead class="bg-gray-50 border-b border-gray-100">
+            <thead class="border-b border-white/8">
                 <tr>
-                    <th class="text-left px-4 py-3 font-semibold text-gray-600">Nome</th>
-                    <th class="text-left px-4 py-3 font-semibold text-gray-600">Endereço</th>
-                    <th class="text-left px-4 py-3 font-semibold text-gray-600">CP</th>
-                    <th class="text-left px-4 py-3 font-semibold text-gray-600">País</th>
-                    <th class="text-center px-4 py-3 font-semibold text-gray-600">Estado</th>
+                    <th class="text-left px-4 py-3 font-semibold text-white/60">Nome</th>
+                    <th class="text-left px-4 py-3 font-semibold text-white/60">Endereço</th>
+                    <th class="text-left px-4 py-3 font-semibold text-white/60">CP</th>
+                    <th class="text-left px-4 py-3 font-semibold text-white/60">País</th>
+                    <th class="text-center px-4 py-3 font-semibold text-white/60">Estado</th>
                     <th class="px-4 py-3"></th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-50">
+            <tbody class="divide-y divide-white/5">
                 @forelse($locais as $local)
-                    <tr class="hover:bg-gray-50 transition">
+                    <tr class="hover:bg-yellow-400/5 transition">
                         <td class="px-4 py-3">
-                            <div class="font-semibold text-gray-800">{{ $local->nome }}</div>
-                            <div class="text-xs text-gray-400 mt-0.5">
+                            <div class="font-semibold text-white/90">{{ $local->nome }}</div>
+                            <div class="text-xs text-white/40 mt-0.5">
                                 <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[0.6rem] font-bold uppercase
                                     {{ $local->tipo === 'portugal' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
                                     {{ $local->tipo }}
                                 </span>
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-gray-600">
+                        <td class="px-4 py-3 text-white/60">
                             {{ $local->morada }}
                             @if($local->localidade)
-                                <div class="text-xs text-gray-400">{{ $local->localidade }}</div>
+                                <div class="text-xs text-white/40">{{ $local->localidade }}</div>
                             @endif
                         </td>
-                        <td class="px-4 py-3 text-gray-600 font-mono text-xs">
+                        <td class="px-4 py-3 text-white/60 font-mono text-xs">
                             @if($local->cp4 && $local->cp3)
                                 {{ $local->cp4 }}-{{ $local->cp3 }}
                                 @if($local->cpalf)
-                                    <div class="text-gray-400">{{ $local->cpalf }}</div>
+                                    <div class="text-white/40">{{ $local->cpalf }}</div>
                                 @endif
                             @endif
                         </td>
-                        <td class="px-4 py-3 text-gray-500 text-xs">{{ $local->pais }}</td>
+                        <td class="px-4 py-3 text-white/50 text-xs">{{ $local->pais }}</td>
                         <td class="px-4 py-3 text-center">
                             @if($local->activo)
-                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Activo</span>
+                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-900/40 text-emerald-400 border border-emerald-500/30">Activo</span>
                             @else
-                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-600">Inactivo</span>
+                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold bg-red-900/40 text-red-400 border border-red-500/30">Inactivo</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex justify-end gap-2">
                                 <a href="{{ route('locais-frequentes.editar', $local) }}" wire:navigate
-                                   class="text-blue-500 hover:text-blue-700 text-xs font-semibold">Editar</a>
+                                   class="text-white/70 hover:text-white text-xs font-semibold">Editar</a>
                                 <button wire:click="pedirEliminar({{ $local->id }})"
                                         class="text-red-400 hover:text-red-600 text-xs font-semibold">Eliminar</button>
                             </div>
