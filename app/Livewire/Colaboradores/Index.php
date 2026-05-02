@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 #[Title('Colaboradores')]
 class Index extends Component
 {
+    use WithPagination;
+
     public string $sortBy = 'nombre';
 
     public string $sortDir = 'asc';
@@ -29,6 +32,16 @@ class Index extends Component
     public ?int $eliminandoId = null;
 
     public bool $eliminacaoBloqueada = false;
+
+    public function updatingPesquisa(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFiltro(): void
+    {
+        $this->resetPage();
+    }
 
     public function sort(string $column): void
     {
@@ -152,7 +165,7 @@ class Index extends Component
         }
 
         return view('livewire.colaboradores.index', [
-            'colaboradores' => $query->get(),
+            'colaboradores' => $query->paginate(20),
         ]);
     }
 }
