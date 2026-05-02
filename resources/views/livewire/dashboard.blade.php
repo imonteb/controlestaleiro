@@ -159,9 +159,14 @@
                 <p class="text-orange-400 text-xs font-bold uppercase tracking-widest mb-1">Segurança e Conformidade</p>
                 <p class="text-5xl font-black text-white mb-1">{{ $totalAlertas }}</p>
                 <p class="text-orange-300/70 text-sm mb-4">{{ $totalAlertas === 1 ? 'equipamento a verificar' : 'equipamentos a verificar' }}</p>
-                <a href="{{ route('seguranca.index') }}" wire:navigate class="block text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-colors">
-                    VER EQUIPAMENTOS →
-                </a>
+                <div class="flex gap-2">
+                    <a href="{{ route('extintores.index') }}" wire:navigate class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-3 rounded-xl transition-colors">
+                        Extintores →
+                    </a>
+                    <a href="{{ route('ferramentas.index') }}" wire:navigate class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-3 rounded-xl transition-colors">
+                        Ferramentas →
+                    </a>
+                </div>
             </div>
             @endif
 
