@@ -1,4 +1,4 @@
-<div class="p-4 lg:p-6 flex flex-col gap-5">
+<div class="p-4 lg:p-6 flex flex-col gap-5 h-full">
 
     {{-- Cabeçalho --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -55,7 +55,7 @@
     </div>
 
     {{-- Tabela --}}
-    <div style="overflow-x:auto;overflow-y:visible;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border:1px solid #e5e7eb;">
+    <div class="flex-1 min-h-0 overflow-x-auto overflow-y-auto" style="border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border:1px solid rgba(255,255,255,0.08);">
         <table style="border-collapse:collapse;width:100%;min-width:{{ count($diasLaborais) * 100 + 280 }}px;">
 
             <thead>
