@@ -275,7 +275,9 @@
                             </div>
                             @endif
 
-                            <div class="flex-1" x-data="{ openAuxiliar: false }">
+                            <div class="flex-1"
+                                wire:key="pep-alpine-{{ $pep->id }}-{{ $data }}"
+                                x-data="{ openAuxiliar: false, hasAuxiliar: {{ isset($pepData[$pep->id]['auxiliar']) && count($pepData[$pep->id]['auxiliar']) > 0 ? 'true' : 'false' }} }">
                                 {{-- EQUIPO PRINCIPAL --}}
                                 <div class="mb-4">
                                     <h4 class="text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Equipa
@@ -361,9 +363,8 @@
                                 </div>
 
                                 {{-- EQUIPO AUXILIAR (OCULTO POR DEFECTO PERO CON DATOS CARGADOS) --}}
-                                <div x-show="openAuxiliar || {{ isset($pepData[$pep->id]['auxiliar']) && count($pepData[$pep->id]['auxiliar']) > 0 ? 'true' : 'false' }}"
-                                    class="mt-3 bg-yellow-400/5 p-2 rounded border border-yellow-400/15"
-                                    style="display:none;">
+                                <div x-show="openAuxiliar || hasAuxiliar"
+                                    class="mt-3 bg-yellow-400/5 p-2 rounded border border-yellow-400/15">
 
                                     {{-- Jefe Auxiliar --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
