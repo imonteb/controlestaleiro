@@ -251,19 +251,18 @@
                 @forelse ($peps as $pep)
                     <div wire:key="pep-card-{{ $pep->id }}"
                         class="bg-blue-950/60 rounded-lg border border-white/10 overflow-hidden flex flex-col">
-                        <div class="px-4 py-3 bg-blue-800 border-b border-blue-900">
+                        <div class="px-3 py-2 bg-blue-800 border-b border-blue-900">
                             <div class="flex items-center gap-2">
-                                <span class="text-lg font-semibold text-white">{{ $pep->nombre }}</span>
-                                <span class="ml-auto px-2 py-0.5 rounded text-white text-xs font-bold truncate max-w-30"
+                                <span class="text-xs font-bold text-white/90">{{ $pep->nombre }}</span>
+                                <span class="ml-auto px-2 py-0.5 rounded text-white text-[0.6rem] font-bold truncate max-w-30"
                                     style="background-color: {{ $pep->tipoTrabalho->color ?? '#ca8a04' }};">
                                     {{ $pep->tipoTrabalho->nombre ?? 'N/A' }}
                                 </span>
                             </div>
                             <div class="flex items-center justify-between mt-1">
-                                <div class="text-xs text-blue-200">{{ $pep->localizacao->nombre ?? 'N/A' }}</div>
-                                <button wire:click="abrirModalNotas({{ $pep->id }})" class="text-xs text-yellow-400 hover:text-yellow-300 font-bold flex items-center gap-1 cursor-pointer transition-colors bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded border border-yellow-400/30">
+                                <div class="text-[0.65rem] text-white/50">{{ $pep->localizacao->nombre ?? 'N/A' }}</div>
+                                <button wire:click="abrirModalNotas({{ $pep->id }})" title="{{ isset($pepData[$pep->id]['notas']) && $pepData[$pep->id]['notas'] ? 'Editar Notas' : 'Adicionar Notas' }}" class="text-xs text-yellow-400 hover:text-yellow-300 flex items-center cursor-pointer transition-colors bg-white/10 hover:bg-white/20 px-1.5 py-0.5 rounded border border-yellow-400/30">
                                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                                    {{ isset($pepData[$pep->id]['notas']) && $pepData[$pep->id]['notas'] ? 'Editar Notas' : 'Adicionar Notas' }}
                                 </button>
                             </div>
                         </div>
@@ -720,10 +719,11 @@
                 @if ($modalTipo === 'notas')
                     <h3 class="text-base font-extrabold text-blue-800 m-0 mb-5">📝 Instruções / Notas Diárias</h3>
                     <div class="mb-4">
-                        <label class="block text-[0.82rem] font-semibold text-gray-700 mb-1.5">Tarefa, presupuesto ou observação para a equipa</label>
+                        <label class="block text-[0.82rem] font-semibold mb-1.5" style="color:#6b7280!important">Tarefa, presupuesto ou observação para a equipa</label>
                         <textarea wire:model="modalNotas" rows="4"
                             placeholder="Descreva a tarefa específica, orçamento alocado ou qualquer aviso para a equipa hoje..."
-                            class="w-full border-[1.5px] border-blue-200 rounded-lg py-2.5 px-3 text-[0.9rem] text-gray-900 bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            class="w-full border-[1.5px] border-blue-200 rounded-lg py-2.5 px-3 text-[0.9rem] bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            style="color:#111827!important"
                         ></textarea>
                     </div>
                 @elseif ($modalTipo === 'consulta_medica')
