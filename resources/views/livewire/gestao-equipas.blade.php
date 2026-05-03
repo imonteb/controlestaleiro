@@ -456,17 +456,17 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-base font-bold text-white/80 leading-tight">Estaleiro</h2>
-                        <span class="text-xs text-gray-700 font-bold">Localização: <span
-                                class="font-black text-gray-900">{{ $pepEstaleiro?->localizacao->nombre ?? 'Funchal' }}</span></span>
+                        <span class="text-xs text-white/50 font-bold">Localização: <span
+                                class="font-black text-white/90">{{ $pepEstaleiro?->localizacao->nombre ?? 'Funchal' }}</span></span>
                     </div>
                     <div class="flex items-center gap-1">
                         <button wire:click="irDiaAnterior" type="button" title="Dia de trabalho anterior"
-                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 py-1.5 px-2.5 rounded-md text-[0.85rem] cursor-pointer leading-none transition-colors">&#8249;</button>
+                            class="bg-white/8 hover:bg-white/15 border border-white/15 text-white/70 py-1.5 px-2.5 rounded-md text-[0.85rem] cursor-pointer leading-none transition-colors">&#8249;</button>
                         <input type="date" wire:model.live="data"
-                            class="text-sm border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:border-yellow-400 text-gray-700"
-                            style="color-scheme:light;">
+                            class="text-sm border-white/20 rounded-md shadow-sm focus:ring-yellow-400 focus:border-yellow-400 text-white/85 bg-white/8"
+                            style="color-scheme:dark; background:rgba(255,255,255,0.08);">
                         <button wire:click="irDiaSeguinte" type="button" title="Dia de trabalho seguinte"
-                            class="bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 py-1.5 px-2.5 rounded-md text-[0.85rem] cursor-pointer leading-none transition-colors">&#8250;</button>
+                            class="bg-white/8 hover:bg-white/15 border border-white/15 text-white/70 py-1.5 px-2.5 rounded-md text-[0.85rem] cursor-pointer leading-none transition-colors">&#8250;</button>
                     </div>
                 </div>
             </div>
@@ -493,17 +493,17 @@
                     <h3 class="font-semibold text-(--cme-blue) mb-2 bg-gray-50 p-2 rounded text-center">
                         Colaboradores</h3>
                     <div id="colaboradores-list"
-                        class="flex flex-col gap-2 min-h-[300px] max-h-[500px] overflow-y-auto pr-1 pb-10 bg-gray-50/50 rounded"
+                        class="flex flex-col gap-2 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
                         data-list-type="colaborador">
                         @forelse ($colaboradores_libres as $colaborador)
                             <div wire:key="libre-col-{{ $colaborador->id }}"
                                 class="px-2 py-1 border border-white/8 rounded bg-white/5 cursor-grab select-none hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-colors draggable-item flex items-center gap-2 min-w-0"
                                 data-id="{{ $colaborador->id }}" data-type="colaborador">
                                 <div class="min-w-0 flex-1 overflow-hidden">
-                                    <p class="text-xs text-white/85 font-medium truncate leading-tight">
+                                    <p class="text-[0.7rem] text-white/85 font-medium truncate leading-tight">
                                         {{ $colaborador->numero_colaborador }} {{ $colaborador->nombre }} {{ $colaborador->apellido }}
                                     </p>
-                                    <p class="text-[0.6rem] text-white/40 uppercase truncate">
+                                    <p class="text-[0.58rem] text-white/40 uppercase truncate">
                                         {{ $colaborador->denominacion_cargo }}
                                     </p>
                                 </div>
@@ -520,17 +520,17 @@
                     <h3 class="font-semibold text-blue-900 mb-2 bg-gray-50 p-2 rounded text-center">Veículos
                     </h3>
                     <div id="veiculos-list"
-                        class="flex flex-col gap-2 min-h-[300px] max-h-[500px] overflow-y-auto pr-1 pb-10 bg-gray-50/50 rounded"
+                        class="flex flex-col gap-2 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
                         data-list-type="veiculo">
                         @forelse ($veiculos_libres as $veiculo)
                             <div wire:key="libre-veic-{{ $veiculo->id }}"
                                 class="px-2 py-1 border border-white/8 rounded bg-white/5 cursor-grab select-none hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-colors draggable-item flex items-center gap-2 min-w-0"
                                 data-id="{{ $veiculo->id }}" data-type="veiculo">
                                 <div class="min-w-0 flex-1 overflow-hidden">
-                                    <p class="text-xs text-white/85 font-bold truncate leading-tight">
+                                    <p class="text-[0.7rem] text-white/85 font-bold truncate leading-tight">
                                         {{ $veiculo->matricula }}
                                     </p>
-                                    <p class="text-[0.6rem] text-white/40 uppercase truncate">
+                                    <p class="text-[0.58rem] text-white/40 uppercase truncate">
                                         {{ $veiculo->marca }} {{ $veiculo->modelo }}
                                     </p>
                                 </div>
