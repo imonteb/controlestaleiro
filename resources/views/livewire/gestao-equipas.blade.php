@@ -280,7 +280,7 @@
                                 x-data="{ openAuxiliar: false, hasAuxiliar: {{ isset($pepData[$pep->id]['auxiliar']) && count($pepData[$pep->id]['auxiliar']) > 0 ? 'true' : 'false' }} }">
                                 {{-- EQUIPO PRINCIPAL --}}
                                 <div class="mb-4">
-                                    <h4 class="text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Equipa
+                                    <h4 class="text-[0.6rem] font-bold uppercase tracking-widest text-white/35 mb-1">Equipa
                                         Principal</h4>
 
                                     {{-- Jefe Principal --}}
@@ -296,7 +296,15 @@
                                                         <div class="font-bold text-[0.6rem] text-blue-300 pb-0.5 mb-0.5">
                                                             👑 Chefe</div>
                                                         <div class="font-medium text-xs text-white/85 truncate">
-                                                            {{ $colaborador->numero_colaborador }} {{ $colaborador->nombre }} {{ $colaborador->apellido }}
+                                                            @php
+                                                            $partsNome = explode(' ', trim($colaborador->nombre));
+                                                            $partsApelido = explode(' ', trim($colaborador->apellido));
+                                                            $firstName = $partsNome[0] ?? '';
+                                                            $stopWords = ['de','da','do','dos','das','e'];
+                                                            $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                                            $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                                        @endphp
+                                                            {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -320,7 +328,15 @@
                                                         class="px-2 py-1 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div class="font-medium text-xs text-white/85 truncate">
-                                                            {{ $colaborador->numero_colaborador }} {{ $colaborador->nombre }} {{ $colaborador->apellido }}
+                                                            @php
+                                                            $partsNome = explode(' ', trim($colaborador->nombre));
+                                                            $partsApelido = explode(' ', trim($colaborador->apellido));
+                                                            $firstName = $partsNome[0] ?? '';
+                                                            $stopWords = ['de','da','do','dos','das','e'];
+                                                            $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                                            $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                                        @endphp
+                                                            {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -353,7 +369,7 @@
 
                                 {{-- BOTÓN MOSTRAR/OCULTAR EQUIPO AUXILIAR --}}
                                 <div class="border-t border-gray-100 pt-3 flex justify-between items-center text-sm">
-                                    <span class="text-xs font-semibold text-white/40 uppercase tracking-wider">Equipa
+                                    <span class="text-[0.6rem] font-bold uppercase tracking-widest text-white/35">Equipa
                                         Auxiliar</span>
                                     <button @click="openAuxiliar = !openAuxiliar" type="button"
                                         class="text-white/60 hover:text-yellow-400 font-bold bg-white/5 px-2 py-0.5 rounded text-xs transition-colors">
@@ -379,7 +395,15 @@
                                                         <div class="font-bold text-[0.6rem] text-yellow-400/70 pb-0.5 mb-0.5">
                                                             ⭐ Líder Aux.</div>
                                                         <div class="font-medium text-xs text-white/85 truncate">
-                                                            {{ $colaborador->numero_colaborador }} {{ $colaborador->nombre }} {{ $colaborador->apellido }}
+                                                            @php
+                                                            $partsNome = explode(' ', trim($colaborador->nombre));
+                                                            $partsApelido = explode(' ', trim($colaborador->apellido));
+                                                            $firstName = $partsNome[0] ?? '';
+                                                            $stopWords = ['de','da','do','dos','das','e'];
+                                                            $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                                            $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                                        @endphp
+                                                            {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -403,7 +427,15 @@
                                                         class="px-2 py-1 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div class="font-medium text-xs text-white/85 truncate">
-                                                            {{ $colaborador->numero_colaborador }} {{ $colaborador->nombre }} {{ $colaborador->apellido }}
+                                                            @php
+                                                            $partsNome = explode(' ', trim($colaborador->nombre));
+                                                            $partsApelido = explode(' ', trim($colaborador->apellido));
+                                                            $firstName = $partsNome[0] ?? '';
+                                                            $stopWords = ['de','da','do','dos','das','e'];
+                                                            $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                                            $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                                        @endphp
+                                                            {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -501,7 +533,15 @@
                                 data-id="{{ $colaborador->id }}" data-type="colaborador">
                                 <div class="min-w-0 flex-1 overflow-hidden">
                                     <p class="text-[0.7rem] text-white/85 font-medium truncate leading-tight">
-                                        {{ $colaborador->numero_colaborador }} {{ $colaborador->nombre }} {{ $colaborador->apellido }}
+                                        @php
+                                                            $partsNome = explode(' ', trim($colaborador->nombre));
+                                                            $partsApelido = explode(' ', trim($colaborador->apellido));
+                                                            $firstName = $partsNome[0] ?? '';
+                                                            $stopWords = ['de','da','do','dos','das','e'];
+                                                            $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                                            $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                                        @endphp
+                                                            {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
                                     </p>
                                     <p class="text-[0.58rem] text-white/40 uppercase truncate">
                                         {{ $colaborador->denominacion_cargo }}
@@ -559,7 +599,15 @@
                                 class="p-1.5 border border-red-200 rounded shadow-sm bg-red-100 cursor-grab select-none draggable-item"
                                 data-id="{{ $col->id }}" data-type="colaborador">
                                 <div class="font-medium text-xs text-red-800 leading-tight">
-                                    {{ $col->numero_colaborador }} – {{ $col->apellido }}, {{ $col->nombre }}</div>
+                                    @php
+                                    $partsNome = explode(' ', trim($col->nombre));
+                                    $partsApelido = explode(' ', trim($col->apellido));
+                                    $firstName = $partsNome[0] ?? '';
+                                    $stopWords = ['de','da','do','dos','das','e'];
+                                    $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                    $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                @endphp
+                                    {{ $col->numero_colaborador }} · {{ $firstName }} {{ $lastName }}</div>
                             </div>
                         @endforeach
                     @empty
@@ -581,7 +629,15 @@
                                 class="p-1.5 border border-amber-200 rounded shadow-sm bg-amber-100 cursor-grab select-none draggable-item"
                                 data-id="{{ $col->id }}" data-type="colaborador">
                                 <div class="font-medium text-xs text-amber-800 leading-tight">
-                                    {{ $col->numero_colaborador }} – {{ $col->apellido }}, {{ $col->nombre }}</div>
+                                    @php
+                                    $partsNome = explode(' ', trim($col->nombre));
+                                    $partsApelido = explode(' ', trim($col->apellido));
+                                    $firstName = $partsNome[0] ?? '';
+                                    $stopWords = ['de','da','do','dos','das','e'];
+                                    $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                    $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                @endphp
+                                    {{ $col->numero_colaborador }} · {{ $firstName }} {{ $lastName }}</div>
                             </div>
                         @endforeach
                     @empty
@@ -603,7 +659,15 @@
                                 class="p-1.5 border border-green-200 rounded shadow-sm bg-green-100 cursor-grab select-none draggable-item"
                                 data-id="{{ $col->id }}" data-type="colaborador">
                                 <div class="font-medium text-xs text-green-800 leading-tight">
-                                    {{ $col->numero_colaborador }} – {{ $col->apellido }}, {{ $col->nombre }}</div>
+                                    @php
+                                    $partsNome = explode(' ', trim($col->nombre));
+                                    $partsApelido = explode(' ', trim($col->apellido));
+                                    $firstName = $partsNome[0] ?? '';
+                                    $stopWords = ['de','da','do','dos','das','e'];
+                                    $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                    $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                @endphp
+                                    {{ $col->numero_colaborador }} · {{ $firstName }} {{ $lastName }}</div>
                             </div>
                         @endforeach
                     @empty
@@ -630,7 +694,15 @@
                                 class="p-1.5 border border-teal-200 rounded shadow-sm bg-teal-100 cursor-grab select-none draggable-item"
                                 data-id="{{ $col->id }}" data-type="colaborador">
                                 <div class="font-medium text-xs text-teal-800 leading-tight">
-                                    {{ $col->numero_colaborador }} – {{ $col->apellido }}, {{ $col->nombre }}</div>
+                                    @php
+                                    $partsNome = explode(' ', trim($col->nombre));
+                                    $partsApelido = explode(' ', trim($col->apellido));
+                                    $firstName = $partsNome[0] ?? '';
+                                    $stopWords = ['de','da','do','dos','das','e'];
+                                    $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                    $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                @endphp
+                                    {{ $col->numero_colaborador }} · {{ $firstName }} {{ $lastName }}</div>
                                 @if ($entry['fecha_hora_evento'])
                                     <div class="text-xs text-teal-600 mt-0.5">📅
                                         {{ \Carbon\Carbon::parse($entry['fecha_hora_evento'])->format('d/m H:i') }}
@@ -657,7 +729,15 @@
                                 class="p-1.5 border border-purple-200 rounded shadow-sm bg-purple-100 cursor-grab select-none draggable-item"
                                 data-id="{{ $col->id }}" data-type="colaborador">
                                 <div class="font-medium text-xs text-purple-800 leading-tight">
-                                    {{ $col->numero_colaborador }} – {{ $col->apellido }}, {{ $col->nombre }}
+                                    @php
+                                    $partsNome = explode(' ', trim($col->nombre));
+                                    $partsApelido = explode(' ', trim($col->apellido));
+                                    $firstName = $partsNome[0] ?? '';
+                                    $stopWords = ['de','da','do','dos','das','e'];
+                                    $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                    $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                @endphp
+                                    {{ $col->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
                                 </div>
                                 @if ($entry['fecha_hora_evento'])
                                     <div class="text-xs text-purple-600 mt-0.5">📅
