@@ -108,39 +108,39 @@
 
             @if(auth()->user()->hasRole('epi') || auth()->user()->isAdmin())
             {{-- Widget: Pedidos Pendentes --}}
-            <div class="bg-blue-600 rounded-3xl p-6 shadow-xl shadow-blue-900/20 relative overflow-hidden group">
+            <div class="bg-blue-600 rounded-3xl p-4 shadow-xl shadow-blue-900/20 relative overflow-hidden group">
                 <div class="absolute -right-4 -top-4 text-white opacity-20 group-hover:scale-110 transition-transform duration-500">
                     <flux:icon.bell class="size-24" />
                 </div>
                 <h4 class="text-white font-black uppercase tracking-widest text-xs">Pedidos de EPI Mobiles</h4>
-                <p class="text-4xl font-black text-white mt-2">{{ $pedidosPendentesCount }}</p>
+                <p class="text-3xl font-black text-white mt-2">{{ $pedidosPendentesCount }}</p>
                 <p class="text-white/80 text-xs font-bold mt-1">Solicitações aguardando resposta</p>
-                <a href="{{ route('epis.pedidos') }}" wire:navigate class="mt-4 block w-full bg-white text-blue-600 text-center py-2 rounded-xl text-xs font-black uppercase tracking-tighter hover:bg-blue-50 transition-colors">Ver Pedidos</a>
+                <a href="{{ route('epis.pedidos') }}" wire:navigate class="mt-4 block w-full bg-white text-blue-600 text-center py-1.5 rounded-xl text-xs font-black uppercase tracking-tighter hover:bg-blue-50 transition-colors">Ver Pedidos</a>
             </div>
 
             {{-- Widget: Assinaturas Pendentes --}}
-            <div class="bg-yellow-500 rounded-3xl p-6 shadow-xl shadow-yellow-900/20 relative overflow-hidden group">
+            <div class="bg-yellow-500 rounded-3xl p-4 shadow-xl shadow-yellow-900/20 relative overflow-hidden group">
                 <div class="absolute -right-4 -top-4 text-yellow-600 opacity-20 group-hover:scale-110 transition-transform duration-500">
                     <svg class="h-24 w-24" fill="currentColor" viewBox="0 0 24 24"><path d="M14.06,9.02L12.98,7.94L11.9,9.02L14.06,9.02ZM15.84,7.24C16.23,7.63 16.23,8.26 15.84,8.65L14.34,10.15L12.18,10.15L15.84,7.24ZM3,17.25L3,21L6.75,21L17.81,9.94L14.06,6.19L3,17.25Z" /></svg>
                 </div>
                 <h4 class="text-blue-950 font-black uppercase tracking-widest text-xs">Assinaturas de EPI</h4>
-                <p class="text-4xl font-black text-blue-950 mt-2">{{ $assinaturasPendentesCount }}</p>
+                <p class="text-3xl font-black text-blue-950 mt-2">{{ $assinaturasPendentesCount }}</p>
                 <p class="text-blue-950/70 text-xs font-bold mt-1">Pendentes de validação</p>
-                <a href="{{ route('epis.entregas.index') }}" wire:navigate class="mt-4 block w-full bg-blue-950 text-white text-center py-2 rounded-xl text-xs font-black uppercase tracking-tighter hover:bg-blue-900 transition-colors">Gerir Entregas</a>
+                <a href="{{ route('epis.entregas.index') }}" wire:navigate class="mt-4 block w-full bg-blue-950 text-white text-center py-1.5 rounded-xl text-xs font-black uppercase tracking-tighter hover:bg-blue-900 transition-colors">Gerir Entregas</a>
             </div>
 
             {{-- Widget: Stock Crítico --}}
             @if(!empty($stockCritico))
-            <div class="relative overflow-hidden rounded-3xl bg-red-950/60 border border-red-500/30 p-5">
+            <div class="relative overflow-hidden rounded-3xl bg-red-950/60 border border-red-500/30 p-4">
                 <div class="absolute top-3 right-4 opacity-10">
                     <svg class="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
                     </svg>
                 </div>
                 <p class="text-red-400 text-xs font-bold uppercase tracking-widest mb-1">Stock Crítico / Alerta</p>
-                <p class="text-5xl font-black text-white mb-1">{{ count($stockCritico) }}</p>
-                <p class="text-red-300/70 text-sm mb-4">{{ count($stockCritico) === 1 ? 'item abaixo do mínimo' : 'itens abaixo do mínimo' }}</p>
-                <a href="{{ route('epis.index') }}" wire:navigate class="block text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-colors">
+                <p class="text-3xl font-black text-white mb-1">{{ count($stockCritico) }}</p>
+                <p class="text-red-300/70 text-xs mb-4">{{ count($stockCritico) === 1 ? 'item abaixo do mínimo' : 'itens abaixo do mínimo' }}</p>
+                <a href="{{ route('epis.index') }}" wire:navigate class="block text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-1.5 px-4 rounded-xl transition-colors">
                     VER CATÁLOGO COMPLETO →
                 </a>
             </div>
@@ -150,20 +150,20 @@
             @if(auth()->user()->hasRole('logi') || auth()->user()->isAdmin())
             {{-- Widget: Segurança e Conformidade --}}
             @php $totalAlertas = count($inspecoesProximas['extintores'] ?? []) + count($inspecoesProximas['ferramentas'] ?? []); @endphp
-            <div class="relative overflow-hidden rounded-3xl bg-orange-950/60 border border-orange-500/30 p-5">
+            <div class="relative overflow-hidden rounded-3xl bg-orange-950/60 border border-orange-500/30 p-4">
                 <div class="absolute top-3 right-4 opacity-10">
                     <svg class="w-16 h-16 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12V11c0 4.52-3.08 8.79-7 10.07C8.08 19.79 5 15.52 5 11V6.3l7-3.12zM11 7v6h2V7h-2zm0 8v2h2v-2h-2z"/>
                     </svg>
                 </div>
                 <p class="text-orange-400 text-xs font-bold uppercase tracking-widest mb-1">Segurança e Conformidade</p>
-                <p class="text-5xl font-black text-white mb-1">{{ $totalAlertas }}</p>
-                <p class="text-orange-300/70 text-sm mb-4">{{ $totalAlertas === 1 ? 'equipamento a verificar' : 'equipamentos a verificar' }}</p>
+                <p class="text-3xl font-black text-white mb-1">{{ $totalAlertas }}</p>
+                <p class="text-orange-300/70 text-xs mb-4">{{ $totalAlertas === 1 ? 'equipamento a verificar' : 'equipamentos a verificar' }}</p>
                 <div class="flex gap-2">
-                    <a href="{{ route('extintores.index') }}" wire:navigate class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-3 rounded-xl transition-colors">
+                    <a href="{{ route('extintores.index') }}" wire:navigate class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-1.5 px-3 rounded-xl transition-colors">
                         Extintores →
                     </a>
-                    <a href="{{ route('ferramentas.index') }}" wire:navigate class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-3 rounded-xl transition-colors">
+                    <a href="{{ route('ferramentas.index') }}" wire:navigate class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-1.5 px-3 rounded-xl transition-colors">
                         Ferramentas →
                     </a>
                 </div>
