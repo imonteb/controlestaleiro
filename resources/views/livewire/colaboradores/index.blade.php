@@ -42,7 +42,7 @@
     </div>
 
     {{-- Table Card --}}
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+    <div class="bg-white rounded-2xl shadow-lg overflow-x-auto border border-gray-100">
 
         {{-- Table header bar --}}
         <div class="bg-(--cme-blue) px-6 py-4 flex items-center justify-between">
@@ -81,7 +81,7 @@
                             </button>
                         </th>
                         @endforeach
-                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8">Ações</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8 whitespace-nowrap">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -131,7 +131,7 @@
                                 <span class="text-gray-300">—</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('colaboradores.editar', $colaborador->id) }}" wire:navigate
                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-yellow-50 hover:bg-yellow-100 text-yellow-700 border border-yellow-200 text-xs font-semibold transition-colors">
@@ -141,34 +141,40 @@
                                 {{-- Toggle visible en dashboard --}}
                                 <button wire:click="toggleVisibleDashboard({{ $colaborador->id }})"
                                     title="{{ $colaborador->visible_en_dashboard ? 'Visível no dashboard — clique para ocultar' : 'Oculto do dashboard — clique para mostrar' }}"
-                                    style="width:7rem;justify-content:center;" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border {{ $colaborador->visible_en_dashboard ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-400 border-gray-200' }}">
+                                    style="min-width:76px;justify-content:center;" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border {{ $colaborador->visible_en_dashboard ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-400 border-gray-200' }}">
                                     @if($colaborador->visible_en_dashboard)
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        Dashboard
+                                        Visível
                                     @else
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.34 6.34A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-1.21 2.592M6.34 6.34L3 3m3.34 3.34l11.32 11.32M17.66 17.66L21 21"/></svg>
                                         Oculto
                                     @endif
                                 </button>
                                 @if($colaborador->activo)
-                                    <button wire:click="desativar({{ $colaborador->id }})"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border bg-orange-50 text-orange-700 border-orange-200">
-                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                                        Desativar
-                                    </button>
+                                <button wire:click="desativar({{ $colaborador->id }})"
+                                    title="Desativar colaborador"
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors border bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                                    </svg>
+                                </button>
                                 @else
-                                    <button wire:click="reactivar({{ $colaborador->id }})"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border bg-green-50 text-green-700 border-green-200">
-                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                        Reativar
-                                    </button>
+                                <button wire:click="reactivar({{ $colaborador->id }})"
+                                    title="Reativar colaborador"
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors border bg-green-50 text-green-700 border-green-200 hover:bg-green-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </button>
                                 @endif
                                 @if(auth()->user()->isAdmin())
-                                    <button wire:click="pedirEliminar({{ $colaborador->id }})"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold transition-colors">
-                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        Eliminar
-                                    </button>
+                                <button wire:click="pedirEliminar({{ $colaborador->id }})"
+                                    title="Eliminar colaborador"
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors border bg-red-50 text-red-600 border-red-200 hover:bg-red-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
                                 @endif
                             </div>
                         </td>

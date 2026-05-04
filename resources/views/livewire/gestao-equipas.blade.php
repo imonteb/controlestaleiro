@@ -247,7 +247,7 @@
             </div>
             {{-- Fim Toolbar --}}
 
-            <div class="grid gap-3 2xl:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1">
+            <div class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 @forelse ($peps as $pep)
                     <div wire:key="pep-card-{{ $pep->id }}"
                         class="bg-blue-950/60 rounded-lg border border-white/10 overflow-hidden flex flex-col">
@@ -266,7 +266,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="px-4 pt-3 pb-4 flex flex-col flex-1">
+                        <div class="p-2 flex flex-col flex-1">
 
                             @if(isset($pepData[$pep->id]['notas']) && $pepData[$pep->id]['notas'])
                             <div class="mb-3 bg-yellow-50 border border-yellow-200 rounded-md p-2 text-xs text-yellow-800 shadow-sm relative pr-6">
@@ -279,19 +279,19 @@
                                 wire:key="pep-alpine-{{ $pep->id }}-{{ $data }}"
                                 x-data="{ openAuxiliar: false, hasAuxiliar: {{ isset($pepData[$pep->id]['auxiliar']) && count($pepData[$pep->id]['auxiliar']) > 0 ? 'true' : 'false' }} }">
                                 {{-- EQUIPO PRINCIPAL --}}
-                                <div class="mb-4">
+                                <div class="mb-2">
                                     <h4 class="text-[0.6rem] font-bold uppercase tracking-widest text-white/35 mb-1">Equipa
                                         Principal</h4>
 
                                     {{-- Jefe Principal --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-9 mb-1.5 p-1 border border-dashed border-blue-400/30 rounded-md bg-blue-400/5 flex flex-col gap-1"
+                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-blue-400/30 rounded-md bg-blue-400/5 flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="principal"
                                             data-es-jefe="true">
                                             @if (isset($pepData[$pep->id]['principal']['jefes']) && count($pepData[$pep->id]['principal']['jefes']) > 0)
                                                 @foreach ($pepData[$pep->id]['principal']['jefes'] as $colaborador)
                                                     <div wire:key="jefe-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-1 border border-blue-400/40 rounded bg-blue-400/10 cursor-grab select-none draggable-item min-w-0"
+                                                        class="px-2 py-0.5 border border-blue-400/40 rounded bg-blue-400/10 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div class="font-bold text-[0.6rem] text-blue-300 pb-0.5 mb-0.5">
                                                             👑 Chefe</div>
@@ -318,14 +318,14 @@
 
                                     {{-- Colaboradores Principales --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-9 mb-1.5 p-1 border border-dashed border-white/15 rounded-md bg-white/3 flex flex-col gap-1"
+                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-white/15 rounded-md bg-white/3 flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="principal"
                                             data-es-jefe="false">
                                             @if (isset($pepData[$pep->id]['principal']['colaboradores']) &&
                                                     count($pepData[$pep->id]['principal']['colaboradores']) > 0)
                                                 @foreach ($pepData[$pep->id]['principal']['colaboradores'] as $colaborador)
                                                     <div wire:key="col-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-1 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
+                                                        class="px-2 py-0.5 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div class="font-medium text-xs text-white/85 truncate">
                                                             @php
@@ -349,12 +349,12 @@
 
                                     {{-- Vehículos Principales --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-veiculos-list min-h-9 p-1 border border-dashed border-white/15 rounded-md bg-white/3 flex flex-col gap-1"
+                                        <div class="pep-veiculos-list min-h-7 p-0.5 border border-dashed border-white/15 rounded-md bg-white/3 flex flex-col gap-1"
                                             data-list-type="veiculo" data-equipo-tipo="principal">
                                             @if (isset($pepData[$pep->id]['principal']['veiculos']) && count($pepData[$pep->id]['principal']['veiculos']) > 0)
                                                 @foreach ($pepData[$pep->id]['principal']['veiculos'] as $veiculo)
                                                     <div wire:key="veic-{{ $pep->id }}-{{ $veiculo->id }}"
-                                                        class="bg-white/8 border border-purple-400/30 text-purple-300 rounded-md px-2 py-1 text-xs font-bold cursor-grab select-none draggable-item"
+                                                        class="bg-white/8 border border-purple-400/30 text-purple-300 rounded-md px-2 py-0.5 text-xs font-bold cursor-grab select-none draggable-item"
                                                         data-id="{{ $veiculo->id }}" data-type="veiculo">
                                                         <div class="truncate">{{ $veiculo->matricula }}</div>
                                                     </div>
@@ -368,7 +368,7 @@
                                 </div>
 
                                 {{-- BOTÓN MOSTRAR/OCULTAR EQUIPO AUXILIAR --}}
-                                <div class="border-t border-gray-100 pt-3 flex justify-between items-center text-sm">
+                                <div class="border-t border-gray-100 pt-1 flex justify-between items-center text-sm">
                                     <span class="text-[0.6rem] font-bold uppercase tracking-widest text-white/35">Equipa
                                         Auxiliar</span>
                                     <button @click="openAuxiliar = !openAuxiliar" type="button"
@@ -384,13 +384,13 @@
 
                                     {{-- Jefe Auxiliar --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-9 mb-1.5 p-1 border border-dashed border-yellow-400/30 rounded bg-yellow-400/5 flex flex-col gap-1"
+                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-yellow-400/30 rounded bg-yellow-400/5 flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="auxiliar"
                                             data-es-jefe="true">
                                             @if (isset($pepData[$pep->id]['auxiliar']['jefes']) && count($pepData[$pep->id]['auxiliar']['jefes']) > 0)
                                                 @foreach ($pepData[$pep->id]['auxiliar']['jefes'] as $colaborador)
                                                     <div wire:key="jefe-aux-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-1 border border-yellow-400/40 rounded bg-yellow-400/8 cursor-grab select-none draggable-item min-w-0"
+                                                        class="px-2 py-0.5 border border-yellow-400/40 rounded bg-yellow-400/8 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div class="font-bold text-[0.6rem] text-yellow-400/70 pb-0.5 mb-0.5">
                                                             ⭐ Líder Aux.</div>
@@ -417,14 +417,14 @@
 
                                     {{-- Colaboradores Auxiliares --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-9 mb-1.5 p-1 border border-dashed border-white/15 rounded bg-white/3 flex flex-col gap-1"
+                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-white/15 rounded bg-white/3 flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="auxiliar"
                                             data-es-jefe="false">
                                             @if (isset($pepData[$pep->id]['auxiliar']['colaboradores']) &&
                                                     count($pepData[$pep->id]['auxiliar']['colaboradores']) > 0)
                                                 @foreach ($pepData[$pep->id]['auxiliar']['colaboradores'] as $colaborador)
                                                     <div wire:key="col-aux-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-1 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
+                                                        class="px-2 py-0.5 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div class="font-medium text-xs text-white/85 truncate">
                                                             @php
@@ -448,12 +448,12 @@
 
                                     {{-- Veículos Auxiliares --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-veiculos-list min-h-9 p-1 border border-dashed border-white/15 rounded bg-white/3 flex flex-col gap-1"
+                                        <div class="pep-veiculos-list min-h-7 p-0.5 border border-dashed border-white/15 rounded bg-white/3 flex flex-col gap-1"
                                             data-list-type="veiculo" data-equipo-tipo="auxiliar">
                                             @if (isset($pepData[$pep->id]['auxiliar']['veiculos']) && count($pepData[$pep->id]['auxiliar']['veiculos']) > 0)
                                                 @foreach ($pepData[$pep->id]['auxiliar']['veiculos'] as $veiculo)
                                                     <div wire:key="veic-aux-{{ $pep->id }}-{{ $veiculo->id }}"
-                                                        class="bg-white/8 border border-purple-400/30 text-purple-300 rounded-md px-2 py-1 text-xs font-bold cursor-grab select-none draggable-item"
+                                                        class="bg-white/8 border border-purple-400/30 text-purple-300 rounded-md px-2 py-0.5 text-xs font-bold cursor-grab select-none draggable-item"
                                                         data-id="{{ $veiculo->id }}" data-type="veiculo">
                                                         <div class="truncate">{{ $veiculo->matricula }}</div>
                                                     </div>
@@ -525,7 +525,7 @@
                     <h3 class="font-semibold text-(--cme-blue) mb-2 bg-gray-50 p-2 rounded text-center">
                         Colaboradores</h3>
                     <div id="colaboradores-list"
-                        class="flex flex-col gap-2 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
+                        class="flex flex-col gap-1 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
                         data-list-type="colaborador">
                         @forelse ($colaboradores_libres as $colaborador)
                             <div wire:key="libre-col-{{ $colaborador->id }}"
@@ -560,7 +560,7 @@
                     <h3 class="font-semibold text-blue-900 mb-2 bg-gray-50 p-2 rounded text-center">Veículos
                     </h3>
                     <div id="veiculos-list"
-                        class="flex flex-col gap-2 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
+                        class="flex flex-col gap-1 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
                         data-list-type="veiculo">
                         @forelse ($veiculos_libres as $veiculo)
                             <div wire:key="libre-veic-{{ $veiculo->id }}"

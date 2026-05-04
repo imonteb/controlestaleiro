@@ -51,6 +51,10 @@ document.addEventListener('alpine:init', () => {
                         put: isColab ? ['colaboradores'] : ['veiculos']
                     },
                     animation: 150,
+                    scroll: true,
+                    scrollSensitivity: 80,
+                    scrollSpeed: 10,
+                    bubbleScroll: true,
                     delay: 0,
                     forceFallback: false, // Disabled forceFallback to fix general dragging feeling on desktop
                     fallbackOnBody: true,

@@ -1,4 +1,4 @@
-<div class="p-4 lg:p-6 flex flex-col gap-5">
+<div class="p-4 lg:p-6 flex flex-col gap-5 h-full table-scroll-page">
 
     {{-- Cabecera de página --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

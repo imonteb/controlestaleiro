@@ -243,10 +243,10 @@ input[type="week"] {
 /* --- Fondos de tablas y contenedores --- */
 /* Elimina fondos blancos/claros en tablas dentro de la app */
 [data-flux-main] table,
-[data-flux-main] .bg-white,
-[data-flux-main] .bg-gray-50,
-[data-flux-main] .bg-slate-50,
-[data-flux-main] .bg-zinc-50 {
+[data-flux-main] .bg-white:not([style*="background"]),
+[data-flux-main] .bg-gray-50:not([style*="background"]),
+[data-flux-main] .bg-slate-50:not([style*="background"]),
+[data-flux-main] .bg-zinc-50:not([style*="background"]) {
     background-color: #0f2057 !important;
 }
 
@@ -287,10 +287,10 @@ input[type="week"] {
 }
 
 /* --- Contenedores card con bg blanco --- */
-[data-flux-main] .rounded-xl.bg-white,
-[data-flux-main] .rounded-2xl.bg-white,
-[data-flux-main] .rounded-3xl.bg-white,
-[data-flux-main] .rounded-lg.bg-white {
+[data-flux-main] .rounded-xl.bg-white:not([style*="background"]),
+[data-flux-main] .rounded-2xl.bg-white:not([style*="background"]),
+[data-flux-main] .rounded-3xl.bg-white:not([style*="background"]),
+[data-flux-main] .rounded-lg.bg-white:not([style*="background"]) {
     background-color: #0f2057 !important;
     border-color: rgba(255,255,255,0.08) !important;
 }
@@ -418,9 +418,9 @@ input[type="week"] {
 }
 
 /* Badges de cargo en tablas — legibles */
-[data-flux-main] table span.rounded-full,
-[data-flux-main] table span.rounded-lg,
-[data-flux-main] table span.rounded-md {
+[data-flux-main] table span.rounded-full:not([style*="background"]),
+[data-flux-main] table span.rounded-lg:not([style*="background"]),
+[data-flux-main] table span.rounded-md:not([style*="background"]) {
     background-color: rgba(255,255,255,0.08) !important;
     color: rgba(255,255,255,0.85) !important;
     border: 1px solid rgba(255,255,255,0.15) !important;
@@ -468,8 +468,8 @@ input[type="week"] {
 }
 
 /* Badges de cargo — más compactos */
-[data-flux-main] table span.rounded-full,
-[data-flux-main] table span.rounded-lg {
+[data-flux-main] table span.rounded-full:not([style*="background"]),
+[data-flux-main] table span.rounded-lg:not([style*="background"]) {
     font-size: 0.7rem !important;
     padding: 2px 8px !important;
 }
