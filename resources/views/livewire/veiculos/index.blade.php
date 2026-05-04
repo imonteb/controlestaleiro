@@ -47,7 +47,7 @@
     </div>
 
     {{-- Table Card --}}
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+    <div class="bg-white rounded-2xl shadow-lg overflow-x-auto border border-gray-100">
 
         {{-- Table header bar --}}
         <div class="bg-(--cme-blue) px-6 py-4 flex items-center justify-between">
@@ -85,7 +85,7 @@
                             </button>
                         </th>
                         @endforeach
-                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8">Ações</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8 whitespace-nowrap">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -119,7 +119,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-white/70">{{ $veiculo->modelo }}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('veiculos.editar', $veiculo->id) }}" wire:navigate
                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-yellow-50 hover:bg-yellow-100 text-yellow-700 border border-yellow-200 text-xs font-semibold transition-colors">
