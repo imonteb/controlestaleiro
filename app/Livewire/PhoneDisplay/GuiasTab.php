@@ -325,6 +325,10 @@ class GuiasTab extends Component
 
     public function repetirGuia(int $id): void
     {
+        if (! $this->colaboradorId) {
+            return;
+        }
+
         $guia = GuiaTransporte::with('items')->findOrFail($id);
 
         $this->tipo = $guia->tipo;
@@ -367,6 +371,10 @@ class GuiasTab extends Component
 
     public function enviar(): void
     {
+        if (! $this->colaboradorId) {
+            return;
+        }
+
         $this->validate();
 
         DB::transaction(function () {
