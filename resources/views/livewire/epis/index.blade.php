@@ -253,7 +253,7 @@
                                         <span class="px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-800">{{ $risco }}</span>
                                     @endforeach
                                     @if(count($item->riscos) > 2)
-                                        <span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-600">+{{ count($item->riscos) - 2 }}</span>
+                                        <span class="px-2 py-0.5 rounded text-xs bg-white/8 text-white/70 border border-white/15">+{{ count($item->riscos) - 2 }}</span>
                                     @endif
                                 </div>
                             @else
