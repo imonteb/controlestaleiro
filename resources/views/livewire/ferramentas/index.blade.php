@@ -166,8 +166,16 @@
                                 <td class="px-3 py-4 border-r text-white/70 font-bold whitespace-nowrap text-[11px]">
                                     {{ $item->ultimoLog?->data_verificacao?->format('d/m/Y') ?: '—' }}
                                 </td>
-                                <td class="px-3 py-4 border-r text-white/70 font-bold whitespace-nowrap text-[11px]">
-                                    {{ $item->ultimoLog?->proxima_verificacao?->format('d/m/Y') ?: '—' }}
+                                @php
+                                    $proxData = $item->ultimoLog?->proxima_verificacao;
+                                    $proxColor = 'text-white/70';
+                                    if ($proxData) {
+                                        if ($proxData->startOfDay()->isPast()) $proxColor = 'text-red-400';
+                                        elseif ($proxData->lte(now()->addDays(30))) $proxColor = 'text-yellow-400';
+                                    }
+                                @endphp
+                                <td class="px-3 py-4 border-r font-bold whitespace-nowrap text-[11px] {{ $proxColor }}">
+                                    {{ $proxData?->format('d/m/Y') ?: '—' }}
                                 </td>
                                 <td
                                     class="px-3 py-4 border-r text-white/60 text-[10px] font-bold leading-tight uppercase">
