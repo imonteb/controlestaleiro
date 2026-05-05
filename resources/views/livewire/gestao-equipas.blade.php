@@ -12,7 +12,7 @@
             @endphp
 
             @if($mostrarLembreteEpi)
-                <div class="bg-linear-to-r from-blue-700 to-blue-900 rounded-2xl shadow-xl p-5 mb-6 border border-blue-400/30 flex items-center justify-between animate-in slide-in-from-top duration-700 relative overflow-hidden group">
+                <div x-data="{ visible: true }" x-show="visible" class="bg-linear-to-r from-blue-700 to-blue-900 rounded-2xl shadow-xl p-5 mb-6 border border-blue-400/30 flex items-center justify-between animate-in slide-in-from-top duration-700 relative overflow-hidden group">
                     <div class="absolute -right-6 -bottom-6 text-white/5 transform rotate-12 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
                         <svg class="h-32 w-32" fill="currentColor" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
                     </div>
