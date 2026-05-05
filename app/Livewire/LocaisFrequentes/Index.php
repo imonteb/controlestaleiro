@@ -42,6 +42,10 @@ class Index extends Component
 
     public function eliminar(): void
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         LocalFrequente::find($this->eliminandoId)?->delete();
 
         $this->confirmandoEliminar = false;

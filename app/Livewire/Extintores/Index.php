@@ -63,6 +63,10 @@ class Index extends Component
 
     public function delete($id)
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         Extintor::findOrFail($id)->delete();
         session()->flash('success', 'Extintor removido com sucesso!');
     }

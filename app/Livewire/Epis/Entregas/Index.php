@@ -68,6 +68,10 @@ class Index extends Component
 
     public function eliminar(int $id): void
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         /** @var EpiEntrega|null $entrega */
         $entrega = EpiEntrega::find($id);
         if ($entrega) {

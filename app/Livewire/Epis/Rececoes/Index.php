@@ -43,6 +43,10 @@ class Index extends Component
 
     public function eliminarPermanente(): void
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         /** @var EpiRececao|null $rececao */
         $rececao = EpiRececao::find($this->eliminandoId);
         if ($rececao) {

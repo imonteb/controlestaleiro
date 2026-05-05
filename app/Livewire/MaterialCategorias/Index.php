@@ -25,6 +25,10 @@ class Index extends Component
 
     public function eliminarPermanente(): void
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         $categoria = MaterialCategoria::find($this->eliminandoId);
 
         if ($categoria) {

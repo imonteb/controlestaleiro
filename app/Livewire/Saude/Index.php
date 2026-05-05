@@ -25,6 +25,10 @@ class Index extends Component
 
     public function deleteKit($id)
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         AutoSocorroKit::findOrFail($id)->delete();
         session()->flash('success', 'Kit de saúde removido com sucesso!');
     }

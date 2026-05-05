@@ -25,6 +25,10 @@ class Index extends Component
 
     public function eliminarPermanente(): void
     {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         $locacion = Localizacao::find($this->eliminandoId);
 
         if ($locacion) {
