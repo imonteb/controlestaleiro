@@ -6,8 +6,8 @@
         <div class="mb-6">
             @php
                 $hoje = \Carbon\Carbon::now();
-                // Mostrar o lembrete nos primeiros 12 dias do mês (margem para impressões mensais)
-                $mostrarLembreteEpi = $hoje->day <= 12;
+                // Mostrar o lembrete nos primeiros 5 dias do mês (margem para impressões mensais)
+                $mostrarLembreteEpi = $hoje->day <= 5;
                 $mesAnterior = $hoje->copy()->subMonth();
             @endphp
 
@@ -35,6 +35,15 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
                     </a>
+                    <button @click="visible = false"
+                            type="button"
+                            title="Fechar aviso"
+                            class="absolute top-2 right-2 z-20 text-white/40 hover:text-white/80 transition-colors bg-transparent border-none cursor-pointer p-1 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
                 </div>
             @endif
 
