@@ -26,7 +26,7 @@
 
                 <flux:sidebar.group heading="Equipas" expandable :open="request()->routeIs('gestao-equipas') || request()->routeIs('publicar-dia') || request()->routeIs('monitor') || request()->routeIs('tv') || request()->routeIs('phone')" class="grid">
                     <flux:sidebar.item icon="calendar-days" :href="route('gestao-equipas')" :current="request()->routeIs('gestao-equipas')" wire:navigate>
-                        Formação (Gestão)
+                        Gestão de Equipas
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="presentation-chart-bar" :href="route('publicar-dia')" :current="request()->routeIs('publicar-dia')" wire:navigate>
                         Publicar em TV
@@ -57,24 +57,15 @@
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
-                <flux:sidebar.group heading="Auxiliares" expandable class="grid">
+                <flux:sidebar.group heading="Dados Base" expandable class="grid">
                     <flux:sidebar.item icon="users" :href="route('colaboradores.index')" :current="request()->routeIs('colaboradores.*')" wire:navigate>
                         Colaboradores
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="truck" :href="route('veiculos.index')" :current="request()->routeIs('veiculos.index') || request()->routeIs('veiculos.crear') || request()->routeIs('veiculos.editar')" wire:navigate>
                         Veículos
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="identification" :href="route('condutores.registo')" :current="request()->routeIs('condutores.*')" wire:navigate>
-                        Registo de Condução
-                    </flux:sidebar.item>
                     <flux:sidebar.item icon="clipboard" :href="route('peps.index')" :current="request()->routeIs('peps.*')" wire:navigate>
                         PEPs
-                    </flux:sidebar.item>
-                    <flux:sidebar.item icon="briefcase" :href="route('tipos-trabalho.index')" :current="request()->routeIs('tipos-trabalho.*')" wire:navigate>
-                        Tipos de Trabalho
-                    </flux:sidebar.item>
-                    <flux:sidebar.item icon="map-pin" :href="route('localizacoes.index')" :current="request()->routeIs('localizacoes.*')" wire:navigate>
-                        Localizações
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
@@ -112,6 +103,9 @@
                 <flux:sidebar.group heading="Transporte" expandable :open="request()->routeIs('guias.*')" class="grid">
                     <flux:sidebar.item icon="document-text" :href="route('guias.index')" :current="request()->routeIs('guias.*')" wire:navigate>
                         Guias de Transporte
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="identification" :href="route('condutores.registo')" :current="request()->routeIs('condutores.*')" wire:navigate>
+                        Registo de Condução
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
@@ -159,6 +153,12 @@
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="document-text" :href="route('legal-pages.index')" :current="request()->routeIs('legal-pages.*')" wire:navigate>
                         Páginas Legais
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="briefcase" :href="route('tipos-trabalho.index')" :current="request()->routeIs('tipos-trabalho.*')" wire:navigate>
+                        Tipos de Trabalho
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="map-pin" :href="route('localizacoes.index')" :current="request()->routeIs('localizacoes.*')" wire:navigate>
+                        Localizações
                     </flux:sidebar.item>
                 </flux:sidebar.group>
                 @endif
