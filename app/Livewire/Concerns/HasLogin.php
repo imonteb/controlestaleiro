@@ -109,7 +109,7 @@ trait HasLogin
         }
 
         $this->validate([
-            'pinNovo' => ['required', 'digits:6', 'confirmed'],
+            'pinNovo' => ['required', 'digits:6', 'same:pinNovoConfirmacao'],
             'pinNovoConfirmacao' => ['required'],
         ], [
             'pinNovo.required' => 'O novo PIN é obrigatório.',
