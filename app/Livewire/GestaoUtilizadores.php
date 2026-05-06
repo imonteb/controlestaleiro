@@ -14,12 +14,15 @@ class GestaoUtilizadores extends Component
 {
     use HasMobileSignature;
 
-    private const PROTECTED_EMAIL = 'israelmontesino@gmail.com';
+    private static function protectedEmail(): string
+    {
+        return env('ADMIN_EMAIL', '');
+    }
 
     private function isProtected(User $user): bool
     {
         // El email protegido siempre es intocable para otros.
-        if ($user->email === self::PROTECTED_EMAIL && \Auth::user()->email !== self::PROTECTED_EMAIL) {
+        if ($user->email === self::protectedEmail() && \Auth::user()->email !== self::protectedEmail()) {
             return true;
         }
 
