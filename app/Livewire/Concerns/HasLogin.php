@@ -20,6 +20,8 @@ trait HasLogin
 
     public bool $showPinChange = false;
 
+    public bool $showForcePinChange = false;
+
     public string $pinAtual = '';
 
     public string $pinNovo = '';
@@ -49,6 +51,13 @@ trait HasLogin
             session(['active_colaborador_id' => $colaborador->id]);
             $this->isLoggingIn = false;
             $this->reset(['loginNumero', 'loginPin']);
+
+            if ($colaborador->force_pin_change) {
+                $this->showForcePinChange = true;
+                $this->showPinChange = true;
+
+                return;
+            }
 
             $this->dispatch('colaborador-loggedin', colaboradorId: $colaborador->id);
 
@@ -100,18 +109,19 @@ trait HasLogin
         }
 
         $this->validate([
-            'pinNovo' => ['required', 'digits:4', 'confirmed'],
+            'pinNovo' => ['required', 'digits:6', 'confirmed'],
             'pinNovoConfirmacao' => ['required'],
         ], [
             'pinNovo.required' => 'O novo PIN é obrigatório.',
-            'pinNovo.digits' => 'O PIN deve ter exatamente 4 dígitos.',
+            'pinNovo.digits' => 'O PIN deve ter exatamente 6 dígitos.',
             'pinNovo.confirmed' => 'A confirmação não coincide.',
         ]);
 
         $colaborador->pin = $this->pinNovo;
+        $colaborador->force_pin_change = false;
         $colaborador->save();
 
-        $this->reset(['pinAtual', 'pinNovo', 'pinNovoConfirmacao', 'showPinChange']);
+        $this->reset(['pinAtual', 'pinNovo', 'pinNovoConfirmacao', 'showPinChange', 'showForcePinChange']);
         session()->flash('success', 'PIN alterado com sucesso!');
     }
 }

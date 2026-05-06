@@ -23,6 +23,7 @@ class Colaborador extends Model
         'apellido',
         'telefono',
         'pin',
+        'force_pin_change',
         'denominacion_cargo',
         'activo',
         'motivo_baja',
