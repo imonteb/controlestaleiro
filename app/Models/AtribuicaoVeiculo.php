@@ -10,4 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 class AtribuicaoVeiculo extends Model
 {
     protected $table = 'asignacion_vehiculo';
+
+    protected $fillable = [
+        'asignacion_id',
+        'vehiculo_id',
+        'equipo_tipo',
+    ];
 }

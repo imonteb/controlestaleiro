@@ -10,4 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class AtribuicaoColaborador extends Model
 {
     protected $table = 'asignacion_colaborador';
+
+    protected $fillable = [
+        'asignacion_id',
+        'colaborador_id',
+        'rol_en_equipo',
+        'equipo_tipo',
+        'es_jefe',
+    ];
 }
