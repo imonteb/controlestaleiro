@@ -51,16 +51,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/peps/nuevo', \App\Livewire\Peps\Form::class)->name('peps.crear');
     Route::get('/peps/editar/{pep}', \App\Livewire\Peps\Form::class)->name('peps.editar');
 
-    // Tipos de Trabalho
-    Route::get('/tipos-trabalho', \App\Livewire\TiposTrabalho\Index::class)->name('tipos-trabalho.index');
-    Route::get('/tipos-trabalho/novo', \App\Livewire\TiposTrabalho\Form::class)->name('tipos-trabalho.crear');
-    Route::get('/tipos-trabalho/editar/{tipoTrabalho}', \App\Livewire\TiposTrabalho\Form::class)->name('tipos-trabalho.editar');
-
-    // Localizações
-    Route::get('/localizacoes', \App\Livewire\Localizacoes\Index::class)->name('localizacoes.index');
-    Route::get('/localizacoes/nueva', \App\Livewire\Localizacoes\Form::class)->name('localizacoes.crear');
-    Route::get('/localizacoes/editar/{localizacao}', \App\Livewire\Localizacoes\Form::class)->name('localizacoes.editar');
-
     // Administración — Super Admin (Gestión de Usuarios)
     Route::middleware(['super_admin'])->group(function () {
         Route::get('/register', fn () => view('livewire.auth.register'))->name('register');
@@ -107,6 +97,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/locais-frequentes', \App\Livewire\LocaisFrequentes\Index::class)->name('locais-frequentes.index');
         Route::get('/locais-frequentes/novo', \App\Livewire\LocaisFrequentes\Form::class)->name('locais-frequentes.crear');
         Route::get('/locais-frequentes/editar/{local}', \App\Livewire\LocaisFrequentes\Form::class)->name('locais-frequentes.editar');
+
+        // Tipos de Trabalho
+        Route::get('/tipos-trabalho', \App\Livewire\TiposTrabalho\Index::class)->name('tipos-trabalho.index');
+        Route::get('/tipos-trabalho/novo', \App\Livewire\TiposTrabalho\Form::class)->name('tipos-trabalho.crear');
+        Route::get('/tipos-trabalho/editar/{tipoTrabalho}', \App\Livewire\TiposTrabalho\Form::class)->name('tipos-trabalho.editar');
+
+        // Localizações
+        Route::get('/localizacoes', \App\Livewire\Localizacoes\Index::class)->name('localizacoes.index');
+        Route::get('/localizacoes/nueva', \App\Livewire\Localizacoes\Form::class)->name('localizacoes.crear');
+        Route::get('/localizacoes/editar/{localizacao}', \App\Livewire\Localizacoes\Form::class)->name('localizacoes.editar');
 
         // Páginas Legais (App Info)
         Route::get('/legal-pages', \App\Livewire\GestaoLegalPages::class)->name('legal-pages.index');
