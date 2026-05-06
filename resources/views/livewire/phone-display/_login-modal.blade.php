@@ -23,7 +23,7 @@
 
                 <div class="flex flex-col gap-1.5">
                     <label class="text-white/50 text-[0.65rem] font-extrabold uppercase tracking-widest ml-1">PIN de Acesso</label>
-                    <input wire:model="loginPin" type="password" maxlength="4" placeholder="••••"
+                    <input wire:model="loginPin" type="password" maxlength="6" placeholder="••••••"
                            class="w-full bg-black/20 border border-white/10 rounded-[14px] px-3.5 py-3.5 text-white text-2xl tracking-[0.6em] text-center outline-none transition-colors duration-200 focus:border-blue-500/50">
                 </div>
 
