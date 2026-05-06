@@ -14,7 +14,7 @@
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+    <div class="bg-white/5 rounded-2xl shadow-lg overflow-hidden border border-white/10">
         <div class="bg-(--cme-blue) px-6 py-4 flex items-center gap-3">
             <div class="bg-yellow-500 p-2 rounded-lg">
                 <svg class="h-5 w-5 text-(--cme-blue)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -31,42 +31,42 @@
             <div class="space-y-4">
                 <div class="flex items-center gap-2">
                     <div class="h-1 w-8 bg-yellow-500 rounded-full"></div>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-(--cme-blue)">Identificação Geral</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-white/50">Identificação Geral</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="md:col-span-2 flex flex-col gap-1">
-                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-                            Designação do Equipamento <span class="text-red-500">*</span>
+                        <label class="text-[11px] font-bold text-white/50 uppercase tracking-wider">
+                            Designação do Equipamento <span class="text-red-400">*</span>
                         </label>
                         <input type="text" wire:model="designacao"
                                placeholder="Ex: Berbequim Percussão 18V"
-                               class="w-full rounded-xl border-2 border-gray-300 bg-gray-50 px-3 py-2.5 text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:border-(--cme-blue) focus:bg-white focus:outline-none focus:ring-0 transition-colors">
+                               class="w-full rounded-xl border-2 border-white/15 bg-white/8 px-3 py-2.5 text-sm font-medium text-white placeholder:text-white/30 focus:border-(--cme-blue) focus:bg-white/12 focus:outline-none focus:ring-0 transition-colors">
                         @error('designacao') <span class="text-xs text-red-500 font-medium">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Código Interno</label>
+                        <label class="text-[11px] font-bold text-white/50 uppercase tracking-wider">Código Interno</label>
                         <input type="text" wire:model="referencia"
                                placeholder="Ex: 514"
-                               class="w-full rounded-xl border-2 border-gray-300 bg-gray-50 px-3 py-2.5 text-sm font-bold text-(--cme-blue) placeholder:text-gray-400 focus:border-(--cme-blue) focus:bg-white focus:outline-none focus:ring-0 transition-colors">
+                               class="w-full rounded-xl border-2 border-white/15 bg-white/8 px-3 py-2.5 text-sm font-bold text-yellow-400 placeholder:text-white/30 focus:border-(--cme-blue) focus:bg-white/12 focus:outline-none focus:ring-0 transition-colors">
                         @error('referencia') <span class="text-xs text-red-500 font-medium">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>
 
             {{-- ── Controlo Preventivo ─────────────────────────── --}}
-            <div class="bg-blue-50 rounded-2xl p-5 border border-blue-200 space-y-4">
+            <div class="bg-blue-500/10 rounded-2xl p-5 border border-blue-400/20 space-y-4">
                 <div class="flex items-center gap-2">
-                    <div class="h-1 w-8 bg-blue-500 rounded-full"></div>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-blue-800">Controlo Preventivo</span>
+                    <div class="h-1 w-8 bg-blue-400 rounded-full"></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-blue-300">Controlo Preventivo</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="flex flex-col gap-1">
-                        <label class="text-[11px] font-bold text-blue-800 uppercase tracking-wider">Estado Operacional</label>
+                        <label class="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Estado Operacional</label>
                         <select wire:model="estado_operacional"
-                                class="w-full rounded-xl border-2 border-blue-300 bg-white px-3 py-2.5 text-sm font-bold text-blue-900 focus:border-blue-500 focus:outline-none focus:ring-0 transition-colors">
+                                class="w-full rounded-xl border-2 border-white/15 bg-white/8 px-3 py-2.5 text-sm font-bold text-white focus:border-blue-400 focus:outline-none focus:ring-0 transition-colors">
                             <option value="Apto">Apto</option>
                             <option value="Não Apto">Não Apto</option>
                             <option value="Condicionado">Condicionado</option>
@@ -76,16 +76,16 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <label class="text-[11px] font-bold text-blue-800 uppercase tracking-wider">Periodicidade (Meses)</label>
+                        <label class="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Periodicidade (Meses)</label>
                         <input type="number" wire:model="periodicidade_meses" min="1"
-                               class="w-full rounded-xl border-2 border-blue-300 bg-white px-3 py-2.5 text-sm font-bold text-blue-900 focus:border-blue-500 focus:outline-none focus:ring-0 transition-colors">
+                               class="w-full rounded-xl border-2 border-white/15 bg-white/8 px-3 py-2.5 text-sm font-bold text-white focus:border-blue-400 focus:outline-none focus:ring-0 transition-colors">
                         @error('periodicidade_meses') <span class="text-xs text-red-500 font-medium">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <label class="text-[11px] font-bold text-blue-800 uppercase tracking-wider">Documentação</label>
+                        <label class="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Documentação</label>
                         <select wire:model="tipo_documentacao"
-                                class="w-full rounded-xl border-2 border-blue-300 bg-white px-3 py-2.5 text-sm font-bold text-blue-900 focus:border-blue-500 focus:outline-none focus:ring-0 transition-colors">
+                                class="w-full rounded-xl border-2 border-white/15 bg-white/8 px-3 py-2.5 text-sm font-bold text-white focus:border-blue-400 focus:outline-none focus:ring-0 transition-colors">
                             <option value="Manual">Manual</option>
                             <option value="Certificado">Certificado</option>
                             <option value="Ficha Técnica">Ficha Técnica</option>
@@ -99,8 +99,8 @@
             {{-- ── Detalhes Técnicos ───────────────────────────── --}}
             <div class="space-y-4">
                 <div class="flex items-center gap-2">
-                    <div class="h-1 w-8 bg-gray-400 rounded-full"></div>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-600">Detalhes Técnicos & Identificação</span>
+                    <div class="h-1 w-8 bg-white/30 rounded-full"></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Detalhes Técnicos & Identificação</span>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -112,10 +112,10 @@
 ['model' => 'localizacao','label' => 'Localização',  'placeholder' => 'Ex: Armazém A'],
                     ] as $field)
                     <div class="flex flex-col gap-1">
-                        <label class="text-[11px] font-bold text-gray-600 uppercase tracking-wider">{{ $field['label'] }}</label>
+                        <label class="text-[11px] font-bold text-white/50 uppercase tracking-wider">{{ $field['label'] }}</label>
                         <input type="text" wire:model="{{ $field['model'] }}"
                                @if($field['placeholder']) placeholder="{{ $field['placeholder'] }}" @endif
-                               class="w-full rounded-xl border-2 border-gray-300 bg-gray-50 px-3 py-2.5 text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:border-(--cme-blue) focus:bg-white focus:outline-none focus:ring-0 transition-colors">
+                               class="w-full rounded-xl border-2 border-white/15 bg-white/8 px-3 py-2.5 text-sm font-medium text-white placeholder:text-white/30 focus:border-(--cme-blue) focus:bg-white/12 focus:outline-none focus:ring-0 transition-colors">
                         @error($field['model']) <span class="text-xs text-red-500 font-medium">{{ $message }}</span> @enderror
                     </div>
                     @endforeach
@@ -124,16 +124,16 @@
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" wire:model="activo" class="sr-only peer">
                             <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
-                            <span class="ml-2 text-xs font-bold uppercase text-gray-600">Ativo</span>
+                            <span class="ml-2 text-xs font-bold uppercase text-white/50">Ativo</span>
                         </label>
                     </div>
                 </div>
             </div>
 
             {{-- ── Ações ───────────────────────────────────────── --}}
-            <div class="border-t border-gray-200 pt-5 flex justify-end gap-3">
+            <div class="border-t border-white/10 pt-5 flex justify-end gap-3">
                 <a href="{{ route('ferramentas.index') }}" wire:navigate
-                    class="inline-flex items-center gap-2 py-2.5 px-5 rounded-xl font-semibold text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors">
+                    class="inline-flex items-center gap-2 py-2.5 px-5 rounded-xl font-semibold text-sm text-white/60 bg-white/8 hover:bg-white/12 border border-white/10 transition-colors">
                     Cancelar
                 </a>
 
