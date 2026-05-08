@@ -29,6 +29,7 @@
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
+                @if(auth()->user()?->isOperario() || auth()->user()?->isAdmin())
                 <flux:sidebar.group heading="Equipas" expandable :open="request()->routeIs('gestao-equipas') || request()->routeIs('publicar-dia') || request()->routeIs('monitor') || request()->routeIs('tv') || request()->routeIs('phone')" class="grid">
                     <flux:sidebar.item icon="calendar-days" :href="route('gestao-equipas')" :current="request()->routeIs('gestao-equipas')" wire:navigate>
                         Gestão de Equipas
@@ -49,7 +50,9 @@
                         Vista Mobile
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+                @endif
 
+                @if(auth()->user()?->isAdmin())
                 <flux:sidebar.group heading="Estatísticas" expandable class="grid">
                     <flux:sidebar.item icon="table-cells" :href="route('resumo-mensal')" :current="request()->routeIs('resumo-mensal')" wire:navigate>
                         Resumo Mensal
@@ -61,7 +64,9 @@
                         Estatísticas de Colaboradores
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+                @endif
 
+                @if(auth()->user()?->isAdmin())
                 <flux:sidebar.group heading="Dados Base" expandable class="grid">
                     <flux:sidebar.item icon="users" :href="route('colaboradores.index')" :current="request()->routeIs('colaboradores.*')" wire:navigate>
                         Colaboradores
@@ -73,8 +78,10 @@
                         PEPs
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+                @endif
 
-                @if(auth()->user()?->isEpi())
+                {{-- EPIs + Transporte --}}
+                @if(auth()->user()?->isEpi() || auth()->user()?->isAdmin())
                 <flux:sidebar.group heading="EPIs" expandable class="grid">
                     <flux:sidebar.item icon="shield-check" :href="route('epis.index')" :current="request()->routeIs('epis.index') || request()->routeIs('epis.crear') || request()->routeIs('epis.editar')" wire:navigate>
                         Catálogo
@@ -113,7 +120,10 @@
                         Registo de Condução
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+                @endif
 
+                {{-- Logística e Segurança --}}
+                @if(auth()->user()?->isLogi() || auth()->user()?->isAdmin())
                 <flux:sidebar.group heading="Logística e Segurança" expandable class="grid">
                     <flux:sidebar.item icon="wrench" :href="route('ferramentas.index')" :current="request()->routeIs('ferramentas.*')" wire:navigate>
                         Ferramentas

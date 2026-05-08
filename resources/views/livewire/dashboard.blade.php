@@ -11,10 +11,12 @@
             <span class="text-[10px] bg-[rgba(255,211,0,0.15)] text-[#FFD300] px-2 py-1 rounded font-medium tracking-wide">
                 {{ $hoje->translatedFormat('d \d\e F \d\e Y') }}
             </span>
+            @if(auth()->user()->isOperario() || auth()->user()->isAdmin())
             <a href="{{ route('gestao-equipas') }}" wire:navigate
                class="text-[10px] bg-[#FFD300] text-[#09143B] px-3 py-1 rounded font-black tracking-wide hover:bg-yellow-300 transition-colors">
                 + Gestão de Equipas
             </a>
+            @endif
         </div>
     </div>
 
@@ -22,7 +24,7 @@
     <div class="bg-[#EEECEA] p-4 space-y-4">
 
         {{-- Métricas --}}
-        @if(!empty($resumoAtividade))
+        @if(!empty($resumoAtividade) && (auth()->user()->isOperario() || auth()->user()->isAdmin()))
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
             <div style="background:#FFFFFF; border:1px solid rgba(9,20,59,0.18);" class="rounded-lg px-3 py-2.5">
                 <div style="color:#7A7775;" class="text-[10px] uppercase tracking-wide mb-1">Projetos Ativos</div>
@@ -152,11 +154,14 @@
                         <span class="text-white font-medium text-[11px] uppercase tracking-widest">Acessos Rápidos</span>
                     </div>
                     <div class="bg-[#F0EEEB] p-3 grid grid-cols-3 gap-2">
+                        @if(auth()->user()->isOperario() || auth()->user()->isAdmin())
                         <a href="{{ route('gestao-equipas') }}" wire:navigate
                            class="flex flex-col items-center gap-1.5 p-3 bg-[#EEECEA] border border-[rgba(9,20,59,0.08)] rounded-lg hover:bg-[#E4E2DF] transition-colors">
                             <flux:icon name="calendar-days" class="w-5 h-5 text-[#09143B]" />
                             <span class="text-[10px] text-[#4A4845] font-medium text-center">Gestão Equipas</span>
                         </a>
+                        @endif
+                        @if(auth()->user()->isAdmin())
                         <a href="{{ route('colaboradores.index') }}" wire:navigate
                            class="flex flex-col items-center gap-1.5 p-3 bg-[#EEECEA] border border-[rgba(9,20,59,0.08)] rounded-lg hover:bg-[#E4E2DF] transition-colors">
                             <flux:icon name="users" class="w-5 h-5 text-[#09143B]" />
@@ -167,25 +172,28 @@
                             <flux:icon name="truck" class="w-5 h-5 text-[#09143B]" />
                             <span class="text-[10px] text-[#4A4845] font-medium text-center">Veículos</span>
                         </a>
-                        @if(auth()->user()->hasRole('epi') || auth()->user()->isAdmin())
+                        @endif
+                        @if(auth()->user()->isEpi() || auth()->user()->isAdmin())
                         <a href="{{ route('epis.entregas.index') }}" wire:navigate
                            class="flex flex-col items-center gap-1.5 p-3 bg-[#EEECEA] border border-[rgba(9,20,59,0.08)] rounded-lg hover:bg-[#E4E2DF] transition-colors">
                             <flux:icon name="hand-raised" class="w-5 h-5 text-[#09143B]" />
                             <span class="text-[10px] text-[#4A4845] font-medium text-center">Entregas EPI</span>
                         </a>
                         @endif
-                        @if(auth()->user()->hasRole('logi') || auth()->user()->isAdmin())
+                        @if(auth()->user()->isLogi() || auth()->user()->isAdmin())
                         <a href="{{ route('ferramentas.index') }}" wire:navigate
                            class="flex flex-col items-center gap-1.5 p-3 bg-[#EEECEA] border border-[rgba(9,20,59,0.08)] rounded-lg hover:bg-[#E4E2DF] transition-colors">
                             <flux:icon name="wrench" class="w-5 h-5 text-[#09143B]" />
                             <span class="text-[10px] text-[#4A4845] font-medium text-center">Ferramentas</span>
                         </a>
                         @endif
+                        @if(auth()->user()->isAdmin())
                         <a href="{{ route('resumo-mensal') }}" wire:navigate
                            class="flex flex-col items-center gap-1.5 p-3 bg-[#EEECEA] border border-[rgba(9,20,59,0.08)] rounded-lg hover:bg-[#E4E2DF] transition-colors">
                             <flux:icon name="chart-bar" class="w-5 h-5 text-[#09143B]" />
                             <span class="text-[10px] text-[#4A4845] font-medium text-center">Resumo Mensal</span>
                         </a>
+                        @endif
                     </div>
                 </div>
 

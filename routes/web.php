@@ -19,37 +19,42 @@ Route::prefix('push')->name('push.')->controller(\App\Http\Controllers\WebPushCo
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
-    Route::get('gestao-equipas', \App\Livewire\GestaoEquipas::class)->name('gestao-equipas');
 
-    // Resumo mensal
-    Route::get('/resumo-mensal', \App\Livewire\ResumoMensal::class)->name('resumo-mensal');
+    // Operário + Admin
+    Route::middleware(['operario'])->group(function () {
+        Route::get('gestao-equipas', \App\Livewire\GestaoEquipas::class)->name('gestao-equipas');
+        Route::get('/publicar-dia', \App\Livewire\PublicarDia::class)->name('publicar-dia');
+        Route::get('/monitor', \App\Livewire\PcDisplay::class)->name('monitor');
+    });
 
-    // Estatísticas
-    Route::get('/estatisticas/veiculos', \App\Livewire\Estatisticas\Veiculos::class)->name('estatisticas.veiculos');
-    Route::get('/estatisticas/colaboradores', \App\Livewire\Estatisticas\Colaboradores::class)->name('estatisticas.colaboradores');
+    // Admin only
+    Route::middleware(['admin'])->group(function () {
+        // Resumo mensal
+        Route::get('/resumo-mensal', \App\Livewire\ResumoMensal::class)->name('resumo-mensal');
 
-    // Exportar estatísticas
-    Route::get('/exportar/estatisticas/veiculos', [\App\Http\Controllers\ExportController::class, 'estatisticasVeiculos'])->name('exportar.estatisticas.veiculos');
-    Route::get('/exportar/estatisticas/colaboradores', [\App\Http\Controllers\ExportController::class, 'estatisticasColaboradores'])->name('exportar.estatisticas.colaboradores');
+        // Estatísticas
+        Route::get('/estatisticas/veiculos', \App\Livewire\Estatisticas\Veiculos::class)->name('estatisticas.veiculos');
+        Route::get('/estatisticas/colaboradores', \App\Livewire\Estatisticas\Colaboradores::class)->name('estatisticas.colaboradores');
 
-    // Publicar día en TV
-    Route::get('/publicar-dia', \App\Livewire\PublicarDia::class)->name('publicar-dia');
+        // Exportar estatísticas
+        Route::get('/exportar/estatisticas/veiculos', [\App\Http\Controllers\ExportController::class, 'estatisticasVeiculos'])->name('exportar.estatisticas.veiculos');
+        Route::get('/exportar/estatisticas/colaboradores', [\App\Http\Controllers\ExportController::class, 'estatisticasColaboradores'])->name('exportar.estatisticas.colaboradores');
 
-    // Colaboradores
-    Route::get('/colaboradores', \App\Livewire\Colaboradores\Index::class)->name('colaboradores.index');
-    Route::get('/colaboradores/nuevo', \App\Livewire\Colaboradores\Form::class)->name('colaboradores.crear');
-    Route::get('/colaboradores/editar/{colaborador}', \App\Livewire\Colaboradores\Form::class)->name('colaboradores.editar');
+        // Colaboradores
+        Route::get('/colaboradores', \App\Livewire\Colaboradores\Index::class)->name('colaboradores.index');
+        Route::get('/colaboradores/nuevo', \App\Livewire\Colaboradores\Form::class)->name('colaboradores.crear');
+        Route::get('/colaboradores/editar/{colaborador}', \App\Livewire\Colaboradores\Form::class)->name('colaboradores.editar');
 
-    // Veículos
-    Route::get('/veiculos', \App\Livewire\Veiculos\Index::class)->name('veiculos.index');
-    Route::get('/veiculos/novo', \App\Livewire\Veiculos\Form::class)->name('veiculos.crear');
-    Route::get('/veiculos/editar/{veiculo}', \App\Livewire\Veiculos\Form::class)->name('veiculos.editar');
-    Route::get('/veiculos/registo-conducao', \App\Livewire\Condutores\RegistoConducao::class)->name('condutores.registo');
+        // Veículos
+        Route::get('/veiculos', \App\Livewire\Veiculos\Index::class)->name('veiculos.index');
+        Route::get('/veiculos/novo', \App\Livewire\Veiculos\Form::class)->name('veiculos.crear');
+        Route::get('/veiculos/editar/{veiculo}', \App\Livewire\Veiculos\Form::class)->name('veiculos.editar');
 
-    // PEPs
-    Route::get('/peps', \App\Livewire\Peps\Index::class)->name('peps.index');
-    Route::get('/peps/nuevo', \App\Livewire\Peps\Form::class)->name('peps.crear');
-    Route::get('/peps/editar/{pep}', \App\Livewire\Peps\Form::class)->name('peps.editar');
+        // PEPs
+        Route::get('/peps', \App\Livewire\Peps\Index::class)->name('peps.index');
+        Route::get('/peps/nuevo', \App\Livewire\Peps\Form::class)->name('peps.crear');
+        Route::get('/peps/editar/{pep}', \App\Livewire\Peps\Form::class)->name('peps.editar');
+    });
 
     // Administración — Super Admin (Gestión de Usuarios)
     Route::middleware(['super_admin'])->group(function () {
@@ -76,9 +81,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Segurança e Apoio (Gestão PWA)
         Route::get('/seguranca', \App\Livewire\GestaoSeguranca::class)->name('seguranca.index');
-
-        // Guias de Transporte
-        Route::get('/guias', \App\Livewire\GestaoGuias::class)->name('guias.index');
 
         // Catálogo de Materiais
         Route::get('/materiais', \App\Livewire\Materiais\Index::class)->name('materiais.index');
@@ -180,11 +182,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Ficha EPI (print view)
         Route::get('/epis/ficha/{colaborador}', \App\Http\Controllers\FichaEpiController::class)->name('epis.ficha');
         Route::get('/epis/imprimir-mensal', \App\Http\Controllers\BulkFichaEpiController::class)->name('epis.imprimir-mensal');
+
+        // Transporte
+        Route::get('/guias', \App\Livewire\GestaoGuias::class)->name('guias.index');
+        Route::get('/veiculos/registo-conducao', \App\Livewire\Condutores\RegistoConducao::class)->name('condutores.registo');
     });
 
-    // Panel TV — agora protegido
+    // Panel TV — operario + admin
     Route::get('/tv', \App\Livewire\TvDisplay::class)->name('tv');
-    Route::get('/monitor', \App\Livewire\PcDisplay::class)->name('monitor');
 });
 
 Route::get('/phone', \App\Livewire\PhoneDisplay::class)->name('phone');
