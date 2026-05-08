@@ -3,7 +3,12 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen antialiased bg-linear-to-b from-blue-800 to-blue-950 dark:from-blue-900 dark:to-(--cme-blue)">
+    <body class="min-h-screen antialiased bg-[#EEECEA]">
+        <style>
+            [data-flux-sidebar][data-flux-sidebar-collapsed-desktop] {
+                display: none !important;
+            }
+        </style>
         <flux:sidebar sticky collapsible class="border-e border-blue-700 bg-blue-950 dark:border-blue-700 dark:bg-blue-950">
             <flux:sidebar.header>
                 <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3 px-2 py-2">
@@ -176,7 +181,7 @@
 </flux:sidebar>
 
         <!-- Top navigation bar -->
-        <flux:header>
+        <flux:header class="bg-blue-950 border-b border-[rgba(255,255,255,0.08)]">
             <flux:sidebar.toggle icon="bars-2" inset="left" />
 
             <flux:spacer />
