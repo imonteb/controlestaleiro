@@ -394,7 +394,7 @@
                                                         style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium flex items-center gap-1.5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
                                                         <div style="color:rgba(255,211,0,0.7);" class="text-[9px] font-bold pb-0.5 mb-0.5">
-                                                            ⭐ Líder Aux.</div>
+                                                            Líder Aux.</div>
                                                         <div class="font-medium text-xs text-white truncate">
                                                             @php
                                                             $partsNome = explode(' ', trim($colaborador->nombre));
