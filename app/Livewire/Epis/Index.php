@@ -9,6 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 #[Layout('layouts.app')]
@@ -16,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class Index extends Component
 {
     use WithFileUploads;
+    use WithPagination;
 
     public string $filtro = 'activos';
 
@@ -37,6 +39,16 @@ class Index extends Component
     public bool $confirmandoEliminar = false;
 
     public ?int $eliminandoId = null;
+
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFiltro(): void
+    {
+        $this->resetPage();
+    }
 
     public function desativar(int $id): void
     {
@@ -141,10 +153,10 @@ class Index extends Component
             ->withSum(['entregas' => fn ($q) => $q->whereIn('estado', EpiEntregaEstado::valoresComSaida())], 'cantidad')
             ->withSum('ajustes', 'diferencia');
 
-        $items = $query->get();
+        $items = $query->paginate(20);
 
         // Calculate final stock for each item using the eagerly loaded sums
-        $items->each(function ($item) {
+        $items->getCollection()->each(function ($item) {
             $recebido = (int) $item->rececoes_sum_cantidad;
             $entregue = (int) $item->entregas_sum_cantidad;
             $ajuste = (int) $item->ajustes_sum_diferencia;
