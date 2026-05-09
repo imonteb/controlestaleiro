@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
     </head>
@@ -9,7 +9,7 @@
                 display: none !important;
             }
         </style>
-        <flux:sidebar sticky collapsible class="border-e border-blue-700 bg-blue-950 dark:border-blue-700 dark:bg-blue-950">
+        <flux:sidebar sticky collapsible class="dark border-e border-blue-700 bg-blue-950">
             <flux:sidebar.header>
                 <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3 px-2 py-2">
                     <div class="sidebar-logo-wrapper">

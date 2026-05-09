@@ -12,158 +12,155 @@
             @endphp
 
             @if($mostrarLembreteEpi)
-                <div x-data="{ visible: true }" x-show="visible" class="bg-linear-to-r from-blue-700 to-blue-900 rounded-2xl shadow-xl p-5 mb-6 border border-blue-400/30 flex items-center justify-between animate-in slide-in-from-top duration-700 relative overflow-hidden group">
-                    <div class="absolute -right-6 -bottom-6 text-white/5 transform rotate-12 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
-                        <svg class="h-32 w-32" fill="currentColor" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-                    </div>
-                    <div class="flex items-center gap-5 relative z-10">
-                        <div class="bg-yellow-500 p-3 rounded-2xl shadow-lg ring-4 ring-blue-400/20">
-                            <svg class="h-7 w-7 text-blue-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                <div x-data="{ visible: true }" x-show="visible" class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-4 relative">
+                    <div class="bg-[#09143B] px-4 py-2.5 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="exclamation-triangle" class="text-[#FFD300] w-4 h-4" />
+                            <span class="text-white font-medium text-sm">Relatórios de EPI Pendentes</span>
+                        </div>
+                        <button @click="visible = false" type="button" title="Fechar aviso"
+                                class="text-white/40 hover:text-white/80 transition-colors bg-transparent border-none cursor-pointer p-1 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-white font-black text-base tracking-wider uppercase">Relatórios de EPI Pendentes</h3>
-                            <p class="text-blue-100 text-sm mt-0.5 opacity-90">O mês de <span class="text-yellow-400 font-bold uppercase">{{ $mesAnterior->translatedFormat('F') }}</span> terminou. É necessário imprimir as fichas mensais para arquivo.</p>
-                        </div>
+                        </button>
                     </div>
-                    <a href="{{ route('epis.imprimir-mensal', ['month' => $mesAnterior->month, 'year' => $mesAnterior->year]) }}" 
-                       target="_blank"
-                       class="relative z-10 bg-yellow-500 hover:bg-yellow-400 text-blue-950 font-black px-6 py-3 rounded-xl text-xs transition-all active:scale-95 shadow-[0_4px_20px_rgba(234,179,8,0.4)] flex items-center gap-2 uppercase tracking-widest whitespace-nowrap">
-                        <span>Gerar PDF Mensal</span>
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                    </a>
-                    <button @click="visible = false"
-                            type="button"
-                            title="Fechar aviso"
-                            class="absolute top-2 right-2 z-20 text-white/40 hover:text-white/80 transition-colors bg-transparent border-none cursor-pointer p-1 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
+                    <div class="bg-[#EEECEA] px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+                        <p class="text-[12px] text-[#4A4845] m-0">
+                            O mês de <span class="text-[#09143B] font-bold uppercase">{{ $mesAnterior->translatedFormat('F') }}</span> terminou. É necessário imprimir as fichas mensais para arquivo.
+                        </p>
+                        <a href="{{ route('epis.imprimir-mensal', ['month' => $mesAnterior->month, 'year' => $mesAnterior->year]) }}"
+                           target="_blank"
+                           class="shrink-0 flex items-center gap-1.5 text-[11px] font-bold px-4 py-1.5 rounded-lg transition-opacity hover:opacity-85"
+                           style="background:#09143B; color:#FFD300;">
+                            Gerar PDF Mensal
+                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             @endif
 
             {{-- Banner: dia pendente de confirmação --}}
             @if ($diaPendenteConfirmacao)
                 @php $vendoODiaPendente = $data === $diaPendenteConfirmacao->fecha->toDateString(); @endphp
-                <div class="bg-amber-900/80 border border-amber-400/60 rounded-xl py-4 px-5 mb-4 flex items-center justify-between gap-4 flex-wrap">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-amber-500 p-2 rounded-lg shrink-0">
-                            <svg class="h-5 w-5 text-amber-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="text-amber-200 font-bold text-sm">Dia pendente de confirmação</div>
-                            <div class="text-amber-300/80 text-xs mt-0.5">
-                                @if($vendoODiaPendente)
-                                    Revise as equipas e confirme este dia quando estiver tudo correto.
-                                @else
-                                    O dia <strong class="text-amber-200">{{ $diaPendenteConfirmacao->fecha->locale('pt')->isoFormat('dddd, D [de] MMMM') }}</strong> ainda não foi confirmado. Veja o dia antes de confirmar.
-                                @endif
-                            </div>
-                        </div>
+                <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-4">
+                    <div class="bg-[#09143B] px-4 py-2.5 flex items-center gap-2">
+                        <flux:icon name="check-circle" class="text-[#FFD300] w-4 h-4" />
+                        <span class="text-white font-medium text-sm">Dia pendente de confirmação</span>
                     </div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        @if($vendoODiaPendente)
-                            <button wire:click="abrirModalConfirmacao" type="button"
-                                class="bg-amber-500 hover:bg-amber-400 text-amber-950 text-xs font-black px-4 py-2 rounded-lg transition-colors">
-                                ✓ Confirmar dia
-                            </button>
-                        @else
-                            <button wire:click="irParaDiaPendente" type="button"
-                                class="bg-white/10 hover:bg-white/20 text-amber-200 border border-amber-400/40 text-xs font-bold px-3 py-2 rounded-lg transition-colors">
-                                Ver dia →
-                            </button>
-                        @endif
+                    <div class="bg-[#EEECEA] px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+                        <p class="text-[12px] text-[#4A4845] m-0">
+                            @if($vendoODiaPendente)
+                                Revise as equipas e confirme este dia quando estiver tudo correto.
+                            @else
+                                O dia <strong style="color:#09143B;">{{ $diaPendenteConfirmacao->fecha->locale('pt')->isoFormat('dddd, D [de] MMMM') }}</strong> ainda não foi confirmado. Veja o dia antes de confirmar.
+                            @endif
+                        </p>
+                        <div class="flex items-center gap-2 shrink-0">
+                            @if($vendoODiaPendente)
+                                <button wire:click="abrirModalConfirmacao" type="button"
+                                    class="text-[11px] font-bold px-4 py-1.5 rounded-lg transition-opacity hover:opacity-85"
+                                    style="background:#09143B; color:#FFD300;">
+                                    ✓ Confirmar dia
+                                </button>
+                            @else
+                                <button wire:click="irParaDiaPendente" type="button"
+                                    class="text-[11px] font-bold px-3 py-1.5 rounded-lg border border-[rgba(9,20,59,0.20)] transition-colors hover:bg-[#E4E2DF]"
+                                    style="background:#EEECEA; color:#09143B;">
+                                    Ver dia →
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endif
 
-            <div class="flex items-center justify-between mb-2">
-                <h1 class="text-2xl font-bold uppercase text-yellow-500">Centros de Custo (PEP)</h1>
+            <div class="rounded-t-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-2">
+                <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <flux:icon name="calendar-days" class="text-[#FFD300] w-4 h-4" />
+                        <span class="text-white font-medium text-sm">Centros de Custo (PEP)</span>
+                    </div>
+                </div>
             </div>
 
             {{-- Banner: copiar do último dia com dados --}}
             @if ($semDados)
-                <div class="bg-blue-900/85 border border-blue-400 rounded-xl py-4 px-5 mb-4">
-                    <div class="flex items-center justify-between gap-4 flex-wrap">
-                        <div class="flex items-center gap-3">
-                            <span class="text-[1.6rem]">📋</span>
+                <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-4">
+                    <div class="bg-[#09143B] px-4 py-2.5 flex items-center gap-2">
+                        <flux:icon name="clipboard" class="text-[#FFD300] w-4 h-4" />
+                        <span class="text-white font-medium text-sm">Sem atribuições para este dia</span>
+                    </div>
+                    <div style="background:#F0EEEB !important;" class="px-4 py-3">
+                        <div class="flex items-center justify-between gap-4 flex-wrap">
                             <div>
-                                <p class="text-white font-bold text-sm m-0">Sem atribuições para
-                                    este dia.</p>
                                 @if ($ultimaDataComDados)
-                                    <p class="text-blue-100 text-[0.78rem] font-bold mt-1 mb-0">
-                                        Último dia de trabalho com dados:
-                                        <span class="text-yellow-300 font-black">
-                                            {{ \Carbon\Carbon::parse($ultimaDataComDados)->format('d/m/Y') }}
-                                        </span>
+                                    <p class="text-[12px] text-[#4A4845] m-0">
+                                        Último dia com dados:
+                                        <span class="font-bold" style="color:#09143B;">{{ \Carbon\Carbon::parse($ultimaDataComDados)->format('d/m/Y') }}</span>
                                     </p>
                                 @else
-                                    <p class="text-blue-100 text-[0.78rem] font-bold mt-1 mb-0">Não há dias anteriores
-                                        com dados guardados.</p>
+                                    <p class="text-[12px] text-[#7A7775] m-0">Não há dias anteriores com dados guardados.</p>
+                                @endif
+                            </div>
+                            <div class="flex gap-2 shrink-0 flex-wrap">
+                                @if ($ultimaDataComDados)
+                                    @if($diaPendenteConfirmacao)
+                                        <button type="button" disabled
+                                            title="Confirme o dia {{ $diaPendenteConfirmacao->fecha->format('d/m/Y') }} antes de importar"
+                                            class="text-[11px] font-bold py-1.5 px-4 rounded-lg cursor-not-allowed opacity-40 whitespace-nowrap"
+                                            style="background:#09143B; color:#FFD300;">
+                                            ↓ Copiar equipas de {{ \Carbon\Carbon::parse($ultimaDataComDados)->format('d/m') }}
+                                        </button>
+                                    @else
+                                        <button wire:click="copiarDeUltimaData" type="button"
+                                            class="text-[11px] font-bold py-1.5 px-4 rounded-lg cursor-pointer whitespace-nowrap hover:opacity-85 transition-opacity"
+                                            style="background:#09143B; color:#FFD300;">
+                                            ↓ Copiar equipas de {{ \Carbon\Carbon::parse($ultimaDataComDados)->format('d/m') }}
+                                        </button>
+                                    @endif
+                                @endif
+                                <button wire:click="$toggle('showPesquisarData')" type="button"
+                                    class="text-[11px] font-bold py-1.5 px-3.5 rounded-lg cursor-pointer whitespace-nowrap border border-[rgba(9,20,59,0.20)] hover:bg-[#E4E2DF] transition-colors"
+                                    style="background:#EEECEA; color:#09143B;">
+                                    Pesquisar data
+                                </button>
+                                @if($diaPendenteConfirmacao)
+                                    <button type="button" disabled
+                                        title="Confirme o dia {{ $diaPendenteConfirmacao->fecha->format('d/m/Y') }} antes de continuar"
+                                        class="text-[11px] font-bold py-1.5 px-4 rounded-lg cursor-not-allowed whitespace-nowrap opacity-40 border border-[rgba(9,20,59,0.20)]"
+                                        style="background:#EEECEA; color:#09143B;">
+                                        Começar em branco
+                                    </button>
+                                @else
+                                    <button wire:click="descartarBannerCopia" type="button"
+                                        class="text-[11px] font-bold py-1.5 px-4 rounded-lg cursor-pointer whitespace-nowrap border border-[rgba(9,20,59,0.20)] hover:bg-[#E4E2DF] transition-colors"
+                                        style="background:#EEECEA; color:#09143B;">
+                                        Começar em branco
+                                    </button>
                                 @endif
                             </div>
                         </div>
-                        <div class="flex gap-2.5 shrink-0 flex-wrap">
-                            @if ($ultimaDataComDados)
-                                {{-- Copiar da última data --}}
-                                @if($diaPendenteConfirmacao)
-                                    <button type="button" disabled
-                                        title="Confirme o dia {{ $diaPendenteConfirmacao->fecha->format('d/m/Y') }} antes de importar"
-                                        class="bg-yellow-400/30 text-blue-900/50 font-bold py-[9px] px-5 rounded-lg text-[0.85rem] cursor-not-allowed border-none whitespace-nowrap opacity-50">
-                                        &#8595; Copiar equipas de
-                                        {{ \Carbon\Carbon::parse($ultimaDataComDados)->format('d/m') }}
-                                    </button>
-                                @else
-                                    <button wire:click="copiarDeUltimaData" type="button"
-                                        class="bg-yellow-400 text-blue-900 font-bold py-[9px] px-5 rounded-lg text-[0.85rem] cursor-pointer border-none whitespace-nowrap hover:opacity-85 transition-opacity">
-                                        &#8595; Copiar equipas de
-                                        {{ \Carbon\Carbon::parse($ultimaDataComDados)->format('d/m') }}
-                                    </button>
-                                @endif
-                            @endif
-                            {{-- Pesquisar outra data --}}
-                            <button wire:click="$toggle('showPesquisarData')" type="button"
-                                class="bg-transparent text-[#93c5fd] border border-blue-500 py-[9px] px-3.5 rounded-lg text-[0.85rem] cursor-pointer whitespace-nowrap hover:bg-blue-500/15 transition-colors">
-                                🔍 Pesquisar data
-                            </button>
-                            @if($diaPendenteConfirmacao)
-                                <button type="button" disabled
-                                    title="Confirme o dia {{ $diaPendenteConfirmacao->fecha->format('d/m/Y') }} antes de continuar"
-                                    class="bg-transparent text-[#93c5fd]/40 border border-blue-500/30 py-[9px] px-4 rounded-lg text-[0.85rem] cursor-not-allowed whitespace-nowrap opacity-50">
-                                    Começar em branco
-                                </button>
-                            @else
-                                <button wire:click="descartarBannerCopia" type="button"
-                                    class="bg-transparent text-[#93c5fd] border border-blue-500 py-[9px] px-4 rounded-lg text-[0.85rem] cursor-pointer whitespace-nowrap hover:bg-blue-500/15 transition-colors">
-                                    Começar em branco
-                                </button>
-                            @endif
-                        </div>
-                    </div>
 
-                    {{-- Pesquisador de data histórica --}}
-                    @if ($showPesquisarData)
-                        <div class="mt-3.5 pt-3.5 border-t border-blue-400/40 flex items-center gap-2.5 flex-wrap">
-                            <span class="text-blue-200 text-[0.82rem] font-semibold">Copiar de outra data:</span>
-                            <input type="date" wire:model="pesquisarDataInput"
-                                class="bg-blue-900 text-white border border-blue-500 py-1.5 px-2.5 rounded-md text-[0.83rem]"
-                                style="color-scheme:dark;">
-                            <button wire:click="pesquisarDiaHistorico" type="button"
-                                class="bg-blue-500 text-white font-bold py-1.5 px-3.5 rounded-md text-[0.82rem] cursor-pointer border-none hover:bg-blue-600 transition-colors">
-                                Pesquisar
-                            </button>
-                            @if ($erroPesquisarData)
-                                <span class="text-red-300 text-sm">&#9888; {{ $erroPesquisarData }}</span>
-                            @endif
-                        </div>
-                    @endif
+                        @if ($showPesquisarData)
+                            <div class="mt-3 pt-3 border-t border-[rgba(9,20,59,0.10)] flex items-center gap-2.5 flex-wrap">
+                                <span class="text-[11px] font-semibold text-[#4A4845]">Copiar de outra data:</span>
+                                <input type="date" wire:model="pesquisarDataInput"
+                                    class="border border-[rgba(9,20,59,0.20)] py-1.5 px-2.5 rounded-md text-[11px] text-[#1A1A1A]"
+                                    style="background:#F0EEEB;">
+                                <button wire:click="pesquisarDiaHistorico" type="button"
+                                    class="text-[11px] font-bold py-1.5 px-3.5 rounded-md cursor-pointer border-none hover:opacity-85 transition-opacity"
+                                    style="background:#09143B; color:#FFD300;">
+                                    Pesquisar
+                                </button>
+                                @if ($erroPesquisarData)
+                                    <span class="text-[11px]" style="color:#A32D2D;">&#9888; {{ $erroPesquisarData }}</span>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
                 </div>
             @endif
             {{-- Fim Banner --}}
@@ -201,13 +198,11 @@
             {{-- Fim barra de ações --}}
 
             {{-- Toolbar: Ordenar y Filtrar --}}
-            <div
-                class="bg-white rounded-xl border border-gray-200 shadow-sm p-3 mb-4 flex flex-wrap gap-3 items-center">
-                <span
-                    class="text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Ordenar:</span>
+            <div style="background:#E4E2DF; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl px-4 py-3 mb-4 flex flex-wrap items-center gap-3">
+                <span style="color:#7A7775;" class="text-[10px] uppercase tracking-wide font-medium whitespace-nowrap">Ordenar:</span>
 
                 <select wire:model.live="sortBy"
-                    class="bg-white text-gray-900 font-bold border border-gray-400 py-1 px-2.5 rounded-md text-sm">
+                    style="background:white !important; color:#1A1A1A !important; border:1px solid rgba(9,20,59,0.18); border-radius:8px; padding:6px 10px; font-size:12px; outline:none; cursor:pointer;">
                     <option value="predefinida">Predefinida</option>
                     <option value="nombre">Nome</option>
                     <option value="localizacao">Localização</option>
@@ -217,18 +212,17 @@
                 @if ($sortBy !== 'predefinida')
                     <button wire:click="toggleSortDir" type="button"
                         title="{{ $sortDir === 'asc' ? 'Ascendente — clique para inverter' : 'Descendente — clique para inverter' }}"
-                        class="bg-white text-gray-900 border border-gray-400 py-1 px-3 rounded-md text-sm font-black cursor-pointer hover:bg-gray-50 transition-colors">
+                        class="text-[12px] bg-white border border-[rgba(9,20,59,0.18)] text-[#1A1A1A] rounded-lg px-2 py-1.5 outline-none cursor-pointer font-bold hover:bg-[#F0EEEB] transition-colors">
                         {{ $sortDir === 'asc' ? '↑ A–Z' : '↓ Z–A' }}
                     </button>
                 @endif
 
-                <div class="w-px h-5 bg-gray-300 shrink-0"></div>
+                <div class="w-px h-4 shrink-0" style="background:rgba(9,20,59,0.14);"></div>
 
-                <span
-                    class="text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Filtrar:</span>
+                <span style="color:#7A7775;" class="text-[10px] uppercase tracking-wide font-medium whitespace-nowrap">Filtrar:</span>
 
                 <select wire:model.live="filterLocalizacao"
-                    class="bg-white text-gray-900 font-bold border border-gray-400 py-1 px-2.5 rounded-md text-sm">
+                    style="background:white !important; color:#1A1A1A !important; border:1px solid rgba(9,20,59,0.18); border-radius:8px; padding:6px 10px; font-size:12px; outline:none; cursor:pointer;">
                     <option value="">Todas as localizações</option>
                     @foreach ($localizacoes as $loc)
                         <option value="{{ $loc->id }}">{{ $loc->nombre }}</option>
@@ -236,7 +230,7 @@
                 </select>
 
                 <select wire:model.live="filterTipo"
-                    class="bg-white text-gray-900 font-bold border border-gray-400 py-1 px-2.5 rounded-md text-sm">
+                    style="background:white !important; color:#1A1A1A !important; border:1px solid rgba(9,20,59,0.18); border-radius:8px; padding:6px 10px; font-size:12px; outline:none; cursor:pointer;">
                     <option value="">Todos os tipos de trabalho</option>
                     @foreach ($tiposTrabalho as $tipo)
                         <option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
@@ -245,12 +239,13 @@
 
                 @if ($filterLocalizacao !== '' || $filterTipo !== '' || $sortBy !== 'predefinida' || $sortDir !== 'asc')
                     <button wire:click="clearFilters" type="button"
-                        class="bg-red-100 text-red-900 border border-red-400 py-1 px-3 rounded-md text-xs font-black cursor-pointer hover:bg-red-200 transition-colors">
+                        class="text-[11px] font-bold py-1.5 px-3 rounded-lg cursor-pointer border border-[rgba(9,20,59,0.18)] hover:opacity-85 transition-opacity"
+                        style="background:#fde8e8; color:#A32D2D;">
                         ✕ Limpar
                     </button>
                 @endif
 
-                <span class="ml-auto text-xs text-gray-700 font-bold whitespace-nowrap">
+                <span style="color:#7A7775; margin-left:auto;" class="text-[10px] font-medium whitespace-nowrap">
                     {{ $peps->count() }} PEP{{ $peps->count() !== 1 ? 's' : '' }}
                 </span>
             </div>
@@ -259,23 +254,23 @@
             <div class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 @forelse ($peps as $pep)
                     <div wire:key="pep-card-{{ $pep->id }}"
-                        class="bg-blue-950/60 rounded-lg border border-white/10 overflow-hidden flex flex-col">
-                        <div class="px-3 py-2 bg-blue-800 border-b border-blue-900">
+                        style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl overflow-hidden flex flex-col">
+                        <div style="background:#09143B;" class="px-3 py-2">
                             <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold text-white/90">{{ $pep->nombre }}</span>
+                                <span style="color:#FFD300;" class="text-[11px] font-bold">{{ $pep->nombre }}</span>
                                 <span class="ml-auto px-2 py-0.5 rounded text-white text-[0.6rem] font-bold truncate max-w-30"
                                     style="background-color: {{ $pep->tipoTrabalho->color ?? '#ca8a04' }};">
                                     {{ $pep->tipoTrabalho->nombre ?? 'N/A' }}
                                 </span>
                             </div>
                             <div class="flex items-center justify-between mt-1">
-                                <div class="text-[0.65rem] text-white/50">{{ $pep->localizacao->nombre ?? 'N/A' }}</div>
+                                <div style="color:rgba(255,255,255,0.6);" class="text-[10px]">{{ $pep->localizacao->nombre ?? 'N/A' }}</div>
                                 <button wire:click="abrirModalNotas({{ $pep->id }})" title="{{ isset($pepData[$pep->id]['notas']) && $pepData[$pep->id]['notas'] ? 'Editar Notas' : 'Adicionar Notas' }}" class="text-xs text-yellow-400 hover:text-yellow-300 flex items-center cursor-pointer transition-colors bg-white/10 hover:bg-white/20 px-1.5 py-0.5 rounded border border-yellow-400/30">
                                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                 </button>
                             </div>
                         </div>
-                        <div class="p-2 flex flex-col flex-1">
+                        <div style="background:#F0EEEB;" class="p-2 flex flex-col gap-1.5 flex-1">
 
                             @if(isset($pepData[$pep->id]['notas']) && $pepData[$pep->id]['notas'])
                             <div class="mb-3 bg-yellow-50 border border-yellow-200 rounded-md p-2 text-xs text-yellow-800 shadow-sm relative pr-6">
@@ -289,22 +284,21 @@
                                 x-data="{ openAuxiliar: false, hasAuxiliar: {{ isset($pepData[$pep->id]['auxiliar']) && count($pepData[$pep->id]['auxiliar']) > 0 ? 'true' : 'false' }} }">
                                 {{-- EQUIPO PRINCIPAL --}}
                                 <div class="mb-2">
-                                    <h4 class="text-[0.6rem] font-bold uppercase tracking-widest text-white/35 mb-1">Equipa
-                                        Principal</h4>
+                                    <h4 style="color:rgba(9,20,59,0.40);" class="text-[10px] font-bold uppercase tracking-wide mb-1">Equipa Principal</h4>
 
                                     {{-- Jefe Principal --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-blue-400/30 rounded-md bg-blue-400/5 flex flex-col gap-1"
+                                        <div style="background:#EEECEA; border:1px dashed rgba(9,20,59,0.20);" class="pep-colaboradores-list min-h-7 mb-1 p-0.5 rounded-md flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="principal"
                                             data-es-jefe="true">
                                             @if (isset($pepData[$pep->id]['principal']['jefes']) && count($pepData[$pep->id]['principal']['jefes']) > 0)
                                                 @foreach ($pepData[$pep->id]['principal']['jefes'] as $colaborador)
                                                     <div wire:key="jefe-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-0.5 border border-blue-400/40 rounded bg-blue-400/10 cursor-grab select-none draggable-item min-w-0"
+                                                        style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium flex items-center gap-1.5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
-                                                        <div class="font-bold text-[0.6rem] text-blue-300 pb-0.5 mb-0.5">
+                                                        <div style="color:rgba(255,211,0,0.7);" class="text-[9px] font-bold pb-0.5 mb-0.5">
                                                             👑 Chefe</div>
-                                                        <div class="font-medium text-xs text-white/85 truncate">
+                                                        <div class="font-medium text-xs text-white truncate">
                                                             @php
                                                             $partsNome = explode(' ', trim($colaborador->nombre));
                                                             $partsApelido = explode(' ', trim($colaborador->apellido));
@@ -318,8 +312,7 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div
-                                                    class="text-center text-xs text-blue-700 py-1 ptr-placeholder font-bold">
+                                                <div style="color:rgba(9,20,59,0.35);" class="text-[10px] ptr-placeholder text-center py-1">
                                                     Chefe (Arrastar aqui)</div>
                                             @endif
                                         </div>
@@ -327,16 +320,16 @@
 
                                     {{-- Colaboradores Principales --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-white/15 rounded-md bg-white/3 flex flex-col gap-1"
+                                        <div style="background:#EEECEA; border:1px dashed rgba(9,20,59,0.20);" class="pep-colaboradores-list min-h-7 mb-1 p-0.5 rounded-md flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="principal"
                                             data-es-jefe="false">
                                             @if (isset($pepData[$pep->id]['principal']['colaboradores']) &&
                                                     count($pepData[$pep->id]['principal']['colaboradores']) > 0)
                                                 @foreach ($pepData[$pep->id]['principal']['colaboradores'] as $colaborador)
                                                     <div wire:key="col-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-0.5 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
+                                                        style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium flex items-center gap-1.5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
-                                                        <div class="font-medium text-xs text-white/85 truncate">
+                                                        <div class="font-medium text-xs text-white truncate">
                                                             @php
                                                             $partsNome = explode(' ', trim($colaborador->nombre));
                                                             $partsApelido = explode(' ', trim($colaborador->apellido));
@@ -350,7 +343,7 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div class="text-center text-xs text-gray-600 py-2 ptr-placeholder font-bold">
+                                                <div style="color:rgba(9,20,59,0.35);" class="text-[10px] ptr-placeholder text-center py-2">
                                                     Pessoal (Arrastar aqui)</div>
                                             @endif
                                         </div>
@@ -358,18 +351,18 @@
 
                                     {{-- Vehículos Principales --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-veiculos-list min-h-7 p-0.5 border border-dashed border-white/15 rounded-md bg-white/3 flex flex-col gap-1"
+                                        <div style="background:#EEECEA; border:1px dashed rgba(9,20,59,0.20);" class="pep-veiculos-list min-h-7 p-0.5 rounded-md flex flex-col gap-1"
                                             data-list-type="veiculo" data-equipo-tipo="principal">
                                             @if (isset($pepData[$pep->id]['principal']['veiculos']) && count($pepData[$pep->id]['principal']['veiculos']) > 0)
                                                 @foreach ($pepData[$pep->id]['principal']['veiculos'] as $veiculo)
                                                     <div wire:key="veic-{{ $pep->id }}-{{ $veiculo->id }}"
-                                                        class="bg-white/8 border border-purple-400/30 text-purple-300 rounded-md px-2 py-0.5 text-xs font-bold cursor-grab select-none draggable-item"
+                                                        style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium cursor-grab select-none draggable-item"
                                                         data-id="{{ $veiculo->id }}" data-type="veiculo">
                                                         <div class="truncate">{{ $veiculo->matricula }}</div>
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div class="text-center text-xs text-gray-600 py-1 ptr-placeholder font-bold">
+                                                <div style="color:rgba(9,20,59,0.35);" class="text-[10px] ptr-placeholder text-center py-1">
                                                     Veículos (Arrastar aqui)</div>
                                             @endif
                                         </div>
@@ -377,11 +370,10 @@
                                 </div>
 
                                 {{-- BOTÓN MOSTRAR/OCULTAR EQUIPO AUXILIAR --}}
-                                <div class="border-t border-gray-100 pt-1 flex justify-between items-center text-sm">
-                                    <span class="text-[0.6rem] font-bold uppercase tracking-widest text-white/35">Equipa
-                                        Auxiliar</span>
+                                <div style="background:#E4E2DF; border-top:1px solid rgba(9,20,59,0.08);" class="px-3 py-1.5 flex items-center justify-between -mx-2 -mb-1.5 mt-1">
+                                    <span style="color:#7A7775;" class="text-[9px] uppercase tracking-wide">Equipa Auxiliar</span>
                                     <button @click="openAuxiliar = !openAuxiliar" type="button"
-                                        class="text-white/60 hover:text-yellow-400 font-bold bg-white/5 px-2 py-0.5 rounded text-xs transition-colors">
+                                        style="color:#09143B;" class="text-[10px] font-bold hover:underline bg-transparent border-none cursor-pointer">
                                         <span x-show="!openAuxiliar">+ Adicionar</span>
                                         <span x-show="openAuxiliar">- Ocultar</span>
                                     </button>
@@ -389,21 +381,21 @@
 
                                 {{-- EQUIPO AUXILIAR (OCULTO POR DEFECTO PERO CON DATOS CARGADOS) --}}
                                 <div x-show="openAuxiliar || hasAuxiliar"
-                                    class="mt-3 bg-yellow-400/5 p-2 rounded border border-yellow-400/15">
+                                    style="background:#EEECEA; border:1px solid rgba(9,20,59,0.10);" class="mt-2 p-2 rounded-lg">
 
                                     {{-- Jefe Auxiliar --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-yellow-400/30 rounded bg-yellow-400/5 flex flex-col gap-1"
+                                        <div style="background:#F0EEEB; border:1px dashed rgba(9,20,59,0.20);" class="pep-colaboradores-list min-h-7 mb-1 p-0.5 rounded flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="auxiliar"
                                             data-es-jefe="true">
                                             @if (isset($pepData[$pep->id]['auxiliar']['jefes']) && count($pepData[$pep->id]['auxiliar']['jefes']) > 0)
                                                 @foreach ($pepData[$pep->id]['auxiliar']['jefes'] as $colaborador)
                                                     <div wire:key="jefe-aux-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-0.5 border border-yellow-400/40 rounded bg-yellow-400/8 cursor-grab select-none draggable-item min-w-0"
+                                                        style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium flex items-center gap-1.5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
-                                                        <div class="font-bold text-[0.6rem] text-yellow-400/70 pb-0.5 mb-0.5">
+                                                        <div style="color:rgba(255,211,0,0.7);" class="text-[9px] font-bold pb-0.5 mb-0.5">
                                                             ⭐ Líder Aux.</div>
-                                                        <div class="font-medium text-xs text-white/85 truncate">
+                                                        <div class="font-medium text-xs text-white truncate">
                                                             @php
                                                             $partsNome = explode(' ', trim($colaborador->nombre));
                                                             $partsApelido = explode(' ', trim($colaborador->apellido));
@@ -417,8 +409,7 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div
-                                                    class="text-center text-xs text-yellow-600/60 py-1 ptr-placeholder font-medium">
+                                                <div style="color:rgba(9,20,59,0.35);" class="text-[10px] ptr-placeholder text-center py-1">
                                                     Líder Aux. (Arrastar)</div>
                                             @endif
                                         </div>
@@ -426,16 +417,16 @@
 
                                     {{-- Colaboradores Auxiliares --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-colaboradores-list min-h-7 mb-1 p-0.5 border border-dashed border-white/15 rounded bg-white/3 flex flex-col gap-1"
+                                        <div style="background:#F0EEEB; border:1px dashed rgba(9,20,59,0.20);" class="pep-colaboradores-list min-h-7 mb-1 p-0.5 rounded flex flex-col gap-1"
                                             data-list-type="colaborador" data-equipo-tipo="auxiliar"
                                             data-es-jefe="false">
                                             @if (isset($pepData[$pep->id]['auxiliar']['colaboradores']) &&
                                                     count($pepData[$pep->id]['auxiliar']['colaboradores']) > 0)
                                                 @foreach ($pepData[$pep->id]['auxiliar']['colaboradores'] as $colaborador)
                                                     <div wire:key="col-aux-{{ $pep->id }}-{{ $colaborador->id }}"
-                                                        class="px-2 py-0.5 border border-white/10 rounded bg-white/5 cursor-grab select-none draggable-item min-w-0"
+                                                        style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium flex items-center gap-1.5 cursor-grab select-none draggable-item min-w-0"
                                                         data-id="{{ $colaborador->id }}" data-type="colaborador">
-                                                        <div class="font-medium text-xs text-white/85 truncate">
+                                                        <div class="font-medium text-xs text-white truncate">
                                                             @php
                                                             $partsNome = explode(' ', trim($colaborador->nombre));
                                                             $partsApelido = explode(' ', trim($colaborador->apellido));
@@ -449,7 +440,7 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div class="text-center text-xs text-gray-400 py-2 ptr-placeholder">
+                                                <div style="color:rgba(9,20,59,0.35);" class="text-[10px] ptr-placeholder text-center py-2">
                                                     Pessoal Auxiliar (Arrastar)</div>
                                             @endif
                                         </div>
@@ -457,18 +448,18 @@
 
                                     {{-- Veículos Auxiliares --}}
                                     <div class="drop-zone" data-pep-id="{{ $pep->id }}" data-type="pep">
-                                        <div class="pep-veiculos-list min-h-7 p-0.5 border border-dashed border-white/15 rounded bg-white/3 flex flex-col gap-1"
+                                        <div style="background:#F0EEEB; border:1px dashed rgba(9,20,59,0.20);" class="pep-veiculos-list min-h-7 p-0.5 rounded flex flex-col gap-1"
                                             data-list-type="veiculo" data-equipo-tipo="auxiliar">
                                             @if (isset($pepData[$pep->id]['auxiliar']['veiculos']) && count($pepData[$pep->id]['auxiliar']['veiculos']) > 0)
                                                 @foreach ($pepData[$pep->id]['auxiliar']['veiculos'] as $veiculo)
                                                     <div wire:key="veic-aux-{{ $pep->id }}-{{ $veiculo->id }}"
-                                                        class="bg-white/8 border border-purple-400/30 text-purple-300 rounded-md px-2 py-0.5 text-xs font-bold cursor-grab select-none draggable-item"
+                                                        style="background:#09143B; color:white;" class="rounded-md px-2 py-1 text-[11px] font-medium cursor-grab select-none draggable-item"
                                                         data-id="{{ $veiculo->id }}" data-type="veiculo">
                                                         <div class="truncate">{{ $veiculo->matricula }}</div>
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div class="text-center text-xs text-gray-400 py-1 ptr-placeholder">
+                                                <div style="color:rgba(9,20,59,0.35);" class="text-[10px] ptr-placeholder text-center py-1">
                                                     Veículos Aux. (Arrastar)</div>
                                             @endif
                                         </div>
@@ -491,104 +482,100 @@
     <!-- Panel Derecho: Estaleiro y Recursos Disponibles -->
     <div class="w-full lg:w-80 lg:shrink-0 sticky top-4 flex flex-col gap-4">
 
-        <div class="bg-blue-950/60 rounded-lg border border-white/10 p-3 flex flex-col gap-3 drop-zone"
+        <div style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl overflow-hidden flex flex-col drop-zone"
             data-pep-id="estaleiro" data-type="estaleiro">
-            <div class="flex flex-col gap-1 pb-2 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-base font-bold text-white/80 leading-tight">Estaleiro</h2>
-                        <span class="text-xs text-white/50 font-bold">Localização: <span
-                                class="font-black text-white/90">{{ $pepEstaleiro?->localizacao->nombre ?? 'Funchal' }}</span></span>
-                    </div>
-                    <div class="flex items-center gap-1">
-                        <button wire:click="irDiaAnterior" type="button" title="Dia de trabalho anterior"
-                            class="bg-white/8 hover:bg-white/15 border border-white/15 text-white/70 py-1.5 px-2.5 rounded-md text-[0.85rem] cursor-pointer leading-none transition-colors">&#8249;</button>
-                        <input type="date" wire:model.live="data"
-                            class="text-sm border-white/20 rounded-md shadow-sm focus:ring-yellow-400 focus:border-yellow-400 text-white/85 bg-white/8"
-                            style="color-scheme:dark; background:rgba(255,255,255,0.08);">
-                        <button wire:click="irDiaSeguinte" type="button" title="Dia de trabalho seguinte"
-                            class="bg-white/8 hover:bg-white/15 border border-white/15 text-white/70 py-1.5 px-2.5 rounded-md text-[0.85rem] cursor-pointer leading-none transition-colors">&#8250;</button>
-                    </div>
+
+            {{-- Header --}}
+            <div style="background:#09143B !important;" class="px-4 py-3 flex items-center justify-between">
+                <div>
+                    <h2 style="color:white;" class="text-sm font-medium leading-tight">Estaleiro</h2>
+                    <span style="color:rgba(255,255,255,0.5);" class="text-[10px]">{{ $pepEstaleiro?->localizacao->nombre ?? 'Funchal' }}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button wire:click="irDiaAnterior" type="button" title="Dia de trabalho anterior"
+                        style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:3px 8px; font-size:14px; cursor:pointer; line-height:1;">&#8249;</button>
+                    <input type="date" wire:model.live="data"
+                        style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:3px 8px; font-size:11px; outline:none; color-scheme:dark;">
+                    <button wire:click="irDiaSeguinte" type="button" title="Dia de trabalho seguinte"
+                        style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:3px 8px; font-size:14px; cursor:pointer; line-height:1;">&#8250;</button>
                 </div>
             </div>
 
-            {{-- Buscar en Estaleiro --}}
-            <div class="relative flex items-center">
-                <svg class="absolute left-2.5 text-gray-400 pointer-events-none h-4 w-4" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
-                </svg>
-                <input wire:model.live.debounce.300ms="searchEstaleiro" type="search"
+            {{-- Buscar --}}
+            <div style="background:#EEECEA !important; border-bottom:1px solid rgba(9,20,59,0.10); padding:8px 12px;" class="relative">
+                <input id="estaleiro-search" wire:model.live.debounce.300ms="searchEstaleiro" type="search"
                     placeholder="Pesquisar colaborador ou veículo..."
-                    class="bg-gray-50 text-gray-800 border border-gray-300 py-1.5 pr-2.5 pl-8 rounded-lg text-[0.8rem] w-full focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    style="width:100%; background:white !important; border:1px solid rgba(9,20,59,0.25) !important; border-radius:8px; padding:6px 10px; font-size:11px; color:#1A1A1A !important; outline:none;">
                 @if ($searchEstaleiro)
                     <button wire:click="$set('searchEstaleiro','')" type="button"
-                        class="absolute right-2 text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none text-base">&#10005;</button>
+                        class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none text-base">&#10005;</button>
                 @endif
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <!-- Columna de Colaboradores -->
-                <div>
-                    <h3 class="font-semibold text-(--cme-blue) mb-2 bg-gray-50 p-2 rounded text-center">
-                        Colaboradores</h3>
-                    <div id="colaboradores-list"
-                        class="flex flex-col gap-1 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
-                        data-list-type="colaborador">
+            {{-- Tabs --}}
+            <div x-data="{ tab: 'colaboradores' }" class="flex flex-col flex-1">
+                <div style="background:#E4E2DF; border-bottom:1px solid rgba(9,20,59,0.10);" class="flex">
+                    <button @click="tab='colaboradores'"
+                        :style="tab==='colaboradores' ? 'background:#09143B; color:#FFD300;' : 'background:transparent; color:#7A7775;'"
+                        class="flex-1 text-[11px] font-medium py-2 transition-colors border-none cursor-pointer">
+                        Colaboradores
+                    </button>
+                    <button @click="tab='veiculos'"
+                        :style="tab==='veiculos' ? 'background:#09143B; color:#FFD300;' : 'background:transparent; color:#7A7775;'"
+                        class="flex-1 text-[11px] font-medium py-2 transition-colors border-none cursor-pointer">
+                        Veículos
+                    </button>
+                </div>
+
+                {{-- Lista Colaboradores --}}
+                <div x-show="tab==='colaboradores'" style="background:#F0EEEB;" class="overflow-y-auto max-h-[55vh]">
+                    <div id="colaboradores-list" class="flex flex-col" data-list-type="colaborador">
                         @forelse ($colaboradores_libres as $colaborador)
                             <div wire:key="libre-col-{{ $colaborador->id }}"
-                                class="px-2 py-1 border border-white/8 rounded bg-white/5 cursor-grab select-none hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-colors draggable-item flex items-center gap-2 min-w-0"
+                                style="border-bottom:1px solid rgba(9,20,59,0.06);"
+                                class="px-3 py-2 flex flex-col gap-0.5 cursor-grab select-none draggable-item hover:bg-[#E4E2DF] transition-colors"
                                 data-id="{{ $colaborador->id }}" data-type="colaborador">
-                                <div class="min-w-0 flex-1 overflow-hidden">
-                                    <p class="text-[0.7rem] text-white/85 font-medium truncate leading-tight">
-                                        @php
-                                                            $partsNome = explode(' ', trim($colaborador->nombre));
-                                                            $partsApelido = explode(' ', trim($colaborador->apellido));
-                                                            $firstName = $partsNome[0] ?? '';
-                                                            $stopWords = ['de','da','do','dos','das','e'];
-                                                            $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
-                                                            $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
-                                                        @endphp
-                                                            {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
-                                    </p>
-                                    <p class="text-[0.58rem] text-white/40 uppercase truncate">
-                                        {{ $colaborador->denominacion_cargo }}
-                                    </p>
-                                </div>
+                                <p style="color:#1A1A1A;" class="text-[12px] font-medium truncate leading-tight m-0">
+                                    @php
+                                        $partsNome = explode(' ', trim($colaborador->nombre));
+                                        $partsApelido = explode(' ', trim($colaborador->apellido));
+                                        $firstName = $partsNome[0] ?? '';
+                                        $stopWords = ['de','da','do','dos','das','e'];
+                                        $lastParts = array_filter($partsApelido, fn($p) => !in_array(strtolower($p), $stopWords));
+                                        $lastName = !empty($lastParts) ? end($lastParts) : ($partsApelido[count($partsApelido)-1] ?? '');
+                                    @endphp
+                                    {{ $colaborador->numero_colaborador }} · {{ $firstName }} {{ $lastName }}
+                                </p>
+                                <p style="color:#7A7775;" class="text-[10px] uppercase truncate m-0">
+                                    {{ $colaborador->denominacion_cargo }}
+                                </p>
                             </div>
                         @empty
-                            <div class="text-center text-sm text-gray-400 italic py-4 empty-msg">Nenhum colaborador
-                                disponível</div>
+                            <div class="text-center py-6 text-[12px]" style="color:#7A7775;">Nenhum colaborador disponível</div>
                         @endforelse
                     </div>
                 </div>
 
-                <!-- Columna de Veículos -->
-                <div>
-                    <h3 class="font-semibold text-blue-900 mb-2 bg-gray-50 p-2 rounded text-center">Veículos
-                    </h3>
-                    <div id="veiculos-list"
-                        class="flex flex-col gap-1 min-h-[300px] max-h-[55vh] overflow-y-auto pr-1 pb-10 bg-white/3 rounded"
-                        data-list-type="veiculo">
+                {{-- Lista Veículos --}}
+                <div x-show="tab==='veiculos'" style="background:#F0EEEB;" class="overflow-y-auto max-h-[55vh]">
+                    <div id="veiculos-list" class="flex flex-col" data-list-type="veiculo">
                         @forelse ($veiculos_libres as $veiculo)
                             <div wire:key="libre-veic-{{ $veiculo->id }}"
-                                class="px-2 py-1 border border-white/8 rounded bg-white/5 cursor-grab select-none hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-colors draggable-item flex items-center gap-2 min-w-0"
+                                style="border-bottom:1px solid rgba(9,20,59,0.06);"
+                                class="px-3 py-2 flex flex-col gap-0.5 cursor-grab select-none draggable-item hover:bg-[#E4E2DF] transition-colors"
                                 data-id="{{ $veiculo->id }}" data-type="veiculo">
-                                <div class="min-w-0 flex-1 overflow-hidden">
-                                    <p class="text-[0.7rem] text-white/85 font-bold truncate leading-tight">
-                                        {{ $veiculo->matricula }}
-                                    </p>
-                                    <p class="text-[0.58rem] text-white/40 uppercase truncate">
-                                        {{ $veiculo->marca }} {{ $veiculo->modelo }}
-                                    </p>
-                                </div>
+                                <p style="color:#1A1A1A;" class="text-[12px] font-medium truncate m-0">{{ $veiculo->matricula }}</p>
+                                <p style="color:#7A7775;" class="text-[10px] uppercase truncate m-0">{{ $veiculo->marca }} {{ $veiculo->modelo }}</p>
                             </div>
                         @empty
-                            <div class="text-center text-sm text-gray-400 italic py-4 empty-msg">Nenhum veículo
-                                disponível</div>
+                            <div class="text-center py-6 text-[12px]" style="color:#7A7775;">Nenhum veículo disponível</div>
                         @endforelse
                     </div>
+                </div>
+
+                {{-- Zona drop --}}
+                <div style="background:#E4E2DF; border:2px dashed rgba(9,20,59,0.20); color:rgba(9,20,59,0.35);" class="rounded-xl mx-3 mb-3 mt-2 py-4 text-center text-[11px] font-medium">
+                    Largar aqui para remover do PEP
                 </div>
             </div>
         </div>
@@ -993,4 +980,7 @@
         </div>
     @endif
 
+    <style>
+        #estaleiro-search::placeholder { color: #7A7775 !important; opacity: 1 !important; }
+    </style>
 </div>
