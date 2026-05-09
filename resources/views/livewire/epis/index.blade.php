@@ -210,12 +210,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tighter"
-                                  style="{{ $item->tipo === 'epi' ? 'background:#dbeafe; color:#1e40af;' :
-                                   ($item->tipo === 'saude' ? 'background:#dcfce7; color:#166534;' :
-                                   ($item->tipo === 'incendio' ? 'background:#fde8e8; color:#A32D2D;' : 'background:#fdf0c2; color:#854F0B;')) }}">
-                                {{ $item->tipo === 'epi' ? 'EPI' :
-                                   ($item->tipo === 'saude' ? 'Saúde' :
-                                   ($item->tipo === 'incendio' ? 'Incêndio' : 'Ferramenta')) }}
+                                  style="{{ $item->tipo === 'epi' ? 'background:#dbeafe; color:#1e40af;' : 'background:#dcfce7; color:#166534;' }}">
+                                {{ $item->tipo === 'epi' ? 'EPI' : 'Saúde' }}
                             </span>
                         </td>
                         <td class="px-6 py-4 flex flex-col gap-0.5">
