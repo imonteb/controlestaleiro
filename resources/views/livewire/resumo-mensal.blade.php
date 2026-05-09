@@ -1,62 +1,69 @@
-<div class="p-4 lg:p-6 flex flex-col gap-5 h-full table-scroll-page">
+<div class="p-4 flex flex-col gap-4 h-full table-scroll-page">
 
-    {{-- Cabecera de página --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-            <h1 class="text-2xl font-bold uppercase text-yellow-600">Resumo Mensal</h1>
-            <p style="font-size:0.88rem;color:white;font-weight:600;margin-top:2px;">Atribuições por PEP e dia de trabalho</p>
-        </div>
+    {{-- HEADER --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)]">
+        <div style="background:#09143B;" class="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <flux:icon name="table-cells" class="text-[#FFD300] w-4 h-4" />
+                <span style="color:white;" class="text-sm font-medium">Resumo Mensal</span>
+            </div>
+            {{-- Controles --}}
+            <div class="flex flex-wrap items-center gap-2">
+                {{-- Filtro localização --}}
+                <select wire:model.live="filterLocalizacao"
+                        style="background:white; color:#1A1A1A; border:1px solid rgba(9,20,59,0.18); border-radius:6px; padding:5px 10px; font-size:11px; font-weight:600; cursor:pointer; outline:none;">
+                    <option value="">Todas as localizações</option>
+                    @foreach($locacoes as $loc)
+                        <option value="{{ $loc->id }}">{{ $loc->nombre }}</option>
+                    @endforeach
+                </select>
 
-        {{-- Controles: mes y filtro de locación --}}
-        <div class="flex flex-wrap items-center gap-3">
-            {{-- Filtro de localização --}}
-            <select wire:model.live="filterLocalizacao"
-                    style="background:white;color:#111827;border:1.5px solid #9ca3af;padding:7px 12px;border-radius:8px;font-size:0.84rem;font-weight:700;cursor:pointer;">
-                <option value="">Todas as localizações</option>
-                @foreach($locacoes as $loc)
-                    <option value="{{ $loc->id }}">{{ $loc->nombre }}</option>
-                @endforeach
-            </select>
-
-            {{-- Navegación mes --}}
-            <div class="flex items-center gap-1">
-                <button wire:click="mesAnterior" type="button"
-                        style="background:#e5e7eb;border:1.5px solid #9ca3af;color:#111827;padding:7px 11px;border-radius:7px;font-size:0.9rem;cursor:pointer;font-weight:700;line-height:1;"
-                        onmouseover="this.style.background='#d1d5db'" onmouseout="this.style.background='#e5e7eb'">&#8249;</button>
-                <div style="background:white;border:1.5px solid #9ca3af;padding:7px 18px;border-radius:7px;font-size:0.9rem;font-weight:800;color:#1e3a8a;white-space:nowrap;min-width:140px;text-align:center;text-transform:capitalize;">
-                    {{ $nombreMes }}
+                {{-- Navegação mês --}}
+                <div class="flex items-center gap-1">
+                    <button wire:click="mesAnterior" type="button"
+                            style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.2); padding:5px 10px; border-radius:6px; font-size:13px; cursor:pointer; font-weight:700; line-height:1;">
+                        &#8249;
+                    </button>
+                    <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); padding:5px 16px; border-radius:6px; font-size:11px; font-weight:700; color:white; white-space:nowrap; min-width:120px; text-align:center; text-transform:capitalize;">
+                        {{ $nombreMes }}
+                    </div>
+                    <button wire:click="proximoMes" type="button"
+                            style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.2); padding:5px 10px; border-radius:6px; font-size:13px; cursor:pointer; font-weight:700; line-height:1;">
+                        &#8250;
+                    </button>
                 </div>
-                <button wire:click="proximoMes" type="button"
-                        style="background:#e5e7eb;border:1.5px solid #9ca3af;color:#111827;padding:7px 11px;border-radius:7px;font-size:0.9rem;cursor:pointer;font-weight:700;line-height:1;"
-                        onmouseover="this.style.background='#d1d5db'" onmouseout="this.style.background='#e5e7eb'">&#8250;</button>
             </div>
         </div>
+
+        {{-- Leyenda --}}
+        <div style="background:#F0EEEB; border-top:1px solid rgba(9,20,59,0.08);" class="px-4 py-2.5 flex flex-wrap items-center gap-4">
+            <span style="font-size:0.8rem;font-weight:800;color:#1e3a8a;">Nº colaboradores:</span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#374151;">
+                <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#f3f4f6;border:1.5px solid #d1d5db;"></span> 0 (sem dados)
+            </span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#166534;">
+                <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#dcfce7;border:1.5px solid #86efac;"></span> 1–3
+            </span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#14532d;">
+                <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#4ade80;border:1.5px solid #22c55e;"></span> 4–7
+            </span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#fff;background:#16a34a;padding:3px 8px 3px 4px;border-radius:6px;">
+                <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#16a34a;border:1.5px solid #15803d;"></span> 8+
+            </span>
+            <span style="width:1px;height:20px;background:#cbd5e1;margin:0 2px;"></span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#92400e;">
+                <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#fef3c7;border:1.5px solid #fcd34d;"></span> Estado especial
+            </span>
+            <span style="width:1px;height:20px;background:#cbd5e1;margin:0 2px;"></span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#7f1d1d;">
+                <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#7f1d1d;border:1.5px solid #991b1b;"></span> Fim de semana (com dados)
+            </span>
+        </div>
     </div>
 
-    {{-- Leyenda --}}
-    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;padding:10px 16px;">
-        <span style="font-size:0.8rem;font-weight:800;color:#1e3a8a;">Nº colaboradores:</span>
-        <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#374151;">
-            <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#f3f4f6;border:1.5px solid #d1d5db;"></span> 0 (sem dados)
-        </span>
-        <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#166534;">
-            <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#dcfce7;border:1.5px solid #86efac;"></span> 1–3
-        </span>
-        <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#14532d;">
-            <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#4ade80;border:1.5px solid #22c55e;"></span> 4–7
-        </span>
-        <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#fff;background:#16a34a;padding:3px 8px 3px 4px;border-radius:6px;">
-            <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#16a34a;border:1.5px solid #15803d;"></span> 8+
-        </span>
-        <span style="width:1px;height:20px;background:#cbd5e1;margin:0 2px;"></span>
-            <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#92400e;">
-            <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#fef3c7;border:1.5px solid #fcd34d;"></span> Estado especial
-        </span>
-        <span style="width:1px;height:20px;background:#cbd5e1;margin:0 2px;"></span>
-        <span style="display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#7f1d1d;">
-            <span style="display:inline-block;width:26px;height:20px;border-radius:4px;background:#7f1d1d;border:1.5px solid #991b1b;"></span> Fim de semana (com dados)
-        </span>
-    </div>
+    <style>
+        .pep-row-hover td, .pep-row-hover { background: #E4E2DF !important; }
+    </style>
 
     {{-- Tabla --}}
     <div class="flex-1 min-h-0 overflow-x-auto overflow-y-auto" style="border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border:1px solid #e5e7eb;">
@@ -95,15 +102,15 @@
             <tbody>
                 {{-- Filas de PEPs --}}
                 @forelse($peps as $i => $pep)
-                @php $rowBg = $i % 2 === 0 ? '#ffffff' : '#f8fafc'; @endphp
-                <tr style="background:{{ $rowBg }};" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='{{ $rowBg }}'">
+                @php $rowBg = $i % 2 === 0 ? '#FFFFFF' : '#F0EEEB'; @endphp
+                <tr style="background:{{ $rowBg }} !important;" onmouseover="this.classList.add('pep-row-hover')" onmouseout="this.classList.remove('pep-row-hover')">
                     {{-- PEP + locacion --}}
-                    <td style="position:sticky;left:0;z-index:10;background:inherit;padding:8px 14px;border-right:2px solid #e5e7eb;min-width:240px;border-bottom:1px solid #f1f5f9;">
-                        <div style="font-size:0.82rem;font-weight:700;color:#1e3a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;" title="{{ $pep->nombre }}">
+                    <td style="position:sticky;left:0;z-index:10;background:{{ $rowBg }} !important;padding:8px 14px;border-right:2px solid #e5e7eb;min-width:240px;border-bottom:1px solid #f1f5f9;">
+                        <div style="font-size:0.82rem;font-weight:700;color:#09143B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;" title="{{ $pep->nombre }}">
                             {{ $pep->nombre }}
                         </div>
                         @if($pep->localizacao)
-                        <div style="font-size:0.7rem;color:#6b7280;margin-top:1px;">
+                        <div style="font-size:0.7rem;color:#7A7775;margin-top:1px;">
                             📍 {{ $pep->localizacao->nombre }}
                         </div>
                         @endif
@@ -158,7 +165,7 @@
                 @if(count($estadosActivos) > 0)
                 <tr>
                     <td colspan="{{ count($diasLaborais) + 2 }}"
-                        style="background:#f8fafc;padding:5px 14px;font-size:0.7rem;font-weight:700;color:#9ca3af;letter-spacing:0.08em;text-transform:uppercase;border-top:2px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+                        style="background:#F0EEEB !important;padding:5px 14px;font-size:0.7rem;font-weight:700;color:#7A7775;letter-spacing:0.08em;text-transform:uppercase;border-top:2px solid rgba(9,20,59,0.12);border-bottom:1px solid rgba(9,20,59,0.08);">
                         Estados especiais
                     </td>
                 </tr>
@@ -177,8 +184,8 @@
                     ];
                     $ec = $estadoColors[$estado] ?? ['bg'=>'#f3f4f6','fg'=>'#374151','label'=>''];
                 @endphp
-                <tr style="background:{{ $ec['bg'] }};">
-                    <td style="position:sticky;left:0;z-index:10;background:{{ $ec['bg'] }};padding:7px 14px;border-right:2px solid #e5e7eb;min-width:240px;border-bottom:1px solid rgba(0,0,0,0.04);">
+                <tr style="background:{{ $ec['bg'] }} !important;">
+                    <td style="position:sticky;left:0;z-index:10;background:{{ $ec['bg'] }} !important;padding:7px 14px;border-right:2px solid #e5e7eb;min-width:240px;border-bottom:1px solid rgba(0,0,0,0.04);">
                         <div style="font-size:0.8rem;font-weight:700;color:{{ $ec['fg'] }};">
                             {{ $ec['label'] }} {{ $estadoLabels[$estado] }}
                         </div>
@@ -188,7 +195,7 @@
                         $fechaStr = $dia->toDateString();
                         $cnt = $estadoMatrix[$estado][$fechaStr] ?? 0;
                     @endphp
-                    <td style="text-align:center;padding:6px 2px;border-bottom:1px solid rgba(0,0,0,0.04);border-right:1px solid rgba(0,0,0,0.05);">
+                    <td style="background:{{ $ec['bg'] }} !important;text-align:center;padding:6px 2px;border-bottom:1px solid rgba(0,0,0,0.04);border-right:1px solid rgba(0,0,0,0.05);">
                         @if($cnt > 0)
                         <span style="display:inline-block;background:{{ $ec['fg'] }};color:white;font-size:0.75rem;font-weight:800;border-radius:5px;min-width:22px;padding:2px 4px;">{{ $cnt }}</span>
                         @else
@@ -196,15 +203,15 @@
                         @endif
                     </td>
                     @endforeach
-                    <td style="position:sticky;right:0;z-index:10;background:{{ $ec['bg'] }};text-align:center;padding:6px 10px;border-left:2px solid #e5e7eb;border-bottom:1px solid rgba(0,0,0,0.04);font-size:0.85rem;font-weight:800;color:{{ $ec['fg'] }};">
+                    <td style="position:sticky;right:0;z-index:10;background:{{ $ec['bg'] }} !important;text-align:center;padding:6px 10px;border-left:2px solid #e5e7eb;border-bottom:1px solid rgba(0,0,0,0.04);font-size:0.85rem;font-weight:800;color:{{ $ec['fg'] }};">
                         {{ array_sum($estadoMatrix[$estado] ?? []) ?: '–' }}
                     </td>
                 </tr>
                 @endforeach
 
                 {{-- Fila de totales diarios --}}
-                <tr style="background:#1e3a8a;">
-                    <td style="position:sticky;left:0;z-index:10;background:#1e3a8a;padding:9px 14px;border-right:2px solid #1e40af;border-top:2px solid #1e40af;font-size:0.78rem;font-weight:800;color:#fde047;white-space:nowrap;">
+                <tr style="background:#09143B !important;">
+                    <td style="position:sticky;left:0;z-index:10;background:#09143B !important;padding:9px 14px;border-right:2px solid rgba(255,255,255,0.1);border-top:2px solid rgba(255,255,255,0.1);font-size:0.78rem;font-weight:800;color:#FFD300;white-space:nowrap;">
                         TOTAL COLABORADORES / DIA
                     </td>
                     @foreach($diasLaborais as $dia)
@@ -219,7 +226,7 @@
                         <span style="font-size:0.82rem;font-weight:800;color:{{ $totColor }};">{{ $tot > 0 ? $tot : '–' }}</span>
                     </td>
                     @endforeach
-                    <td style="position:sticky;right:0;z-index:10;background:#1e3a8a;text-align:center;padding:7px 10px;border-left:2px solid #1e40af;border-top:2px solid #1e40af;font-size:0.88rem;font-weight:800;color:#fde047;">
+                    <td style="position:sticky;right:0;z-index:10;background:#09143B !important;text-align:center;padding:7px 10px;border-left:2px solid rgba(255,255,255,0.1);border-top:2px solid rgba(255,255,255,0.1);font-size:0.88rem;font-weight:800;color:#FFD300;">
                         {{ array_sum($totalesDia) ?: '–' }}
                     </td>
                 </tr>
