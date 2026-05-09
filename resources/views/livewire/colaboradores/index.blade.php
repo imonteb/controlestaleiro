@@ -1,66 +1,70 @@
-<div class="flex flex-col gap-6 w-full max-w-6xl mx-auto">
+<div class="flex flex-col gap-4 w-full max-w-6xl mx-auto">
 
     {{-- Page Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold uppercase text-yellow-500 tracking-wide">Colaboradores</h1>
-            <p class="text-sm text-white/80 mt-0.5">Gestão do pessoal registado no sistema</p>
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)]">
+        <div style="background:#09143B;" class="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <flux:icon name="users" class="text-[#FFD300] w-4 h-4" />
+                <span style="color:white;" class="text-sm font-medium">Colaboradores</span>
+            </div>
+            <a href="{{ route('colaboradores.crear') }}" wire:navigate
+               style="display:inline-flex; align-items:center; gap:6px; background:#FFD300; color:#09143B; font-weight:700; font-size:11px; padding:6px 14px; border-radius:6px; text-decoration:none; white-space:nowrap;">
+                + Novo Colaborador
+            </a>
         </div>
-        <a href="{{ route('colaboradores.crear') }}" wire:navigate
-           class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-(--cme-blue) font-bold py-2.5 px-5 rounded-lg transition-colors shadow-md whitespace-nowrap">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            Novo Colaborador
-        </a>
     </div>
 
     {{-- Filtro de estado + Pesquisa --}}
-    <div class="flex items-center justify-between gap-2 flex-wrap">
+    <div style="background:#F0EEEB !important; border:1px solid rgba(9,20,59,0.14); border-radius:10px; padding:10px 14px;" class="flex items-center justify-between gap-2 flex-wrap">
         <div class="flex items-center gap-2">
             <button wire:click="$set('filtro','activos')"
-                class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors border {{ $filtro === 'activos' ? 'bg-(--cme-blue) text-(--cme-yellow) border-(--cme-blue)' : 'bg-white text-gray-500 border-gray-300' }}">
+                style="{{ $filtro === 'activos' ? 'background:#09143B; color:#FFD300; border-color:#09143B;' : 'background:white; color:#4A4845; border-color:rgba(9,20,59,0.18);' }}"
+                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-colors border">
                 Ativos
             </button>
             <button wire:click="$set('filtro','inactivos')"
-                class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors border {{ $filtro === 'inactivos' ? 'bg-(--cme-blue) text-(--cme-yellow) border-(--cme-blue)' : 'bg-white text-gray-500 border-gray-300' }}">
+                style="{{ $filtro === 'inactivos' ? 'background:#09143B; color:#FFD300; border-color:#09143B;' : 'background:white; color:#4A4845; border-color:rgba(9,20,59,0.18);' }}"
+                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-colors border">
                 Inativos
             </button>
             <button wire:click="$set('filtro','todos')"
-                class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors border {{ $filtro === 'todos' ? 'bg-(--cme-blue) text-(--cme-yellow) border-(--cme-blue)' : 'bg-white text-gray-500 border-gray-300' }}">
+                style="{{ $filtro === 'todos' ? 'background:#09143B; color:#FFD300; border-color:#09143B;' : 'background:white; color:#4A4845; border-color:rgba(9,20,59,0.18);' }}"
+                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-colors border">
                 Todos
             </button>
         </div>
-        {{-- Buscar --}}
         <div class="relative flex items-center">
-            <svg class="absolute left-2.5 h-4 w-4 text-gray-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/></svg>
+            <svg class="absolute left-2.5 h-3.5 w-3.5 text-[#7A7775] pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/></svg>
             <input wire:model.live.debounce.300ms="pesquisa" type="search"
+                   id="colaboradores-search"
                    placeholder="Pesquisar..."
-                   class="bg-white text-gray-800 border border-gray-300 rounded-lg text-sm py-2 pl-9 pr-8 w-60 focus:outline-none focus:ring-2 focus:ring-(--cme-blue) focus:border-(--cme-blue)">
+                   style="background:white !important; color:#1A1A1A !important; border:1px solid rgba(9,20,59,0.18) !important; border-radius:8px; font-size:12px; padding:6px 28px; width:220px; outline:none;">
             @if($pesquisa)
-            <button wire:click="$set('pesquisa','')" type="button" class="absolute right-2 text-gray-400 hover:text-gray-600 cursor-pointer text-base leading-none">✕</button>
+            <button wire:click="$set('pesquisa','')" type="button" class="absolute right-2 text-[#7A7775] hover:text-[#1A1A1A] cursor-pointer text-base leading-none">✕</button>
             @endif
         </div>
     </div>
 
     {{-- Table Card --}}
-    <div class="bg-white rounded-2xl shadow-lg overflow-x-auto border border-gray-100">
+    <div style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl overflow-hidden">
 
         {{-- Table header bar --}}
-        <div class="bg-(--cme-blue) px-6 py-4 flex items-center justify-between">
+        <div style="background:#09143B !important;" class="px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-yellow-500 p-2 rounded-lg">
-                    <svg class="h-5 w-5 text-(--cme-blue)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 00-3-3.87"/></svg>
+                <div style="background:#FFD300;" class="p-2 rounded-lg">
+                    <svg class="h-5 w-5" style="color:#09143B;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 00-3-3.87"/></svg>
                 </div>
-                <span class="text-white font-semibold text-lg">Lista de Pessoal</span>
+                <span style="color:white;" class="font-semibold text-lg">Lista de Pessoal</span>
             </div>
-            <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">
+            <span style="background:rgba(255,255,255,0.15); color:white;" class="text-xs font-bold px-3 py-1 rounded-full">
                 {{ $colaboradores->count() }} registos
             </span>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead>
-                    <tr class="bg-gray-50 border-b-2 border-(--cme-blue)/20">
+                <thead style="background:#E4E2DF !important;">
+                    <tr style="background:#E4E2DF !important;">
                         @php
                             $cols = [
                                 'numero_colaborador' => 'Nº',
@@ -70,26 +74,28 @@
                             ];
                         @endphp
                         @foreach($cols as $col => $label)
-                        <th class="px-6 py-3.5 text-left border-b border-white/8">
+                        <th class="px-6 py-3.5 text-left border-b border-[rgba(9,20,59,0.08)]">
                             <button wire:click="sort('{{ $col }}')"
-                                class="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 uppercase tracking-wider hover:text-white/90 transition-colors group">
+                                class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors group"
+                                style="color:#7A7775;">
                                 {{ $label }}
                                 <span class="flex flex-col leading-none">
-                                    <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'asc' ? 'text-yellow-500' : 'text-gray-300 group-hover:text-gray-400' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4l4 6H4z"/></svg>
-                                    <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'desc' ? 'text-yellow-500' : 'text-gray-300 group-hover:text-gray-400' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 12L4 6h8z"/></svg>
+                                    <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'asc' ? 'text-[#FFD300]' : 'text-[rgba(9,20,59,0.25)]' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4l4 6H4z"/></svg>
+                                    <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'desc' ? 'text-[#FFD300]' : 'text-[rgba(9,20,59,0.25)]' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 12L4 6h8z"/></svg>
                                 </span>
                             </button>
                         </th>
                         @endforeach
-                        <th class="px-6 py-3.5 text-right text-xs font-bold text-white/60 uppercase tracking-wider border-b border-white/8 whitespace-nowrap">Ações</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-bold uppercase tracking-wider border-b border-[rgba(9,20,59,0.08)] whitespace-nowrap" style="color:#7A7775;">Ações</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-[rgba(9,20,59,0.06)]" style="background:#FFFFFF !important;">
                     @forelse($colaboradores as $colaborador)
-                    <tr class="{{ !$colaborador->activo ? 'opacity-50' : ($loop->index % 2 === 0 ? 'bg-white/0' : 'bg-white/3') }} hover:bg-yellow-400/5 transition-colors group">
+                    <tr class="{{ !$colaborador->activo ? 'opacity-50' : '' }} transition-colors group {{ $loop->index % 2 === 0 ? 'col-row-even' : 'col-row-odd' }}"
+                        style="background:{{ $loop->index % 2 === 0 ? '#FFFFFF' : '#F0EEEB' }} !important;">
                         <td class="px-6 py-4">
                             <div class="flex flex-col gap-1">
-                                <span class="inline-flex items-center gap-1.5 font-mono font-bold text-(--cme-blue) bg-blue-50 px-2.5 py-1 rounded-lg text-xs tracking-wider w-fit">
+                                <span class="inline-flex items-center gap-1.5 font-mono font-bold px-2.5 py-1 rounded-lg text-xs tracking-wider w-fit" style="background:rgba(9,20,59,0.08); color:#09143B;">
                                     {{ $colaborador->numero_colaborador }}
                                 </span>
                                 @if(!$colaborador->activo)
@@ -102,11 +108,11 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="h-8 w-8 rounded-full {{ $colaborador->activo ? 'bg-(--cme-blue)' : 'bg-gray-400' }} flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                <div class="h-8 w-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style="background:{{ $colaborador->activo ? '#09143B' : '#9ca3af' }};">
                                     {{ strtoupper(substr($colaborador->nombre, 0, 1)) }}{{ strtoupper(substr($colaborador->apellido, 0, 1)) }}
                                 </div>
                                 <div>
-                                    <div class="font-semibold text-gray-800 truncate max-w-45"
+                                    <div class="font-semibold truncate max-w-45" style="color:#1A1A1A;"
                                          title="{{ $colaborador->nombre }} {{ $colaborador->apellido }}">
                                         {{ $colaborador->nombre }} {{ $colaborador->apellido }}
                                     </div>
@@ -117,31 +123,33 @@
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-(--cme-blue)/10 text-(--cme-blue) border border-(--cme-blue)/20">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(9,20,59,0.08); color:#09143B; border:1px solid rgba(9,20,59,0.15);">
                                 {{ $colaborador->denominacion_cargo }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-gray-600">
+                        <td class="px-6 py-4" style="color:#4A4845;">
                             @if($colaborador->telefono)
                                 <span class="flex items-center gap-1.5">
-                                    <svg class="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                    <svg class="h-3.5 w-3.5 text-[#7A7775]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                                     {{ $colaborador->telefono }}
                                 </span>
                             @else
-                                <span class="text-gray-300">—</span>
+                                <span style="color:rgba(9,20,59,0.20);">—</span>
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('colaboradores.editar', $colaborador->id) }}" wire:navigate
-                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-yellow-50 hover:bg-yellow-100 text-yellow-700 border border-yellow-200 text-xs font-semibold transition-colors">
+                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+                                   style="background:#F0EEEB; color:#09143B; border:1px solid rgba(9,20,59,0.18);">
                                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     Editar
                                 </a>
                                 {{-- Toggle visible en dashboard --}}
                                 <button wire:click="toggleVisibleDashboard({{ $colaborador->id }})"
                                     title="{{ $colaborador->visible_en_dashboard ? 'Visível no dashboard — clique para ocultar' : 'Oculto do dashboard — clique para mostrar' }}"
-                                    style="min-width:76px;justify-content:center;" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border {{ $colaborador->visible_en_dashboard ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-400 border-gray-200' }}">
+                                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+                                    style="min-width:76px; justify-content:center; {{ $colaborador->visible_en_dashboard ? 'background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);' : 'background:#E4E2DF; color:#7A7775; border:1px solid rgba(9,20,59,0.14);' }}">
                                     @if($colaborador->visible_en_dashboard)
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                         Visível
@@ -153,7 +161,8 @@
                                 @if($colaborador->activo)
                                 <button wire:click="desativar({{ $colaborador->id }})"
                                     title="Desativar colaborador"
-                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors border bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100">
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors"
+                                    style="background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
                                     </svg>
@@ -161,7 +170,8 @@
                                 @else
                                 <button wire:click="reactivar({{ $colaborador->id }})"
                                     title="Reativar colaborador"
-                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors border bg-green-50 text-green-700 border-green-200 hover:bg-green-100">
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors"
+                                    style="background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
@@ -170,7 +180,8 @@
                                 @if(auth()->user()->isAdmin())
                                 <button wire:click="pedirEliminar({{ $colaborador->id }})"
                                     title="Eliminar colaborador"
-                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors border bg-red-50 text-red-600 border-red-200 hover:bg-red-100">
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
+                                    style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20);">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
@@ -211,10 +222,10 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-6 py-16 text-center">
-                            <div class="flex flex-col items-center gap-3 text-gray-400">
+                            <div class="flex flex-col items-center gap-3" style="color:#7A7775;">
                                 <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 00-3-3.87"/></svg>
                                 <p class="text-sm font-medium">Nenhum colaborador registado</p>
-                                <a href="{{ route('colaboradores.crear') }}" wire:navigate class="text-(--cme-blue) hover:underline text-xs">Criar o primeiro →</a>
+                                <a href="{{ route('colaboradores.crear') }}" wire:navigate class="text-xs hover:underline" style="color:#09143B;">Criar o primeiro →</a>
                             </div>
                         </td>
                     </tr>
@@ -223,7 +234,7 @@
             </table>
         </div>
         @if($colaboradores->hasPages())
-        <div class="px-4 py-3 border-t border-white/5">
+        <div class="px-4 py-3 border-t border-[rgba(9,20,59,0.08)]">
             {{ $colaboradores->links() }}
         </div>
         @endif
@@ -274,3 +285,10 @@
     @endif
 
 </div>
+
+<style>
+.col-row-even { background: #FFFFFF !important; }
+.col-row-odd  { background: #F0EEEB !important; }
+.col-row-even:hover, .col-row-odd:hover { background: #E4E2DF !important; }
+#colaboradores-search::placeholder { color: #7A7775 !important; opacity: 1 !important; }
+</style>
