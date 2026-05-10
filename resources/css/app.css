@@ -434,6 +434,62 @@ input[type="week"] {
     display: inline-block !important;
 }
 
+/* ── CME C016 — Flux Theme Override ─────────────── */
+@theme {
+  /* Accent color = amarelo CME */
+  --color-accent:            #FFD300;
+  --color-accent-content:    #09143B;
+  --color-accent-foreground: #09143B;
+
+  /* Base color = zinc redefinido para os cinzas CME quentes */
+  --color-zinc-50:  #F0EEEB;
+  --color-zinc-100: #EEECEA;
+  --color-zinc-200: #E4E2DF;
+  --color-zinc-300: #D0CECC;
+  --color-zinc-400: #9CA3AF;
+  --color-zinc-500: #7A7775;
+  --color-zinc-600: #4A4845;
+  --color-zinc-700: #2A2826;
+  --color-zinc-800: #1A1A1A;
+  --color-zinc-900: #09143B;
+  --color-zinc-950: #060D28;
+}
+
+/* ── CME Custom Tokens ───────────────────────────── */
+:root {
+  --cme-dark:    #09143B;
+  --cme-yellow:  #FFD300;
+  --cme-bg:      #EEECEA;
+  --cme-surface: #E4E2DF;
+  --cme-card:    #F0EEEB;
+  --cme-border:  rgba(9,20,59,0.14);
+  --cme-border2: rgba(9,20,59,0.18);
+  --cme-text:    #1A1A1A;
+  --cme-mid:     #4A4845;
+  --cme-muted:   #7A7775;
+}
+
+/* ── CME Utility Classes ─────────────────────────── */
+.cme-row-even { background: #ffffff !important; }
+.cme-row-odd  { background: var(--cme-card) !important; }
+.cme-row-even:hover,
+.cme-row-odd:hover { background: var(--cme-surface) !important; }
+
+.badge-ok      { background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25); border-radius:4px; padding:2px 8px; font-size:10px; font-weight:600; }
+.badge-warn    { background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20); border-radius:4px; padding:2px 8px; font-size:10px; font-weight:600; }
+.badge-danger  { background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); border-radius:4px; padding:2px 8px; font-size:10px; font-weight:600; }
+.badge-info    { background:#dbeafe; color:#1e40af; border:1px solid rgba(30,64,175,0.20); border-radius:4px; padding:2px 8px; font-size:10px; font-weight:600; }
+.badge-neutral { background:var(--cme-surface); color:var(--cme-mid); border:1px solid var(--cme-border); border-radius:4px; padding:2px 8px; font-size:10px; font-weight:600; }
+
+.btn-cme-primary   { background:var(--cme-dark) !important; color:var(--cme-yellow) !important; font-weight:700; border-radius:6px; padding:6px 14px; font-size:11px; border:none; cursor:pointer; }
+.btn-cme-secondary { background:var(--cme-surface) !important; color:var(--cme-mid) !important; border:1px solid var(--cme-border) !important; font-weight:600; border-radius:6px; padding:6px 14px; font-size:11px; cursor:pointer; }
+.btn-cme-ghost     { background:rgba(255,255,255,0.12) !important; color:white !important; border:1px solid rgba(255,255,255,0.2) !important; font-weight:600; border-radius:6px; padding:5px 12px; font-size:11px; cursor:pointer; }
+
+.cme-label { color:var(--cme-mid); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:4px; }
+.cme-input { background:white !important; color:var(--cme-text) !important; border:1px solid var(--cme-border2) !important; border-radius:8px; padding:6px 10px; font-size:12px; outline:none; width:100%; }
+.cme-input:focus { border-color:var(--cme-dark) !important; box-shadow:0 0 0 2px rgba(9,20,59,0.10); }
+.cme-input::placeholder { color:#9CA3AF !important; opacity:1 !important; }
+
 /* Scroll interno solo en páginas de tablas anchas */
 .table-scroll-page {
     flex: 1;

@@ -15,7 +15,7 @@
     </div>
 
     {{-- Filtro de estado + Pesquisa --}}
-    <div style="background:#F0EEEB !important; border:1px solid rgba(9,20,59,0.14); border-radius:10px; padding:10px 14px;" class="flex items-center justify-between gap-2 flex-wrap">
+    <div class="cme-card flex items-center justify-between gap-2 flex-wrap" style="border:1px solid rgba(9,20,59,0.14); border-radius:10px; padding:10px 14px;">
         <div class="flex items-center gap-2">
             <button wire:click="$set('filtro','activos')"
                 style="{{ $filtro === 'activos' ? 'background:#09143B; color:#FFD300; border-color:#09143B;' : 'background:white; color:#4A4845; border-color:rgba(9,20,59,0.18);' }}"
@@ -38,7 +38,8 @@
             <input wire:model.live.debounce.300ms="pesquisa" type="search"
                    id="colaboradores-search"
                    placeholder="Pesquisar..."
-                   style="background:white !important; color:#1A1A1A !important; border:1px solid rgba(9,20,59,0.18) !important; border-radius:8px; font-size:12px; padding:6px 28px; width:220px; outline:none;">
+                   class="cme-input"
+                   style="padding:6px 28px; width:220px;">
             @if($pesquisa)
             <button wire:click="$set('pesquisa','')" type="button" class="absolute right-2 text-[#7A7775] hover:text-[#1A1A1A] cursor-pointer text-base leading-none">✕</button>
             @endif
@@ -46,7 +47,7 @@
     </div>
 
     {{-- Table Card --}}
-    <div style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl overflow-hidden">
+    <div class="cme-card rounded-xl overflow-hidden" style="border:1px solid rgba(9,20,59,0.14);">
 
         {{-- Table header bar --}}
         <div style="background:#09143B !important;" class="px-6 py-4 flex items-center justify-between">
@@ -63,8 +64,8 @@
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead style="background:#E4E2DF !important;">
-                    <tr style="background:#E4E2DF !important;">
+                <thead class="cme-surface">
+                    <tr class="cme-surface">
                         @php
                             $cols = [
                                 'numero_colaborador' => 'Nº',
@@ -76,8 +77,7 @@
                         @foreach($cols as $col => $label)
                         <th class="px-6 py-3.5 text-left border-b border-[rgba(9,20,59,0.08)]">
                             <button wire:click="sort('{{ $col }}')"
-                                class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors group"
-                                style="color:#7A7775;">
+                                class="cme-muted inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors group">
                                 {{ $label }}
                                 <span class="flex flex-col leading-none">
                                     <svg class="h-2.5 w-2.5 {{ $sortBy === $col && $sortDir === 'asc' ? 'text-[#FFD300]' : 'text-[rgba(9,20,59,0.25)]' }}" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4l4 6H4z"/></svg>
@@ -86,13 +86,12 @@
                             </button>
                         </th>
                         @endforeach
-                        <th class="px-6 py-3.5 text-right text-xs font-bold uppercase tracking-wider border-b border-[rgba(9,20,59,0.08)] whitespace-nowrap" style="color:#7A7775;">Ações</th>
+                        <th class="cme-muted px-6 py-3.5 text-right text-xs font-bold uppercase tracking-wider border-b border-[rgba(9,20,59,0.08)] whitespace-nowrap">Ações</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-[rgba(9,20,59,0.06)]" style="background:#FFFFFF !important;">
+                <tbody class="bg-white divide-y divide-[rgba(9,20,59,0.06)]">
                     @forelse($colaboradores as $colaborador)
-                    <tr class="{{ !$colaborador->activo ? 'opacity-50' : '' }} transition-colors group {{ $loop->index % 2 === 0 ? 'col-row-even' : 'col-row-odd' }}"
-                        style="background:{{ $loop->index % 2 === 0 ? '#FFFFFF' : '#F0EEEB' }} !important;">
+                    <tr class="{{ !$colaborador->activo ? 'opacity-50' : '' }} transition-colors group {{ $loop->index % 2 === 0 ? 'cme-row-even' : 'cme-row-odd' }}">
                         <td class="px-6 py-4">
                             <div class="flex flex-col gap-1">
                                 <span class="inline-flex items-center gap-1.5 font-mono font-bold px-2.5 py-1 rounded-lg text-xs tracking-wider w-fit" style="background:rgba(9,20,59,0.08); color:#09143B;">
@@ -112,7 +111,7 @@
                                     {{ strtoupper(substr($colaborador->nombre, 0, 1)) }}{{ strtoupper(substr($colaborador->apellido, 0, 1)) }}
                                 </div>
                                 <div>
-                                    <div class="font-semibold truncate max-w-45" style="color:#1A1A1A;"
+                                    <div class="cme-text font-semibold truncate max-w-45"
                                          title="{{ $colaborador->nombre }} {{ $colaborador->apellido }}">
                                         {{ $colaborador->nombre }} {{ $colaborador->apellido }}
                                     </div>
@@ -127,7 +126,7 @@
                                 {{ $colaborador->denominacion_cargo }}
                             </span>
                         </td>
-                        <td class="px-6 py-4" style="color:#4A4845;">
+                        <td class="cme-mid px-6 py-4">
                             @if($colaborador->telefono)
                                 <span class="flex items-center gap-1.5">
                                     <svg class="h-3.5 w-3.5 text-[#7A7775]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -140,8 +139,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('colaboradores.editar', $colaborador->id) }}" wire:navigate
-                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
-                                   style="background:#F0EEEB; color:#09143B; border:1px solid rgba(9,20,59,0.18);">
+                                   class="btn-cme-secondary inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors">
                                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     Editar
                                 </a>
@@ -222,7 +220,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-6 py-16 text-center">
-                            <div class="flex flex-col items-center gap-3" style="color:#7A7775;">
+                            <div class="cme-muted flex flex-col items-center gap-3">
                                 <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 00-3-3.87"/></svg>
                                 <p class="text-sm font-medium">Nenhum colaborador registado</p>
                                 <a href="{{ route('colaboradores.crear') }}" wire:navigate class="text-xs hover:underline" style="color:#09143B;">Criar o primeiro →</a>
@@ -285,10 +283,3 @@
     @endif
 
 </div>
-
-<style>
-.col-row-even { background: #FFFFFF !important; }
-.col-row-odd  { background: #F0EEEB !important; }
-.col-row-even:hover, .col-row-odd:hover { background: #E4E2DF !important; }
-#colaboradores-search::placeholder { color: #7A7775 !important; opacity: 1 !important; }
-</style>

@@ -48,51 +48,55 @@
 }">
 
     {{-- Page Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold uppercase text-yellow-500 tracking-wide">Entregas</h1>
-            <p class="text-sm text-white/80 mt-0.5">Registo de entregas de EPIs aos colaboradores</p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-            {{-- Botão Relatório Mensal Global --}}
-            <div x-data="{ open: false }" class="relative">
-                <button @click="open = !open" 
-                    class="inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg transition-all shadow-md active:scale-95">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                    Relatório Mensal
-                    <svg class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
-                </button>
-                <div x-show="open" @click.away="open = false" 
-                    class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50 animate-in fade-in zoom-in duration-100"
-                    x-cloak>
-                    <p class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50 mb-1">Selecionar Período</p>
-                    <a href="{{ route('epis.imprimir-mensal', ['month' => now()->month, 'year' => now()->year]) }}" target="_blank"
-                       class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                        Mês Atual ({{ now()->translatedFormat('F') }})
-                    </a>
-                    <a href="{{ route('epis.imprimir-mensal', ['month' => now()->subMonth()->month, 'year' => now()->subMonth()->year]) }}" target="_blank"
-                       class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        Mês Anterior ({{ now()->subMonth()->translatedFormat('F') }})
-                    </a>
-                </div>
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)]">
+        <div style="background:#09143B;" class="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <flux:icon name="hand-raised" class="text-[#FFD300] w-4 h-4" />
+                <span style="color:white;" class="text-sm font-medium">Entregas de EPI</span>
             </div>
+            <div class="flex flex-wrap gap-2">
+                {{-- Botão Relatório Mensal Global --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open"
+                        class="inline-flex items-center gap-2 font-bold py-2 px-4 rounded-lg transition-all shadow-md active:scale-95 text-sm"
+                        style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.2);">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Relatório Mensal
+                        <svg class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    <div x-show="open" @click.away="open = false"
+                        class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50 animate-in fade-in zoom-in duration-100"
+                        x-cloak>
+                        <p class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50 mb-1">Selecionar Período</p>
+                        <a href="{{ route('epis.imprimir-mensal', ['month' => now()->month, 'year' => now()->year]) }}" target="_blank"
+                           class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            Mês Atual ({{ now()->translatedFormat('F') }})
+                        </a>
+                        <a href="{{ route('epis.imprimir-mensal', ['month' => now()->subMonth()->month, 'year' => now()->subMonth()->year]) }}" target="_blank"
+                           class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            Mês Anterior ({{ now()->subMonth()->translatedFormat('F') }})
+                        </a>
+                    </div>
+                </div>
 
-            <a href="{{ route('epis.entregas.crear') }}" wire:navigate
-                class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-(--cme-blue) font-bold py-2.5 px-5 rounded-lg transition-colors shadow-md whitespace-nowrap">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                Nova Entrega
-            </a>
+                <a href="{{ route('epis.entregas.crear') }}" wire:navigate
+                    class="inline-flex items-center gap-2 font-bold py-2 px-5 rounded-lg transition-colors shadow-md whitespace-nowrap text-sm"
+                    style="background:#FFD300; color:#09143B;">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Nova Entrega
+                </a>
+            </div>
         </div>
     </div>
 
     {{-- Filtros --}}
-    <div class="flex items-center justify-between gap-2 flex-wrap">
+    <div style="background:#F0EEEB !important; border:1px solid rgba(9,20,59,0.14); border-radius:10px; padding:10px 14px;" class="flex items-center justify-between gap-2 flex-wrap">
         <div class="flex items-center gap-2">
             <select wire:model.live="filtroEpi" class="rounded-lg text-sm"
                 style="background:white;color:#111827;border:1px solid #d1d5db;padding:8px 12px;outline:none;">
@@ -123,23 +127,24 @@
     {{-- Table --}}
     <div class="space-y-4">
         @forelse($colaboradores as $cId => $cData)
-            <div x-data="{ open: false }" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300"
-                 :class="open ? 'ring-2 ring-yellow-400/50 shadow-md' : 'hover:shadow-md'">
-                
+            <div x-data="{ open: false }" class="rounded-xl overflow-hidden transition-all duration-300"
+                 style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);">
+
                 {{-- Collaborator Header --}}
-                <div @click="open = !open" 
-                     class="px-6 py-4 flex items-center justify-between cursor-pointer transition-colors"
-                     :class="open ? 'bg-yellow-50/50' : 'hover:bg-gray-50 bg-white'">
-                    
+                <div @click="open = !open"
+                     class="px-5 py-4 flex items-center justify-between cursor-pointer transition-colors"
+                     :style="open ? 'background:#E4E2DF;' : 'background:#F0EEEB;'">
+
                     <div class="flex items-center gap-4">
-                        <div class="h-12 w-12 rounded-xl bg-(--cme-blue) flex items-center justify-center text-yellow-400 font-bold text-lg shadow-sm">
+                        <div class="h-12 w-12 rounded-xl flex items-center justify-center text-yellow-400 font-bold text-lg shadow-sm"
+                             style="background:#09143B;">
                             {{ substr($cData['info']->nombre, 0, 1) }}{{ substr($cData['info']->apellido, 0, 1) }}
                         </div>
                         <div>
-                            <h3 class="font-bold text-gray-900 text-lg leading-tight">
+                            <h3 class="font-bold text-lg leading-tight" style="color:#1A1A1A;">
                                 {{ $cData['info']->nombre }} {{ $cData['info']->apellido }}
                             </h3>
-                            <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mt-0.5">
+                            <p class="text-xs font-medium uppercase tracking-wider mt-0.5" style="color:#7A7775;">
                                 {{ $cData['info']->denominacion_cargo }}
                             </p>
                         </div>
@@ -147,12 +152,12 @@
 
                     <div class="flex items-center gap-4">
                         <div class="hidden sm:flex flex-col items-end">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Total Registos</span>
-                            <span class="text-sm font-black text-(--cme-blue)">
+                            <span class="text-[10px] font-bold uppercase tracking-tighter" style="color:#7A7775;">Total Registos</span>
+                            <span class="text-sm font-black" style="color:#09143B;">
                                 {{ $cData['meses']->reduce(fn($carry, $mes) => $carry + count($mes['items']), 0) }}
                             </span>
                         </div>
-                        <div class="bg-gray-100 p-2 rounded-lg text-gray-400 group-hover:text-(--cme-blue) transition-colors">
+                        <div class="p-2 rounded-lg transition-colors" style="background:#E4E2DF; color:#7A7775;">
                             <svg class="h-5 w-5 transition-transform duration-300" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -161,25 +166,26 @@
                 </div>
 
                 {{-- Accordion Content (Months) --}}
-                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="border-t border-gray-100">
-                    <div class="p-6 space-y-8 bg-gray-50/30">
+                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" style="border-top:1px solid rgba(9,20,59,0.08);">
+                    <div class="p-4 space-y-4" style="background:#EEECEA;">
                         @foreach($cData['meses'] as $mes)
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="rounded-xl overflow-hidden" style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.12);">
                                 {{-- Month Header --}}
-                                <div class="bg-gray-50 px-5 py-3 flex items-center justify-between border-b border-gray-100">
+                                <div class="px-4 py-2.5 flex items-center justify-between" style="background:#09143B;">
                                     <div class="flex items-center gap-2">
-                                        <div class="bg-blue-100 p-1.5 rounded-md text-blue-600">
+                                        <div class="p-1.5 rounded-md" style="background:rgba(255,211,0,0.15); color:#FFD300;">
                                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                         </div>
-                                        <h4 class="font-bold text-gray-800 text-sm capitalize">{{ $mes['label'] }}</h4>
+                                        <h4 class="font-medium text-[11px] uppercase tracking-widest" style="color:white;">{{ $mes['label'] }}</h4>
                                     </div>
-                                    
+
                                     <div class="flex items-center gap-3">
                                         <a href="{{ route('epis.ficha', [$cId, 'month' => $mes['month'], 'year' => $mes['year']]) }}" target="_blank"
-                                           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-yellow-500 text-(--cme-blue) text-xs font-bold hover:bg-yellow-400 transition-all shadow-sm active:scale-95">
-                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                           class="inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all active:scale-95"
+                                           style="background:#FFD300; color:#09143B;">
+                                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                             </svg>
                                             Imprimir Ficha ({{ $mes['month'] }}/{{ $mes['year'] }})
@@ -188,37 +194,39 @@
                                 </div>
 
                                 {{-- Deliveries Table --}}
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-sm">
-                                        <thead>
-                                            <tr class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100">
-                                                <th class="px-5 py-3 text-left">Data</th>
-                                                <th class="px-5 py-3 text-left">EPI</th>
-                                                <th class="px-5 py-3 text-center">Qtd</th>
-                                                <th class="px-5 py-3 text-left">Tamanho</th>
-                                                <th class="px-5 py-3 text-center">Estado</th>
-                                                <th class="px-5 py-3 text-right">Ações</th>
+                                <div class="overflow-x-auto" style="background:#FFFFFF !important;">
+                                    <table class="w-full text-sm" style="background:#FFFFFF !important;">
+                                        <thead style="background:#E4E2DF !important;">
+                                            <tr class="text-[10px] font-bold uppercase tracking-widest" style="background:#E4E2DF !important;">
+                                                <th class="px-5 py-3 text-left" style="color:#7A7775;">Data</th>
+                                                <th class="px-5 py-3 text-left" style="color:#7A7775;">EPI</th>
+                                                <th class="px-5 py-3 text-center" style="color:#7A7775;">Qtd</th>
+                                                <th class="px-5 py-3 text-left" style="color:#7A7775;">Tamanho</th>
+                                                <th class="px-5 py-3 text-center" style="color:#7A7775;">Estado</th>
+                                                <th class="px-5 py-3 text-right" style="color:#7A7775;">Ações</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="divide-y divide-gray-50">
+                                        <tbody style="background:#FFFFFF !important;">
                                             @foreach($mes['items'] as $e)
-                                                <tr class="hover:bg-blue-50/40 transition-colors group">
-                                                    <td class="px-5 py-4 font-medium text-gray-600">{{ $e->fecha_entrega->format('d/m/Y') }}</td>
+                                                <tr class="transition-colors ent-row"
+                                                    style="background:{{ $loop->index % 2 === 0 ? '#FFFFFF' : '#F0EEEB' }} !important;">
+                                                    <td class="px-5 py-4 font-medium" style="color:#1A1A1A;">{{ $e->fecha_entrega->format('d/m/Y') }}</td>
                                                     <td class="px-5 py-4">
                                                         <div class="flex flex-col">
-                                                            <span class="font-bold text-gray-800">{{ $e->epiItem->nombre ?? '—' }}</span>
+                                                            <span class="font-bold" style="color:#1A1A1A; font-weight:600;">{{ $e->epiItem->nombre ?? '—' }}</span>
                                                             @if($e->epiItem->codigo)
-                                                                <span class="text-[11px] text-gray-400 font-mono">{{ $e->epiItem->codigo }}</span>
+                                                                <span class="text-[11px] font-mono" style="color:#7A7775;">{{ $e->epiItem->codigo }}</span>
                                                             @endif
                                                         </div>
                                                     </td>
                                                     <td class="px-5 py-4 text-center">
-                                                        <span class="font-bold text-gray-800">{{ $e->cantidad }}</span>
-                                                        <span class="text-[10px] text-gray-400 block">{{ $e->epiItem->unidade ?? '' }}</span>
+                                                        <span class="font-bold" style="color:#1A1A1A;">{{ $e->cantidad }}</span>
+                                                        <span class="text-[10px] block" style="color:#7A7775;">{{ $e->epiItem->unidade ?? '' }}</span>
                                                     </td>
-                                                    <td class="px-5 py-4 text-gray-500 font-medium italic">{{ $e->talla ?? '—' }}</td>
+                                                    <td class="px-5 py-4 font-medium italic" style="color:#1A1A1A;">{{ $e->talla ?? '—' }}</td>
                                                     <td class="px-5 py-4 text-center">
-                                                        <span class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold border {{ $e->estado->badgeClass() }}">
+                                                        <span class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold border"
+                                                              style="{{ $e->estado->value === 'entregue' ? 'background:#d4ede4; color:#0F6E56; border-color:rgba(15,110,86,0.25);' : 'background:#E4E2DF; color:#4A4845; border-color:rgba(9,20,59,0.14);' }}">
                                                             {{ strtoupper($e->estado->label()) }}
                                                         </span>
                                                     </td>
@@ -228,13 +236,13 @@
                                                             {{-- Indicador firma entrega --}}
                                                             @if ($e->estado->contaComoSaida())
                                                                 @if ($e->firma)
-                                                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600 bg-green-50 border border-green-200 rounded-full px-2 py-0.5" title="Assinado">
+                                                                    <span style="display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700; background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25); border-radius:20px; padding:2px 8px;" title="Assinado">
                                                                         <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                                                         Ass.
                                                                     </span>
                                                                 @else
                                                                     <button wire:click="solicitarAssinatura({{ $e->id }})"
-                                                                            class="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-700 bg-yellow-50 border border-yellow-300 rounded-full px-2 py-0.5 hover:bg-yellow-100 transition-colors"
+                                                                            style="display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700; background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.25); border-radius:20px; padding:2px 8px;"
                                                                             title="Sem assinatura — clique para assinar">
                                                                         <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                                                         Ass.
@@ -262,7 +270,8 @@
                                                             {{-- Devolver (solo Entregue) --}}
                                                             @if ($e->estado === \App\Enums\EpiEntregaEstado::Entregue)
                                                                 <button wire:click="marcarDevolvido({{ $e->id }})"
-                                                                        class="p-2 rounded-lg hover:bg-green-100 text-green-600 transition-colors"
+                                                                        class="p-2 rounded-lg transition-colors ent-btn-devolver"
+                                                                        style="color:#0F6E56;"
                                                                         title="Marcar Devolvido">
                                                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 15L12 19L8 15M12 19V5" />
@@ -272,7 +281,8 @@
                                                             {{-- Eliminar (sempre visível) --}}
                                                             <button wire:click="eliminar({{ $e->id }})"
                                                                     wire:confirm="Tem a certeza que quer eliminar esta entrega?"
-                                                                    class="p-2 rounded-lg hover:bg-red-100 text-red-500 transition-colors"
+                                                                    class="p-2 rounded-lg transition-colors ent-btn-eliminar"
+                                                                    style="color:#A32D2D;"
                                                                     title="Eliminar">
                                                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -284,8 +294,8 @@
                                                 </tr>
                                                 {{-- Inline Return Panel --}}
                                                 @if ($devolvendoId === $e->id)
-                                                    <tr class="bg-green-50/50">
-                                                        <td colspan="6" class="px-5 py-4 border-l-4 border-green-500">
+                                                    <tr style="background:#d4ede4;">
+                                                        <td colspan="6" class="px-5 py-4" style="border-left:4px solid #0F6E56;">
                                                             <div class="flex items-center gap-4">
                                                                 <div>
                                                                     <label class="text-[10px] font-bold text-green-700 uppercase tracking-widest block mb-1">Data de devolução</label>
@@ -311,15 +321,15 @@
                 </div>
             </div>
         @empty
-            <div class="bg-white rounded-2xl shadow-lg py-20 border border-gray-100 flex flex-col items-center gap-4">
-                <div class="bg-gray-50 p-6 rounded-full text-gray-300">
+            <div class="rounded-xl py-20 flex flex-col items-center gap-4" style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);">
+                <div class="p-6 rounded-full" style="background:#E4E2DF; color:rgba(9,20,59,0.25);">
                     <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                 </div>
                 <div class="text-center">
-                    <h3 class="text-lg font-bold text-gray-900">Nenhum colaborador encontrado</h3>
-                    <p class="text-gray-500 text-sm">Tente ajustar a sua pesquisa ou filtros.</p>
+                    <h3 class="text-lg font-bold" style="color:#1A1A1A;">Nenhum colaborador encontrado</h3>
+                    <p class="text-sm" style="color:#7A7775;">Tente ajustar a sua pesquisa ou filtros.</p>
                 </div>
             </div>
         @endforelse
@@ -687,3 +697,11 @@
 
     <livewire:epis.entrega-modal />
 </div>
+
+<style>
+.ent-row:nth-child(even) { background: #F0EEEB !important; }
+.ent-row:nth-child(odd)  { background: #FFFFFF !important; }
+.ent-row:hover { background: #E4E2DF !important; }
+.ent-btn-devolver:hover { background: #d4ede4 !important; }
+.ent-btn-eliminar:hover { background: #fde8e8 !important; }
+</style>
