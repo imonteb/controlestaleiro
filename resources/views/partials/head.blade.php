@@ -21,4 +21,3 @@
         localStorage.setItem('flux.appearance', 'dark');
     }
 </script>
-@fluxAppearance
