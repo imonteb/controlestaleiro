@@ -1,22 +1,21 @@
 <div class="flex flex-col gap-6 w-full max-w-6xl mx-auto">
 
     {{-- Page Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold uppercase text-yellow-600 tracking-wide">Recepções</h1>
-            <p class="text-sm text-white/70 mt-0.5">Registo de entradas de stock de EPIs</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <button wire:click="$set('showImport', true)"
-                class="inline-flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white font-bold py-2.5 px-5 rounded-lg transition-colors shadow-md whitespace-nowrap text-sm">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                Importar
-            </button>
-            <a href="{{ route('epis.rececoes.crear') }}" wire:navigate
-               class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-(--cme-blue) font-bold py-2.5 px-5 rounded-lg transition-colors shadow-md whitespace-nowrap">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                Nova Recepção
-            </a>
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)]">
+        <div style="background:#09143B;" class="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <flux:icon name="inbox-arrow-down" class="text-[#FFD300] w-4 h-4" />
+                <span style="color:white;" class="text-sm font-medium">Recepções de EPI</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button wire:click="$set('showImport', true)" class="btn-cme-ghost text-[11px]">
+                    📥 Importar
+                </button>
+                <a href="{{ route('epis.rececoes.crear') }}" wire:navigate
+                   style="background:#FFD300; color:#09143B; font-weight:700; font-size:11px; padding:6px 14px; border-radius:6px; text-decoration:none; white-space:nowrap;">
+                    + Nova Recepção
+                </a>
+            </div>
         </div>
     </div>
 
@@ -48,10 +47,10 @@
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                 
-                <div class="bg-green-800 px-6 py-4 flex items-center justify-between">
+                <div style="background:#09143B !important;" class="px-6 py-4 flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="bg-green-600 p-2 rounded-lg">
-                            <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                        <div style="background:rgba(255,211,0,0.15);" class="p-2 rounded-lg">
+                            <svg class="h-5 w-5 text-[#FFD300]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                         </div>
                         <span class="text-white font-semibold text-lg uppercase tracking-wider">Importar Recepções de Stock</span>
                     </div>
@@ -108,12 +107,12 @@
                         </div>
 
                         <div class="flex items-center justify-between gap-4 pt-4 border-t border-gray-100">
-                            <a href="{{ route('epis.rececoes.plantilla') }}" class="inline-flex items-center gap-2 text-xs text-green-700 hover:text-green-900 font-bold uppercase tracking-wider transition-colors">
+                            <a href="{{ route('epis.rececoes.plantilla') }}" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-colors" style="color:#09143B;">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                 Modelo Excel
                             </a>
                             <button wire:click="importar" wire:loading.attr="disabled"
-                                    class="inline-flex items-center gap-2 bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:shadow-green-900/20 text-xs uppercase tracking-widest">
+                                    class="btn-cme-primary inline-flex items-center gap-2 disabled:opacity-50 py-3 px-8 text-xs uppercase tracking-widest">
                                 <svg wire:loading.remove wire:target="importar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                 <svg wire:loading wire:target="importar" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
                                 <span wire:loading.remove wire:target="importar">Importar Dados</span>
@@ -127,7 +126,7 @@
     </div>
 
     {{-- Filtros --}}
-    <div class="flex items-center justify-between gap-2 flex-wrap">
+    <div class="cme-card rounded-xl border border-[rgba(9,20,59,0.14)] p-3 flex items-center justify-between gap-2 flex-wrap">
         <select wire:model.live="filtroEpi" class="rounded-lg text-sm" style="background:white;color:#111827;border:1px solid #d1d5db;padding:8px 12px;outline:none;">
             <option value="">Todos os EPIs</option>
             @foreach($epiItems as $epi)
@@ -142,7 +141,7 @@
     </div>
 
     {{-- Table --}}
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.14)]">
         <div class="bg-(--cme-blue) px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="bg-yellow-500 p-2 rounded-lg">
