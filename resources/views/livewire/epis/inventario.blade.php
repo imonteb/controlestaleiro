@@ -1,14 +1,16 @@
 <div class="flex flex-col gap-6 w-full">
 
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-2xl font-bold uppercase text-yellow-600 tracking-wide">Inventário EPI</h1>
-            <p class="text-sm text-white/70 mt-0.5">Conferir stock real vs. sistema e registar ajustes</p>
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)]">
+        <div style="background:#09143B;" class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="clipboard-document-list" class="text-[#FFD300] w-4 h-4" />
+                <span style="color:white;" class="text-sm font-medium">Inventário EPI</span>
+                <span style="color:rgba(255,255,255,0.5); font-size:11px;">— Conferir stock real vs. sistema</span>
+            </div>
+            <button wire:click="$toggle('mostrarHistorico')" class="btn-cme-ghost text-[11px]">
+                {{ $mostrarHistorico ? 'Ocultar histórico' : 'Ver histórico' }}
+            </button>
         </div>
-        <button wire:click="$toggle('mostrarHistorico')" class="inline-flex items-center gap-1.5 text-white/70 hover:text-white text-sm font-medium transition-colors">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            {{ $mostrarHistorico ? 'Ocultar histórico' : 'Ver histórico' }}
-        </button>
     </div>
 
     @if(session('message'))
@@ -19,7 +21,7 @@
     @endif
 
     {{-- Control Bar --}}
-    <div class="bg-blue-50 rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-row items-center justify-between gap-4">
+    <div class="cme-card rounded-xl border border-[rgba(9,20,59,0.14)] p-4 flex flex-row items-center justify-between gap-4">
         <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 flex-nowrap">
             <label class="inline-flex items-center cursor-pointer group shrink-0">
                 <input type="checkbox" wire:model.live="soloConStock" class="sr-only peer">
@@ -53,7 +55,7 @@
     </div>
 
     {{-- Inventário Table --}}
-    <div class="bg-blue-50 rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.14)]">
         <div class="bg-(--cme-blue) px-6 py-4 flex items-center gap-3">
             <div class="bg-yellow-500 p-2 rounded-lg">
                 <svg class="h-5 w-5 text-(--cme-blue)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 00(2 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -107,7 +109,7 @@
                 {{ collect($linhas)->filter(fn($l) => $l['diferenca'] != 0)->count() }} item(s) com diferença
             </span>
             <button wire:click="guardar" wire:loading.attr="disabled"
-                    class="inline-flex items-center gap-2 hover:bg-blue-800 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors shadow-md disabled:opacity-50" style="background:#0f2a5e;">
+                    class="btn-cme-primary inline-flex items-center gap-2 disabled:opacity-50">
                 <svg wire:loading.remove wire:target="guardar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                 <svg wire:loading wire:target="guardar" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
                 <span wire:loading.remove wire:target="guardar">Guardar ajustes</span>
@@ -120,7 +122,7 @@
     {{-- Histórico de Ajustes --}}
     @if($mostrarHistorico)
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-        <div class="bg-gray-800 px-6 py-4 flex items-center gap-3">
+        <div style="background:#09143B !important;" class="px-6 py-4 flex items-center gap-3">
             <div class="bg-yellow-500 p-2 rounded-lg">
                 <svg class="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>

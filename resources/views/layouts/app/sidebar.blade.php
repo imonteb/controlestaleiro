@@ -30,7 +30,7 @@
                 </flux:sidebar.group>
 
                 @if(auth()->user()?->isOperario() || auth()->user()?->isAdmin())
-                <flux:sidebar.group heading="Equipas" expandable :open="request()->routeIs('gestao-equipas') || request()->routeIs('publicar-dia') || request()->routeIs('monitor') || request()->routeIs('tv') || request()->routeIs('phone')" class="grid">
+                <flux:sidebar.group heading="Equipas" expandable :expanded="request()->routeIs('gestao-equipas') || request()->routeIs('publicar-dia') || request()->routeIs('monitor') || request()->routeIs('tv') || request()->routeIs('phone')" class="grid">
                     <flux:sidebar.item icon="calendar-days" :href="route('gestao-equipas')" :current="request()->routeIs('gestao-equipas')" wire:navigate>
                         Gestão de Equipas
                     </flux:sidebar.item>
@@ -53,7 +53,7 @@
                 @endif
 
                 @if(auth()->user()?->isAdmin())
-                <flux:sidebar.group heading="Estatísticas" expandable class="grid">
+                <flux:sidebar.group heading="Estatísticas" expandable :expanded="request()->routeIs('resumo-mensal') || request()->routeIs('estatisticas.*')" class="grid">
                     <flux:sidebar.item icon="table-cells" :href="route('resumo-mensal')" :current="request()->routeIs('resumo-mensal')" wire:navigate>
                         Resumo Mensal
                     </flux:sidebar.item>
@@ -67,7 +67,7 @@
                 @endif
 
                 @if(auth()->user()?->isAdmin())
-                <flux:sidebar.group heading="Dados Base" expandable class="grid">
+                <flux:sidebar.group heading="Dados Base" expandable :expanded="request()->routeIs('colaboradores.*') || request()->routeIs('veiculos.*') || request()->routeIs('peps.*') || request()->routeIs('tipos-trabalho.*') || request()->routeIs('localizacoes.*')" class="grid">
                     <flux:sidebar.item icon="users" :href="route('colaboradores.index')" :current="request()->routeIs('colaboradores.*')" wire:navigate>
                         Colaboradores
                     </flux:sidebar.item>
@@ -82,7 +82,7 @@
 
                 {{-- EPIs + Transporte --}}
                 @if(auth()->user()?->isEpi() || auth()->user()?->isAdmin())
-                <flux:sidebar.group heading="EPIs" expandable class="grid">
+                <flux:sidebar.group heading="EPIs" expandable :expanded="request()->routeIs('epis.*') || request()->routeIs('guias.*') || request()->routeIs('condutores.*')" class="grid">
                     <flux:sidebar.item icon="shield-check" :href="route('epis.index')" :current="request()->routeIs('epis.index') || request()->routeIs('epis.crear') || request()->routeIs('epis.editar')" wire:navigate>
                         Catálogo
                     </flux:sidebar.item>
@@ -112,7 +112,7 @@
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
-                <flux:sidebar.group heading="Transporte" expandable :open="request()->routeIs('guias.*')" class="grid">
+                <flux:sidebar.group heading="Transporte" expandable :expanded="request()->routeIs('guias.*') || request()->routeIs('condutores.*')" class="grid">
                     <flux:sidebar.item icon="document-text" :href="route('guias.index')" :current="request()->routeIs('guias.*')" wire:navigate>
                         Guias de Transporte
                     </flux:sidebar.item>
@@ -124,7 +124,7 @@
 
                 {{-- Logística e Segurança --}}
                 @if(auth()->user()?->isLogi() || auth()->user()?->isAdmin())
-                <flux:sidebar.group heading="Logística e Segurança" expandable class="grid">
+                <flux:sidebar.group heading="Logística e Segurança" expandable :expanded="request()->routeIs('ferramentas.*') || request()->routeIs('gestao-activos') || request()->routeIs('extintores.*') || request()->routeIs('materiais.*') || request()->routeIs('material-categorias.*') || request()->routeIs('locais-frequentes.*')" class="grid">
                     <flux:sidebar.item icon="wrench" :href="route('ferramentas.index')" :current="request()->routeIs('ferramentas.*')" wire:navigate>
                         Ferramentas
                     </flux:sidebar.item>
@@ -144,7 +144,7 @@
                 @endif
 
                 @if(auth()->user()?->isAdmin())
-                <flux:sidebar.group heading="Administração" expandable class="grid">
+                <flux:sidebar.group heading="Administração" expandable :expanded="request()->routeIs('register') || request()->routeIs('utilizadores.*') || request()->routeIs('sessoes.*') || request()->routeIs('importar*') || request()->routeIs('avisos-tv.*') || request()->routeIs('notificacoes.*') || request()->routeIs('seguranca.*') || request()->routeIs('legal-pages.*') || request()->routeIs('tipos-trabalho.*') || request()->routeIs('localizacoes.*')" class="grid">
                     <flux:sidebar.item icon="user-plus" :href="route('register')" :current="request()->routeIs('register')" wire:navigate>
                         Registar Utilizador
                     </flux:sidebar.item>
