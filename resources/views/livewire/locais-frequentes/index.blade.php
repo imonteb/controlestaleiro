@@ -1,119 +1,122 @@
-<div class="w-full max-w-5xl mx-auto px-4 py-8">
+<div class="w-full max-w-5xl mx-auto px-4 py-6">
 
-    {{-- Cabecera --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold uppercase tracking-wide text-yellow-600">Locais Frequentes</h1>
-            <p class="text-sm text-blue-200 mt-1">Endereços guardados para guias de transporte</p>
+    {{-- Header CME --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-4">
+        <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="map-pin" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">Locais Frequentes</span>
+                <span class="text-[10px] bg-[rgba(255,211,0,0.15)] text-[#FFD300] px-2 py-1 rounded font-medium tracking-wide">Endereços para guias de transporte</span>
+            </div>
+            <a href="{{ route('locais-frequentes.crear') }}" wire:navigate
+               style="background:#FFD300; color:#09143B; font-weight:700; font-size:11px; padding:6px 14px; border-radius:6px; white-space:nowrap; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none;">
+                + Novo Local
+            </a>
         </div>
-        <a href="{{ route('locais-frequentes.crear') }}" wire:navigate
-           class="inline-flex items-center gap-2 px-4 py-2 font-bold rounded-lg shadow transition text-sm"
-           style="background-color:var(--cme-yellow);color:var(--cme-blue);"
-           onmouseover="this.style.backgroundColor='#facc15';"
-           onmouseout="this.style.backgroundColor='var(--cme-yellow)';">
-            + Novo Local
-        </a>
     </div>
 
     {{-- Filtros --}}
-    <div class="flex flex-wrap gap-3 mb-5">
+    <div class="cme-card rounded-xl border border-[rgba(9,20,59,0.14)] p-3 flex flex-wrap gap-3 mb-4">
         <input wire:model.live.debounce.300ms="search"
                type="text"
                placeholder="Pesquisar por nome, localidade, morada..."
-               class="flex-1 min-w-[220px] bg-white/8 border border-white/15 text-white/90 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400/50 placeholder:text-white/30">
+               class="cme-input flex-1" style="min-width:220px;">
 
-        <select wire:model.live="filtroTipo"
-                class="bg-white/8 border border-white/15 text-white/90 rounded-lg px-3 py-2 text-sm focus:outline-none">
+        <select wire:model.live="filtroTipo" class="cme-input" style="min-width:160px;">
             <option value="">Todos os tipos</option>
             <option value="portugal">Portugal</option>
             <option value="internacional">Internacional</option>
         </select>
 
-        <select wire:model.live="filtroActivo"
-                class="bg-white/8 border border-white/15 text-white/90 rounded-lg px-3 py-2 text-sm focus:outline-none">
+        <select wire:model.live="filtroActivo" class="cme-input" style="min-width:140px;">
             <option value="activos">Activos</option>
             <option value="inactivos">Inactivos</option>
             <option value="">Todos</option>
         </select>
     </div>
 
-    {{-- Tabla --}}
-    <div class="bg-white/0 rounded-2xl border border-white/8 overflow-hidden">
+    {{-- Tabela --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.14)]">
         <table class="w-full text-sm">
-            <thead class="border-b border-white/8">
-                <tr>
-                    <th class="text-left px-4 py-3 font-semibold text-white/60">Nome</th>
-                    <th class="text-left px-4 py-3 font-semibold text-white/60">Endereço</th>
-                    <th class="text-left px-4 py-3 font-semibold text-white/60">CP</th>
-                    <th class="text-left px-4 py-3 font-semibold text-white/60">País</th>
-                    <th class="text-center px-4 py-3 font-semibold text-white/60">Estado</th>
+            <thead>
+                <tr style="background:#E4E2DF !important; border-bottom:1px solid rgba(9,20,59,0.10);">
+                    <th class="text-left px-4 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Nome</th>
+                    <th class="text-left px-4 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Endereço</th>
+                    <th class="text-left px-4 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">CP</th>
+                    <th class="text-left px-4 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">País</th>
+                    <th class="text-center px-4 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Estado</th>
                     <th class="px-4 py-3"></th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-white/5">
+            <tbody>
                 @forelse($locais as $local)
-                    <tr class="hover:bg-yellow-400/5 transition">
-                        <td class="px-4 py-3">
-                            <div class="font-semibold text-white/90">{{ $local->nome }}</div>
-                            <div class="text-xs text-white/40 mt-0.5">
-                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[0.6rem] font-bold uppercase
-                                    {{ $local->tipo === 'portugal' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
-                                    {{ $local->tipo }}
-                                </span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-3 text-white/60">
-                            {{ $local->morada }}
-                            @if($local->localidade)
-                                <div class="text-xs text-white/40">{{ $local->localidade }}</div>
+                @php $zebraBase = $loop->index % 2 === 0 ? '#ffffff' : '#F0EEEB'; @endphp
+                <tr class="hover:bg-[#EEF2FF] transition-colors" style="background:{{ $zebraBase }}; border-bottom:1px solid rgba(9,20,59,0.06);">
+                    <td class="px-4 py-3">
+                        <div style="color:#1A1A1A; font-weight:600; font-size:13px;">{{ $local->nome }}</div>
+                        <div class="mt-0.5">
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[0.6rem] font-bold uppercase
+                                {{ $local->tipo === 'portugal' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
+                                {{ $local->tipo }}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span style="color:#4A4845;">{{ $local->morada }}</span>
+                        @if($local->localidade)
+                            <div style="color:#7A7775; font-size:11px;">{{ $local->localidade }}</div>
+                        @endif
+                    </td>
+                    <td class="px-4 py-3 font-mono text-xs" style="color:#4A4845;">
+                        @if($local->cp4 && $local->cp3)
+                            {{ $local->cp4 }}-{{ $local->cp3 }}
+                            @if($local->cpalf)
+                                <div style="color:#7A7775;">{{ $local->cpalf }}</div>
                             @endif
-                        </td>
-                        <td class="px-4 py-3 text-white/60 font-mono text-xs">
-                            @if($local->cp4 && $local->cp3)
-                                {{ $local->cp4 }}-{{ $local->cp3 }}
-                                @if($local->cpalf)
-                                    <div class="text-white/40">{{ $local->cpalf }}</div>
-                                @endif
-                            @endif
-                        </td>
-                        <td class="px-4 py-3 text-white/50 text-xs">{{ $local->pais }}</td>
-                        <td class="px-4 py-3 text-center">
-                            @if($local->activo)
-                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-900/40 text-emerald-400 border border-emerald-500/30">Activo</span>
-                            @else
-                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold bg-red-900/40 text-red-400 border border-red-500/30">Inactivo</span>
-                            @endif
-                        </td>
-                        <td class="px-4 py-3 text-right">
-                            <div class="flex justify-end gap-2">
-                                <a href="{{ route('locais-frequentes.editar', $local) }}" wire:navigate
-                                   class="text-white/70 hover:text-white text-xs font-semibold">Editar</a>
-                                <button wire:click="pedirEliminar({{ $local->id }})"
-                                        class="text-red-400 hover:text-red-600 text-xs font-semibold">Eliminar</button>
-                            </div>
-                        </td>
-                    </tr>
+                        @endif
+                    </td>
+                    <td class="px-4 py-3 text-xs" style="color:#7A7775;">{{ $local->pais }}</td>
+                    <td class="px-4 py-3 text-center">
+                        @if($local->activo)
+                            <span class="badge-ok">Activo</span>
+                        @else
+                            <span class="badge-neutral">Inactivo</span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-3 text-right">
+                        <div class="flex justify-end gap-3">
+                            <a href="{{ route('locais-frequentes.editar', $local) }}" wire:navigate
+                               style="color:#09143B; font-size:12px; font-weight:600;" class="hover:underline">Editar</a>
+                            <button wire:click="pedirEliminar({{ $local->id }})"
+                                    style="color:#A32D2D; font-size:12px; font-weight:600;" class="hover:underline">Eliminar</button>
+                        </div>
+                    </td>
+                </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-gray-400 text-sm">Sem locais registados.</td>
+                        <td colspan="6" class="px-4 py-10 text-center cme-muted text-sm">Sem locais registados.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 
-    {{-- Paginacion --}}
-    <div class="mt-4">{{ $locais->links() }}</div>
+    {{-- Paginação --}}
+    @if($locais->hasPages())
+    <div style="border-top:1px solid rgba(9,20,59,0.08); padding:12px 0; margin-top:0;">
+        {{ $locais->links() }}
+    </div>
+    @endif
 
     {{-- Modal confirmar eliminar --}}
     @if($confirmandoEliminar)
     <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
         <div class="bg-white rounded-2xl shadow-xl p-6 max-w-sm w-full mx-4">
-            <h3 class="text-lg font-bold text-gray-800 mb-2">Eliminar local?</h3>
-            <p class="text-sm text-gray-500 mb-5">Esta acção não pode ser revertida.</p>
+            <h3 class="text-lg font-bold mb-2" style="color:#1A1A1A;">Eliminar local?</h3>
+            <p class="text-sm mb-5" style="color:#7A7775;">Esta acção não pode ser revertida.</p>
             <div class="flex gap-3 justify-end">
-                <button wire:click="cancelarEliminar" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50">Cancelar</button>
-                <button wire:click="eliminar" class="px-4 py-2 rounded-lg bg-red-500 text-white text-sm font-bold hover:bg-red-600">Eliminar</button>
+                <button wire:click="cancelarEliminar" class="btn-cme-secondary">Cancelar</button>
+                <button wire:click="eliminar" style="background:#A32D2D; color:white; font-weight:700; font-size:12px; padding:6px 16px; border-radius:6px; border:none; cursor:pointer;">Eliminar</button>
             </div>
         </div>
     </div>
