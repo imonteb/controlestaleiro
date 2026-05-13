@@ -95,23 +95,26 @@
     {{-- ── Modal Criar / Editar ──────────────────────────────── --}}
     @if($showModal)
     <div class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 py-6">
-        <div class="bg-blue-950 border border-blue-700 rounded-2xl shadow-2xl w-full max-w-lg mx-4 p-6 space-y-5">
-            <h2 class="text-lg font-bold text-white">{{ $editingId ? 'Editar Aviso' : 'Novo Aviso' }}</h2>
-
-            <div class="space-y-4">
+        <div class="w-full max-w-lg mx-4 rounded-2xl overflow-hidden shadow-2xl border border-[rgba(9,20,59,0.16)]">
+            {{-- Header --}}
+            <div class="bg-[#09143B] px-5 py-3 flex items-center gap-2">
+                <flux:icon name="tv" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">{{ $editingId ? 'Editar Aviso' : 'Novo Aviso' }}</span>
+            </div>
+            {{-- Body --}}
+            <div style="background:white;" class="p-6 space-y-4">
                 {{-- Título --}}
                 <div>
-                    <label class="block text-xs text-blue-300 font-medium mb-1">Título <span class="text-red-400">*</span></label>
-                    <input wire:model="titulo" type="text" maxlength="255"
-                           class="w-full rounded-lg bg-blue-900/60 border border-blue-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    @error('titulo') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                    <label class="cme-label">Título <span class="text-red-500">*</span></label>
+                    <input wire:model="titulo" type="text" maxlength="255" class="cme-input mt-1">
+                    @error('titulo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 {{-- Conteúdo --}}
                 <div>
-                    <label class="block text-xs text-blue-300 font-medium mb-1">Texto adicional (opcional)</label>
+                    <label class="cme-label">Texto adicional (opcional)</label>
                     <textarea wire:model="conteudo" rows="3" maxlength="2000"
-                              class="w-full rounded-lg bg-blue-900/60 border border-blue-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 resize-none"></textarea>
-                    @error('conteudo') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                              class="cme-input mt-1" style="resize:none;"></textarea>
+                    @error('conteudo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 {{-- Imagem com Crop --}}
@@ -165,18 +168,18 @@
                         if (this.cropperInstance) { this.cropperInstance.destroy(); this.cropperInstance = null; }
                     }
                 }">
-                    <label class="block text-xs text-blue-300 font-medium mb-1">Imagem (opcional)</label>
+                    <label class="cme-label">Imagem (opcional)</label>
 
                     {{-- Imagem atual guardada --}}
                     @if($imagemAtual)
-                    <div class="flex items-center gap-3 mb-2 p-2 rounded-lg bg-blue-900/40 border border-blue-700">
-                            <img src="{{ Storage::url($imagemAtual) }}" class="w-16 h-16 object-cover rounded-lg">
+                    <div class="flex items-center gap-3 mb-2 p-2 rounded-lg" style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);">
+                        <img src="{{ Storage::url($imagemAtual) }}" class="w-16 h-16 object-cover rounded-lg">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs text-blue-300">Imagem atual</p>
-                            <p class="text-xs text-blue-500 truncate">{{ basename($imagemAtual) }}</p>
+                            <p class="text-xs font-semibold" style="color:#4A4845;">Imagem atual</p>
+                            <p class="text-xs cme-muted truncate">{{ basename($imagemAtual) }}</p>
                         </div>
                         <button wire:click="removerImagem" type="button"
-                                class="text-xs bg-red-700/60 hover:bg-red-600 text-white px-2 py-1 rounded transition">
+                                style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); font-size:11px; font-weight:600; padding:4px 10px; border-radius:6px; cursor:pointer;">
                             Remover
                         </button>
                     </div>
@@ -184,15 +187,17 @@
 
                     {{-- Preview do crop --}}
                     <div x-show="preview" class="mb-2">
-                        <img :src="preview" class="w-full max-h-44 object-contain rounded-lg border border-emerald-700">
-                        <p class="text-xs text-emerald-400 mt-1" x-text="croppedLabel"></p>
+                        <img :src="preview" class="w-full max-h-44 object-contain rounded-lg" style="border:1px solid rgba(15,110,86,0.3);">
+                        <p class="text-xs mt-1" style="color:#0F6E56;" x-text="croppedLabel"></p>
                     </div>
 
                     {{-- Botão selecionar --}}
                     <button type="button" @click="openPicker()"
-                            class="flex items-center gap-2 w-full rounded-lg border border-dashed border-blue-600 bg-blue-900/40 hover:bg-blue-900/60 px-3 py-3 transition cursor-pointer">
-                        <svg class="w-5 h-5 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        <span class="text-xs text-blue-300" x-text="preview ? 'Escolher outra imagem…' : '{{ $imagemAtual ? 'Substituir imagem…' : 'Selecionar imagem e recortar…' }}'">
+                            class="flex items-center gap-2 w-full rounded-lg px-3 py-3 transition cursor-pointer"
+                            style="border:1px dashed rgba(9,20,59,0.25); background:#F0EEEB;"
+                            onmouseover="this.style.background='#E4E2DF';" onmouseout="this.style.background='#F0EEEB';">
+                        <svg class="w-5 h-5 shrink-0" style="color:#7A7775;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <span class="text-xs" style="color:#4A4845;" x-text="preview ? 'Escolher outra imagem…' : '{{ $imagemAtual ? 'Substituir imagem…' : 'Selecionar imagem e recortar…' }}'">
                         </span>
                     </button>
 
@@ -204,16 +209,17 @@
                     <input x-ref="livewireInput" wire:model="novaImagem" type="file"
                            accept="image/jpeg,image/png,image/webp,image/gif,image/png" class="hidden">
 
-                    <p class="text-xs text-blue-500 mt-1">JPEG, PNG ou WebP · Recortado a máx. 500×500 px · ≤1 MB</p>
-                    @error('novaImagem') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                    <p class="cme-muted text-xs mt-1">JPEG, PNG ou WebP · Recortado a máx. 500×500 px · ≤1 MB</p>
+                    @error('novaImagem') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
 
                     {{-- Layout da imagem --}}
                     @if($imagemAtual || $novaImagem)
                     <div class="mt-3">
-                        <label class="block text-xs text-blue-300 font-medium mb-1.5">Posição da imagem na TV</label>
+                        <label class="cme-label mb-1.5">Posição da imagem na TV</label>
                         <div class="flex gap-2">
                             <button type="button" wire:click="$set('layoutImagem','lateral')"
-                                class="flex-1 flex flex-col items-center gap-1.5 px-3 py-2.5 rounded-lg border text-xs font-semibold transition-colors {{ $layoutImagem === 'lateral' ? 'border-blue-400 bg-blue-800/60 text-white' : 'border-blue-700/40 bg-blue-900/30 text-blue-400 hover:bg-blue-900/60' }}">
+                                class="flex-1 flex flex-col items-center gap-1.5 px-3 py-2.5 rounded-lg border text-xs font-semibold transition-colors"
+                                style="{{ $layoutImagem === 'lateral' ? 'border:2px solid #09143B; background:#09143B; color:#FFD300;' : 'border:1px solid rgba(9,20,59,0.20); background:#F0EEEB; color:#4A4845;' }}">
                                 {{-- Icon: image on side --}}
                                 <svg viewBox="0 0 40 28" width="40" height="28" fill="none">
                                     <rect x="0.5" y="0.5" width="39" height="27" rx="3" stroke="currentColor" stroke-opacity="0.4"/>
@@ -226,7 +232,8 @@
                                 Lateral
                             </button>
                             <button type="button" wire:click="$set('layoutImagem','topo')"
-                                class="flex-1 flex flex-col items-center gap-1.5 px-3 py-2.5 rounded-lg border text-xs font-semibold transition-colors {{ $layoutImagem === 'topo' ? 'border-blue-400 bg-blue-800/60 text-white' : 'border-blue-700/40 bg-blue-900/30 text-blue-400 hover:bg-blue-900/60' }}">
+                                class="flex-1 flex flex-col items-center gap-1.5 px-3 py-2.5 rounded-lg border text-xs font-semibold transition-colors"
+                                style="{{ $layoutImagem === 'topo' ? 'border:2px solid #09143B; background:#09143B; color:#FFD300;' : 'border:1px solid rgba(9,20,59,0.20); background:#F0EEEB; color:#4A4845;' }}">
                                 {{-- Icon: image on top --}}
                                 <svg viewBox="0 0 40 28" width="40" height="28" fill="none">
                                     <rect x="0.5" y="0.5" width="39" height="27" rx="3" stroke="currentColor" stroke-opacity="0.4"/>
@@ -286,9 +293,8 @@
                 {{-- Cor + Ordem --}}
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-blue-300 font-medium mb-1">Cor do destaque</label>
-                        <select wire:model="cor"
-                                class="w-full rounded-lg bg-blue-900/60 border border-blue-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        <label class="cme-label">Cor do destaque</label>
+                        <select wire:model="cor" class="cme-input mt-1">
                             <option value="azul">🔵 Azul</option>
                             <option value="verde">🟢 Verde</option>
                             <option value="amarelo">🟡 Amarelo</option>
@@ -298,26 +304,24 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs text-blue-300 font-medium mb-1">Ordem</label>
-                        <input wire:model="ordem" type="number" min="0"
-                               class="w-full rounded-lg bg-blue-900/60 border border-blue-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        <label class="cme-label">Ordem</label>
+                        <input wire:model="ordem" type="number" min="0" class="cme-input mt-1">
                     </div>
                 </div>
                 {{-- Ativo --}}
                 <div class="flex items-center gap-3">
                     <input wire:model="ativo" type="checkbox" id="ativo-check"
-                           class="w-4 h-4 rounded border-blue-600 bg-blue-900 text-yellow-500 focus:ring-yellow-500">
-                    <label for="ativo-check" class="text-sm text-blue-200">Exibir na TV (ativo)</label>
+                           class="w-4 h-4 accent-[#09143B] cursor-pointer">
+                    <label for="ativo-check" class="text-sm font-semibold cursor-pointer" style="color:#4A4845;">Exibir na TV (ativo)</label>
                 </div>
             </div>
 
-            <div class="flex justify-end gap-3 pt-2">
-                <button wire:click="$set('showModal', false)"
-                    class="text-sm text-blue-300 hover:text-white px-4 py-2 rounded-lg border border-blue-700 hover:border-blue-500 transition">
+            <div class="flex justify-end gap-3 px-6 py-4" style="border-top:1px solid rgba(9,20,59,0.08);">
+                <button wire:click="$set('showModal', false)" class="btn-cme-secondary">
                     Cancelar
                 </button>
                 <button wire:click="guardar"
-                    class="text-sm bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-5 py-2 rounded-lg transition">
+                    style="background:#FFD300; color:#09143B; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; border:none; cursor:pointer;">
                     Guardar
                 </button>
             </div>
@@ -328,18 +332,22 @@
     {{-- ── Modal Eliminar ────────────────────────────────────── --}}
     @if($showDeleteModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-        <div class="bg-blue-950 border border-red-700/60 rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6 space-y-5">
-            <h2 class="text-lg font-bold text-white">Eliminar aviso?</h2>
-            <p class="text-sm text-blue-300">Esta ação não pode ser desfeita.</p>
-            <div class="flex justify-end gap-3">
-                <button wire:click="$set('showDeleteModal', false)"
-                    class="text-sm text-blue-300 hover:text-white px-4 py-2 rounded-lg border border-blue-700 hover:border-blue-500 transition">
-                    Cancelar
-                </button>
-                <button wire:click="eliminar"
-                    class="text-sm bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2 rounded-lg transition">
-                    Eliminar
-                </button>
+        <div class="w-full max-w-sm mx-4 rounded-2xl overflow-hidden shadow-2xl border border-[rgba(163,45,45,0.30)]">
+            <div style="background:#09143B;" class="px-5 py-3 flex items-center gap-2">
+                <svg class="w-4 h-4 shrink-0" style="color:#FFD300;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                <span class="text-white font-medium text-sm">Eliminar aviso?</span>
+            </div>
+            <div style="background:white;" class="px-6 py-5">
+                <p class="text-sm mb-5" style="color:#4A4845;">Esta ação não pode ser desfeita.</p>
+                <div class="flex justify-end gap-3">
+                    <button wire:click="$set('showDeleteModal', false)" class="btn-cme-secondary">
+                        Cancelar
+                    </button>
+                    <button wire:click="eliminar"
+                        style="background:#A32D2D; color:white; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; border:none; cursor:pointer;">
+                        Eliminar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
