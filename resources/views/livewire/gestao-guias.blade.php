@@ -1,23 +1,22 @@
 <div class="px-6 py-8 w-full max-w-7xl mx-auto space-y-10 animate-in fade-in duration-500">
     {{-- Header --}}
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-blue-700/30 pb-10">
-        <div class="space-y-2">
-            <h1 class="text-4xl font-black text-white tracking-tighter uppercase leading-none">
-                Gestão de <span class="text-yellow-500">Guias</span> de Transporte
-            </h1>
-            <p class="text-blue-400 font-bold text-xs uppercase tracking-[0.3em] flex items-center gap-2">
-                <span class="w-4 h-[2px] bg-yellow-500"></span>
-                Controlo de Carga e Logística C016
-            </p>
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-6">
+        <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="truck" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">Gestão de Guias de Transporte</span>
+                <span class="text-[10px] bg-[rgba(255,211,0,0.15)] text-[#FFD300] px-2 py-1 rounded font-medium tracking-wide">
+                    Controlo de Carga e Logística C016
+                </span>
+            </div>
+            <button wire:click="openModal" class="btn-cme-primary">
+                + Nova Guia
+            </button>
         </div>
-        <button wire:click="openModal" class="bg-yellow-500 hover:bg-yellow-400 text-[#09143B] font-black px-8 py-4 rounded-2xl shadow-xl shadow-yellow-500/20 transition-all active:scale-95 text-xs uppercase tracking-widest flex items-center gap-3 group">
-            <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
-            Nova Guia
-        </button>
     </div>
 
     @if (session()->has('success'))
-        <div class="bg-green-500/10 border border-green-500/50 text-green-400 px-6 py-4 rounded-2xl flex items-center gap-4 animate-in slide-in-from-top-4 duration-300">
+        <div class="badge-ok px-6 py-4 rounded-xl flex items-center gap-4 mb-4">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
             <span class="font-bold text-sm">{{ session('success') }}</span>
         </div>
@@ -26,14 +25,14 @@
     {{-- Filter tabs --}}
     <div class="flex items-center gap-2 flex-wrap">
         @foreach([
-            'todas'    => ['label' => 'Todas',    'color' => 'bg-white/5 text-white/60 hover:bg-white/10'],
-            'pendente' => ['label' => 'Pendentes', 'color' => 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20'],
-            'emitida'  => ['label' => 'Emitidas',  'color' => 'bg-green-500/10 text-green-400 hover:bg-green-500/20'],
-            'recusada' => ['label' => 'Recusadas', 'color' => 'bg-red-500/10 text-red-400 hover:bg-red-500/20'],
+            'todas'    => ['label' => 'Todas',    'color' => 'bg-[#E4E2DF] text-[#09143B] hover:bg-[#D0CECC] border-[rgba(9,20,59,0.2)]'],
+            'pendente' => ['label' => 'Pendentes', 'color' => 'bg-[#09143B] text-[#FFD300] hover:bg-[#0a1a4d] border-[#09143B]'],
+            'emitida'  => ['label' => 'Emitidas',  'color' => 'bg-[#0F6E56] text-white hover:bg-[#0a5c47] border-[#0F6E56]'],
+            'recusada' => ['label' => 'Recusadas', 'color' => 'bg-[#A32D2D] text-white hover:bg-[#8b2525] border-[#A32D2D]'],
         ] as $key => $tab)
             <button wire:click="$set('filtroEstado', '{{ $key }}')"
                 class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border
-                    {{ $filtroEstado === $key ? 'ring-2 ring-white/20 border-white/20' : 'border-transparent' }}
+                    {{ $filtroEstado === $key ? 'ring-2 ring-[#09143B] border-[#09143B]' : 'border-transparent' }}
                     {{ $tab['color'] }}">
                 {{ $tab['label'] }}
                 @if($key !== 'todas')
@@ -44,22 +43,22 @@
     </div>
 
     {{-- Table --}}
-    <div class="bg-blue-900/30 backdrop-blur-md rounded-[2.5rem] border border-blue-700/40 overflow-hidden shadow-2xl">
+    <div class="rounded-2xl border border-[rgba(9,20,59,0.14)] overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-blue-800/50">
-                        <th class="px-8 py-5 text-[10px] font-black text-blue-400 uppercase tracking-widest">Tipo / Data</th>
-                        <th class="px-8 py-5 text-[10px] font-black text-blue-400 uppercase tracking-widest">Origem</th>
-                        <th class="px-8 py-5 text-[10px] font-black text-blue-400 uppercase tracking-widest">Destino / Matrícula</th>
-                        <th class="px-8 py-5 text-[10px] font-black text-blue-400 uppercase tracking-widest">Itens</th>
-                        <th class="px-8 py-5 text-[10px] font-black text-blue-400 uppercase tracking-widest">Estado</th>
-                        <th class="px-8 py-5 text-[10px] font-black text-blue-400 uppercase tracking-widest text-right">Ações</th>
+                    <tr style="background:#E4E2DF;">
+                        <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest" style="color:#4A4845;">Tipo / Data</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest" style="color:#4A4845;">Origem</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest" style="color:#4A4845;">Destino / Matrícula</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest" style="color:#4A4845;">Itens</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest" style="color:#4A4845;">Estado</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-right" style="color:#4A4845;">Ações</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-blue-800/30">
+                <tbody class="divide-y divide-[rgba(9,20,59,0.06)]">
                     @forelse($guias as $g)
-                    <tr class="hover:bg-white/5 transition-colors group">
+                    <tr class="hover:bg-[#F0EEEB] transition-colors group">
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="inline-flex px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest {{ $g->tipo === 'global' ? 'bg-purple-600 text-white' : 'bg-blue-600 text-white' }}">{{ $g->tipo }}</span>
@@ -67,32 +66,32 @@
                                     <span class="inline-flex px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest bg-orange-500/20 text-orange-400">PWA</span>
                                 @endif
                             </div>
-                            <div class="text-sm font-black text-white italic">{{ $g->data_inicio?->format('d/m/Y') }}</div>
-                            <div class="text-[10px] font-black text-white/30 uppercase tracking-widest mt-1">{{ $g->hora_inicio }}</div>
+                            <div class="text-sm font-black italic" style="color:#1A1A1A;">{{ $g->data_inicio?->format('d/m/Y') }}</div>
+                            <div class="text-[10px] font-black uppercase tracking-widest mt-1" style="color:#7A7775;">{{ $g->hora_inicio }}</div>
                         </td>
                         <td class="px-8 py-6 text-sm">
-                            <div class="font-black text-white uppercase tracking-tight">{{ $g->local_carga_nome }}</div>
-                            <div class="text-blue-400/60 text-xs font-medium mt-1 uppercase">{{ $g->local_carga_localidade }}</div>
+                            <div class="font-black uppercase tracking-tight" style="color:#1A1A1A;">{{ $g->local_carga_nome }}</div>
+                            <div class="text-xs font-medium mt-1 uppercase" style="color:#7A7775;">{{ $g->local_carga_localidade }}</div>
                             @if($g->local_carga_morada)
-                                <div class="text-white/30 text-[10px] mt-0.5">{{ $g->local_carga_morada }}</div>
+                                <div class="text-[10px] mt-0.5" style="color:#7A7775;">{{ $g->local_carga_morada }}</div>
                             @endif
                         </td>
                         <td class="px-8 py-6 text-sm">
-                            <div class="font-black text-yellow-500 uppercase tracking-tight">{{ $g->matricula }}</div>
-                            <div class="text-white/60 text-xs font-medium mt-1 uppercase">{{ $g->destino_localidade }}</div>
+                            <div class="font-black uppercase tracking-tight" style="color:#09143B; font-weight:700;">{{ $g->matricula }}</div>
+                            <div class="text-xs font-medium mt-1 uppercase" style="color:#4A4845;">{{ $g->destino_localidade }}</div>
                             @if($g->destino_morada)
-                                <div class="text-white/30 text-[10px] mt-0.5">{{ $g->destino_morada }}</div>
+                                <div class="text-[10px] mt-0.5" style="color:#7A7775;">{{ $g->destino_morada }}</div>
                             @endif
                         </td>
                         <td class="px-8 py-6">
                             <div class="space-y-1">
                                 @foreach($g->items->take(2) as $item)
-                                    <div class="text-[10px] text-white/60 font-medium">
-                                        <span class="text-yellow-500 font-black">{{ $item->quantidade }} {{ $item->unidade }}</span> {{ $item->descricao }}
+                                    <div class="text-[10px] font-medium" style="color:#4A4845;">
+                                        <span class="font-black" style="color:#09143B; font-weight:700;">{{ $item->quantidade }} {{ $item->unidade }}</span> {{ $item->descricao }}
                                     </div>
                                 @endforeach
                                 @if($g->items->count() > 2)
-                                    <div class="text-[9px] text-blue-400 font-black uppercase tracking-widest">+{{ $g->items->count() - 2 }} mais</div>
+                                    <div class="text-[9px] font-black uppercase tracking-widest" style="color:#09143B;">+{{ $g->items->count() - 2 }} mais</div>
                                 @endif
                             </div>
                         </td>
@@ -117,17 +116,17 @@
                         </td>
                         <td class="px-8 py-6 text-right space-x-4">
                             <button wire:click="editarGuia({{ $g->id }})"
-                                    class="transition-colors text-xs font-black uppercase tracking-widest
-                                           {{ $g->origem === 'colaborador' ? 'text-orange-400 hover:text-orange-200' : 'text-blue-400 hover:text-white' }}">
+                                    class="transition-colors text-xs font-black uppercase tracking-widest"
+                                    style="{{ $g->origem === 'colaborador' ? 'color:#854F0B;' : 'color:#09143B;' }}">
                                 {{ $g->origem === 'colaborador' ? 'Ver Pedido' : 'Editar' }}
                             </button>
-                            <button wire:click="apagarGuia({{ $g->id }})" wire:confirm="Apagar esta guia?" class="text-red-400/50 hover:text-red-400 transition-colors text-xs font-black uppercase tracking-widest">Eliminar</button>
+                            <button wire:click="apagarGuia({{ $g->id }})" wire:confirm="Apagar esta guia?" class="transition-colors text-xs font-black uppercase tracking-widest" style="color:#A32D2D;">Eliminar</button>
                         </td>
                     </tr>
                     @empty
                     <tr>
                         <td colspan="6" class="px-8 py-24 text-center">
-                            <div class="text-white/20 text-[10px] font-black uppercase tracking-[0.6em]">Sem guias registadas</div>
+                            <div class="text-[10px] font-black uppercase tracking-[0.6em]" style="color:#7A7775;">Sem guias registadas</div>
                         </td>
                     </tr>
                     @endforelse
@@ -135,7 +134,7 @@
             </table>
         </div>
         @if($guias->hasPages())
-        <div class="px-8 py-6 bg-blue-950/50 border-t border-blue-800/30">
+        <div class="px-8 py-6 border-t" style="background:#F0EEEB; border-color:rgba(9,20,59,0.10);">
             {{ $guias->links() }}
         </div>
         @endif
