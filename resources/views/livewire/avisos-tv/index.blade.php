@@ -1,48 +1,51 @@
 <div class="p-6 space-y-6">
 
-    {{-- Cabeçalho --}}
-    <div class="flex items-center justify-between flex-wrap gap-3">
-        <div>
-            <h1 class="text-2xl font-bold text-white uppercase tracking-wide">Avisos para a TV</h1>
-            <p class="text-sm text-blue-200 mt-0.5">Mensagens e informações exibidas no painel TV</p>
+    {{-- Header CME --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-6">
+        <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="tv" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">Avisos para a TV</span>
+            </div>
+            <button wire:click="novo"
+                style="background:#FFD300; color:#09143B; font-weight:700; font-size:12px; padding:6px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Novo Aviso
+            </button>
         </div>
-        <button wire:click="novo"
-            class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold text-sm px-4 py-2 rounded-lg transition">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            Novo Aviso
-        </button>
     </div>
 
     {{-- Mensagem de sucesso --}}
     @if($successMessage)
-        <div class="bg-green-600/20 border border-green-500 text-green-200 rounded-lg px-4 py-3 text-sm">
+        <div class="badge-ok px-4 py-3 rounded-xl mb-4 flex items-center gap-2">
+            <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             {{ $successMessage }}
         </div>
     @endif
 
     {{-- Lista --}}
     @if($avisos->isEmpty())
-        <div class="rounded-xl border border-blue-700/40 bg-blue-900/20 px-6 py-12 text-center">
-            <p class="text-blue-400 text-sm">Nenhum aviso criado ainda.</p>
+        <div style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl px-6 py-12 text-center">
+            <p class="cme-muted text-sm italic">Nenhum aviso criado ainda.</p>
         </div>
     @else
     <div class="space-y-3">
         @foreach($avisos as $aviso)
         @php
             $cores = [
-                'azul'     => ['ring' => 'ring-blue-500/50',   'dot' => 'bg-blue-400',   'label' => 'Azul'],
-                'verde'    => ['ring' => 'ring-emerald-500/50', 'dot' => 'bg-emerald-400', 'label' => 'Verde'],
-                'amarelo'  => ['ring' => 'ring-yellow-500/50',  'dot' => 'bg-yellow-400', 'label' => 'Amarelo'],
-                'vermelho' => ['ring' => 'ring-red-500/50',     'dot' => 'bg-red-400',    'label' => 'Vermelho'],
-                'roxo'     => ['ring' => 'ring-purple-500/50',  'dot' => 'bg-purple-400', 'label' => 'Roxo'],
-                'branco'   => ['ring' => 'ring-white/30',       'dot' => 'bg-white',      'label' => 'Branco'],
+                'azul'     => ['dot' => 'bg-blue-400',   'label' => 'Azul'],
+                'verde'    => ['dot' => 'bg-emerald-400', 'label' => 'Verde'],
+                'amarelo'  => ['dot' => 'bg-yellow-400',  'label' => 'Amarelo'],
+                'vermelho' => ['dot' => 'bg-red-400',     'label' => 'Vermelho'],
+                'roxo'     => ['dot' => 'bg-purple-400',  'label' => 'Roxo'],
+                'branco'   => ['dot' => 'bg-white',       'label' => 'Branco'],
             ];
             $c = $cores[$aviso->cor] ?? $cores['azul'];
         @endphp
-        <div class="flex items-start gap-4 rounded-xl border border-blue-700/50 bg-blue-950/40 px-5 py-4 {{ $aviso->ativo ? '' : 'opacity-50' }}">
+        <div style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="flex items-start gap-4 rounded-xl px-5 py-4 {{ $aviso->ativo ? '' : 'opacity-50' }}">
             {{-- Ordem --}}
             <div class="shrink-0 w-8 text-center">
-                <span class="text-blue-500 text-xs font-bold">{{ $aviso->ordem }}</span>
+                <span style="color:#7A7775; font-size:11px; font-weight:700;">{{ $aviso->ordem }}</span>
             </div>
             {{-- Cor ponto --}}
             <div class="shrink-0 mt-1">
@@ -51,36 +54,36 @@
             {{-- Imagem miniatura --}}
             @if($aviso->imagem)
             <div class="shrink-0">
-                <img src="{{ $aviso->imageUrl() }}" alt="" class="w-12 h-12 object-cover rounded-lg border border-blue-700/50">
+                <img src="{{ $aviso->imageUrl() }}" alt="" style="width:48px; height:48px; object-fit:cover; border-radius:8px; border:1px solid rgba(9,20,59,0.14);">
             </div>
             @endif
             {{-- Conteúdo --}}
             <div class="flex-1 min-w-0">
-                <div class="text-white font-semibold text-sm leading-snug">{{ $aviso->titulo }}</div>
+                <div style="color:#1A1A1A; font-weight:600; font-size:14px; line-height:1.35;">{{ $aviso->titulo }}</div>
                 @if($aviso->conteudo)
-                <p class="text-blue-300 text-xs mt-1 leading-relaxed">{{ $aviso->conteudo }}</p>
+                <p style="color:#4A4845; font-size:12px; margin-top:4px; line-height:1.5;">{{ $aviso->conteudo }}</p>
                 @endif
             </div>
             {{-- Estado --}}
             <div class="shrink-0">
                 @if($aviso->ativo)
-                    <span class="inline-flex items-center gap-1 bg-green-500/20 text-green-300 border border-green-500/30 rounded-full px-2 py-0.5 text-xs">✓ Ativo</span>
+                    <span class="badge-ok inline-flex items-center gap-1 px-2 py-0.5 text-xs">✓ Ativo</span>
                 @else
-                    <span class="inline-flex items-center gap-1 bg-gray-500/20 text-gray-400 border border-gray-500/30 rounded-full px-2 py-0.5 text-xs">Inativo</span>
+                    <span class="badge-neutral inline-flex items-center gap-1 px-2 py-0.5 text-xs">Inativo</span>
                 @endif
             </div>
             {{-- Ações --}}
             <div class="shrink-0 flex items-center gap-2">
                 <button wire:click="toggleAtivo({{ $aviso->id }})"
-                    class="text-xs {{ $aviso->ativo ? 'bg-gray-700 hover:bg-gray-600' : 'bg-green-700 hover:bg-green-600' }} text-white px-3 py-1.5 rounded-lg transition">
+                    style="{{ $aviso->ativo ? 'background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);' : 'background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.20);' }} font-size:11px; font-weight:600; padding:6px 12px; border-radius:6px; cursor:pointer;">
                     {{ $aviso->ativo ? 'Desativar' : 'Ativar' }}
                 </button>
                 <button wire:click="editar({{ $aviso->id }})"
-                    class="text-xs bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition">
+                    class="btn-cme-secondary text-xs px-3 py-1.5 rounded-lg">
                     Editar
                 </button>
                 <button wire:click="confirmarEliminar({{ $aviso->id }})"
-                    class="text-xs bg-red-700 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition">
+                    style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); font-size:11px; font-weight:600; padding:6px 12px; border-radius:6px; cursor:pointer;">
                     Eliminar
                 </button>
             </div>
