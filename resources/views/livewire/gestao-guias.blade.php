@@ -9,7 +9,8 @@
                     Controlo de Carga e Logística C016
                 </span>
             </div>
-            <button wire:click="openModal" class="btn-cme-primary">
+            <button wire:click="openModal"
+                style="background:#FFD300; color:#09143B; font-weight:700; font-size:11px; padding:6px 14px; border-radius:6px; white-space:nowrap; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
                 + Nova Guia
             </button>
         </div>
