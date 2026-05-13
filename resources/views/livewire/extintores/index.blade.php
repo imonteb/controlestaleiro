@@ -95,11 +95,11 @@
                             </td>
                             <td class="px-6 py-3">
                                 @if($item->estado === 'Conforme')
-                                    <span class="badge-ok">● Conforme</span>
+                                    <span class="badge-ok">Conforme</span>
                                 @elseif($item->estado === 'Não Conforme')
-                                    <span class="badge-danger">● Não Conforme</span>
+                                    <span class="badge-danger">Não Conforme</span>
                                 @else
-                                    <span class="badge-neutral">● Desconhecido</span>
+                                    <span class="badge-neutral">Desconhecido</span>
                                 @endif
                             </td>
                             <td class="px-6 py-3 text-right">
