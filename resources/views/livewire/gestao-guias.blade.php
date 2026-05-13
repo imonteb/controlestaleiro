@@ -25,15 +25,15 @@
     {{-- Filter tabs --}}
     <div class="flex items-center gap-2 flex-wrap">
         @foreach([
-            'todas'    => ['label' => 'Todas',    'color' => 'bg-[#E4E2DF] text-[#09143B] hover:bg-[#D0CECC] border-[rgba(9,20,59,0.2)]'],
-            'pendente' => ['label' => 'Pendentes', 'color' => 'bg-[#09143B] text-[#FFD300] hover:bg-[#0a1a4d] border-[#09143B]'],
-            'emitida'  => ['label' => 'Emitidas',  'color' => 'bg-[#0F6E56] text-white hover:bg-[#0a5c47] border-[#0F6E56]'],
-            'recusada' => ['label' => 'Recusadas', 'color' => 'bg-[#A32D2D] text-white hover:bg-[#8b2525] border-[#A32D2D]'],
+            'todas'    => ['label' => 'Todas',    'bg' => '#E4E2DF', 'color' => '#09143B', 'border' => 'rgba(9,20,59,0.2)'],
+            'pendente' => ['label' => 'Pendentes', 'bg' => '#09143B', 'color' => '#FFD300', 'border' => '#09143B'],
+            'emitida'  => ['label' => 'Emitidas',  'bg' => '#0F6E56', 'color' => '#ffffff', 'border' => '#0F6E56'],
+            'recusada' => ['label' => 'Recusadas', 'bg' => '#A32D2D', 'color' => '#ffffff', 'border' => '#A32D2D'],
         ] as $key => $tab)
             <button wire:click="$set('filtroEstado', '{{ $key }}')"
-                class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border
-                    {{ $filtroEstado === $key ? 'ring-2 ring-[#09143B] border-[#09143B]' : 'border-transparent' }}
-                    {{ $tab['color'] }}">
+                class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
+                style="background:{{ $tab['bg'] }}; color:{{ $tab['color'] }}; border-color:{{ $tab['border'] }};
+                    {{ $filtroEstado === $key ? 'outline:2px solid #09143B; outline-offset:2px;' : '' }}">
                 {{ $tab['label'] }}
                 @if($key !== 'todas')
                     <span class="ml-1 opacity-60">({{ $counts[$key] ?? 0 }})</span>
