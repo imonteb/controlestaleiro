@@ -1,67 +1,63 @@
 <div class="w-full max-w-5xl mx-auto px-4 py-8">
 
-    {{-- Cabecera --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold uppercase tracking-wide text-yellow-600">Catálogo de Materiais</h1>
-            <p class="text-sm text-blue-200 mt-1">Materiais disponíveis para guias de transporte</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <button wire:click="$toggle('showImport')"
-                    class="inline-flex items-center gap-2 px-4 py-2 font-bold rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition text-sm">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                Importar Excel
-            </button>
-            <a href="{{ route('materiais.crear') }}" wire:navigate
-               class="inline-flex items-center gap-2 px-4 py-2 font-bold rounded-lg shadow transition text-sm"
-               style="background-color:var(--cme-yellow);color:var(--cme-blue);"
-               onmouseover="this.style.backgroundColor='#facc15';"
-               onmouseout="this.style.backgroundColor='var(--cme-yellow)';">
-                + Novo Material
-            </a>
+    {{-- Header CME --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-6">
+        <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="cube" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">Catálogo de Materiais</span>
+                <span style="color:rgba(255,255,255,0.5); font-size:11px;">— Materiais para guias de transporte</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button wire:click="$toggle('showImport')" class="btn-cme-ghost text-[11px]">
+                    📥 Importar Excel
+                </button>
+                <a href="{{ route('materiais.crear') }}" wire:navigate
+                   style="background:#FFD300; color:#09143B; font-weight:700; font-size:11px; padding:6px 14px; border-radius:6px; text-decoration:none; white-space:nowrap;">
+                    + Novo Material
+                </a>
+            </div>
         </div>
     </div>
 
-    {{-- Mensajes de importación --}}
+    {{-- Flash mensagens --}}
     @if($importSuccess)
-    <div class="mb-4 flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-sm font-semibold">
-        <svg class="h-5 w-5 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-        {{ $importMsg }}
+    <div class="badge-ok px-4 py-3 rounded-xl mb-4 flex items-center gap-3">
+        <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <span class="text-sm font-semibold">{{ $importMsg }}</span>
     </div>
     @endif
     @if($importError)
-    <div class="mb-4 flex items-center gap-3 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-sm font-semibold">
-        <svg class="h-5 w-5 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        {{ $importErrorMsg }}
+    <div class="badge-danger px-4 py-3 rounded-xl mb-4 flex items-center gap-3">
+        <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <span class="text-sm font-semibold">{{ $importErrorMsg }}</span>
     </div>
     @endif
 
-    {{-- Panel importación --}}
+    {{-- Panel importação --}}
     @if($showImport)
-    <div class="mb-4 bg-white border border-blue-200 rounded-xl p-4 shadow-sm">
+    <div style="background:#F0EEEB; border:1px solid rgba(9,20,59,0.14);" class="rounded-xl p-4 mb-4">
         <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-gray-800 text-sm">Importar Materiais via Excel</h3>
-            <button wire:click="$set('showImport', false)" class="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+            <h3 class="font-bold text-sm" style="color:#1A1A1A;">Importar Materiais via Excel</h3>
+            <button wire:click="$set('showImport', false)" class="text-lg leading-none" style="color:#7A7775; background:none; border:none; cursor:pointer;">&times;</button>
         </div>
-        <p class="text-xs text-gray-500 mb-3">
+        <p class="text-xs mb-3" style="color:#7A7775;">
             O ficheiro deve ter as colunas: <code class="bg-gray-100 px-1 rounded">codigo</code>, <code class="bg-gray-100 px-1 rounded">nome</code>, <code class="bg-gray-100 px-1 rounded">categoria</code>, <code class="bg-gray-100 px-1 rounded">unidade</code>, <code class="bg-gray-100 px-1 rounded">descricao</code>.
             O <strong>código</strong> é obrigatório e único — linhas com código existente serão actualizadas.
             Categorias novas são criadas automaticamente.
         </p>
         <div class="flex items-center gap-3 flex-wrap">
             <a href="{{ route('materiais.plantilla') }}" target="_blank"
-               class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+               style="color:#09143B;" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition hover:opacity-75" style="background:rgba(9,20,59,0.06);">
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 Descarregar Modelo Excel
             </a>
             <div class="flex items-center gap-2 flex-1 min-w-0">
                 <input type="file" wire:model="ficheiroImport" accept=".xlsx,.xls,.csv"
-                       class="text-sm text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                       class="text-sm text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#09143B] file:text-[#FFD300] hover:file:opacity-90 cursor-pointer">
                 @error('ficheiroImport') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
             </div>
-            <button wire:click="importar" wire:loading.attr="disabled"
-                    class="px-4 py-2 text-xs font-bold rounded-lg shadow transition"
-                    style="background-color:var(--cme-yellow);color:var(--cme-blue);">
+            <button wire:click="importar" wire:loading.attr="disabled" class="btn-cme-primary">
                 <span wire:loading.remove wire:target="importar">Importar</span>
                 <span wire:loading wire:target="importar">A importar...</span>
             </button>
@@ -106,16 +102,16 @@
         </a>
     </div>
 
-    {{-- Tabla --}}
-    <div class="bg-white rounded-xl border border-gray-200 shadow overflow-hidden">
+    {{-- Tabela --}}
+    <div class="rounded-xl border border-[rgba(9,20,59,0.14)] overflow-hidden">
         @if($materiais->isEmpty())
-            <div class="flex flex-col items-center justify-center py-16 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="flex flex-col items-center justify-center py-16" style="color:#7A7775;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#C4C2BF;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
                 <p class="text-base font-medium">Sem materiais encontrados</p>
                 @if(!$search && !$filtroCategoria)
-                <a href="{{ route('materiais.crear') }}" wire:navigate class="mt-3 text-sm font-semibold hover:underline" style="color:var(--cme-blue);">
+                <a href="{{ route('materiais.crear') }}" wire:navigate class="mt-3 text-sm font-semibold hover:underline" style="color:#09143B;">
                     Criar o primeiro →
                 </a>
                 @endif
@@ -123,52 +119,50 @@
         @else
             <table class="w-full text-sm">
                 <thead>
-                    <tr class="bg-gray-50 border-b border-gray-200">
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">Código</th>
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">Nome</th>
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">Categoria</th>
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">Unidade</th>
-                        <th class="text-left px-5 py-3 font-semibold text-gray-600 uppercase text-xs tracking-wider">Estado</th>
+                    <tr style="background:#E4E2DF; border-bottom:1px solid rgba(9,20,59,0.10);">
+                        <th class="text-left px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Código</th>
+                        <th class="text-left px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Nome</th>
+                        <th class="text-left px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Categoria</th>
+                        <th class="text-left px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Unidade</th>
+                        <th class="text-left px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Estado</th>
                         <th class="px-5 py-3"></th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-[rgba(9,20,59,0.06)]">
                     @foreach($materiais as $material)
-                    <tr class="hover:bg-gray-50 transition-colors {{ !$material->activo ? 'opacity-60' : '' }}">
+                    @php $rowBg = $loop->index % 2 === 0 ? '#ffffff' : '#F0EEEB'; @endphp
+                    <tr class="hover:bg-[#E4E2DF] transition-colors {{ !$material->activo ? 'opacity-60' : '' }}" style="background:{{ $rowBg }};">
                         <td class="px-5 py-3">
-                            <code class="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">{{ $material->codigo }}</code>
+                            <span class="badge-info">{{ $material->codigo }}</span>
                         </td>
                         <td class="px-5 py-3">
-                            <span class="font-semibold text-gray-800">{{ $material->nome }}</span>
+                            <span class="font-semibold" style="color:#1A1A1A;">{{ $material->nome }}</span>
                             @if($material->descripcion)
-                                <span class="block text-xs text-gray-400 mt-0.5 truncate max-w-xs">{{ $material->descripcion }}</span>
+                                <span class="block text-xs mt-0.5 truncate max-w-xs" style="color:#7A7775;">{{ $material->descripcion }}</span>
                             @endif
                         </td>
                         <td class="px-5 py-3">
                             @if($material->categoria)
-                                <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700">{{ $material->categoria->nome }}</span>
+                                <span class="badge-info">{{ $material->categoria->nome }}</span>
                             @else
-                                <span class="text-gray-300 text-xs italic">—</span>
+                                <span class="text-xs italic" style="color:#C4C2BF;">—</span>
                             @endif
                         </td>
-                        <td class="px-5 py-3">
-                            <span class="text-gray-600 font-mono text-xs">{{ $material->unidade_padrao }}</span>
-                        </td>
+                        <td class="px-5 py-3 font-mono text-xs" style="color:#4A4845;">{{ $material->unidade_padrao }}</td>
                         <td class="px-5 py-3">
                             @if($material->activo)
-                                <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">Activo</span>
+                                <span class="badge-ok">Activo</span>
                             @else
-                                <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-500" title="{{ $material->motivo_baja }}">Inactivo</span>
+                                <span class="badge-neutral" title="{{ $material->motivo_baja }}">Inactivo</span>
                             @endif
                         </td>
                         <td class="px-5 py-3 text-right">
                             <div class="flex items-center justify-end gap-2">
-                                <a href="{{ route('materiais.editar', $material) }}" wire:navigate
-                                   class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition">
+                                <a href="{{ route('materiais.editar', $material) }}" wire:navigate class="btn-cme-secondary">
                                     Editar
                                 </a>
                                 <button wire:click="pedirEliminar({{ $material->id }})"
-                                        class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition">
+                                        style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); font-size:11px; font-weight:600; padding:6px 12px; border-radius:6px; cursor:pointer;">
                                     Eliminar
                                 </button>
                             </div>
@@ -178,9 +172,9 @@
                 </tbody>
             </table>
 
-            {{-- Paginación --}}
+            {{-- Paginação --}}
             @if($materiais->hasPages())
-            <div class="px-5 py-3 border-t border-gray-100">
+            <div class="px-5 py-3" style="border-top:1px solid rgba(9,20,59,0.08);">
                 {{ $materiais->links() }}
             </div>
             @endif
@@ -189,10 +183,10 @@
 
     {{-- Total --}}
     @if($materiais->total() > 0)
-    <p class="text-xs text-gray-400 mt-3 text-right">{{ $materiais->total() }} material{{ $materiais->total() !== 1 ? 'is' : '' }} encontrado{{ $materiais->total() !== 1 ? 's' : '' }}</p>
+    <p class="text-xs mt-3 text-right" style="color:#7A7775;">{{ $materiais->total() }} material{{ $materiais->total() !== 1 ? 'is' : '' }} encontrado{{ $materiais->total() !== 1 ? 's' : '' }}</p>
     @endif
 
-    {{-- Modal confirmar eliminación --}}
+    {{-- Modal confirmar eliminação --}}
     @if($confirmandoEliminar)
     <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6">
