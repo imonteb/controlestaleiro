@@ -47,20 +47,28 @@
             Categorias novas são criadas automaticamente.
         </p>
         <div class="flex items-center gap-3 flex-wrap">
-            <a href="{{ route('materiais.plantilla') }}" target="_blank"
-               style="color:#09143B;" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition hover:opacity-75" style="background:rgba(9,20,59,0.06);">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                Descarregar Modelo Excel
-            </a>
-            <div class="flex items-center gap-2 flex-1 min-w-0">
+            <div class="flex flex-col gap-2 w-full">
+                <label class="text-[10px] font-black uppercase tracking-widest" style="color:#4A4845;">Selecionar Ficheiro (.xlsx, .xls, .csv)</label>
                 <input type="file" wire:model="ficheiroImport" accept=".xlsx,.xls,.csv"
-                       class="text-sm text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#09143B] file:text-[#FFD300] hover:file:opacity-90 cursor-pointer">
-                @error('ficheiroImport') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
+                       class="block w-full text-sm text-[#4A4845] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:uppercase file:bg-[#09143B] file:text-[#FFD300] hover:file:opacity-90 cursor-pointer border border-[rgba(9,20,59,0.18)] rounded-lg bg-white">
+                @error('ficheiroImport') <span class="text-xs text-red-500 mt-1">{{ $message }}</span> @enderror
             </div>
-            <button wire:click="importar" wire:loading.attr="disabled" class="btn-cme-primary">
-                <span wire:loading.remove wire:target="importar">Importar</span>
-                <span wire:loading wire:target="importar">A importar...</span>
-            </button>
+            <div class="flex items-center justify-between gap-4 pt-3 w-full" style="border-top:1px solid rgba(9,20,59,0.08);">
+                <a href="{{ route('materiais.plantilla') }}" target="_blank"
+                   class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-colors hover:opacity-70"
+                   style="color:#09143B;">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Modelo Excel
+                </a>
+                <button wire:click="importar" wire:loading.attr="disabled"
+                        class="inline-flex items-center gap-2 font-bold py-2.5 px-6 rounded-xl transition-all shadow-md text-xs uppercase tracking-widest disabled:opacity-50"
+                        style="background:#09143B; color:#FFD300;">
+                    <svg wire:loading.remove wire:target="importar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <svg wire:loading wire:target="importar" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                    <span wire:loading.remove wire:target="importar">Importar</span>
+                    <span wire:loading wire:target="importar">A processar...</span>
+                </button>
+            </div>
         </div>
     </div>
     @endif
