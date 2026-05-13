@@ -54,105 +54,111 @@
     }
 }" x-cloak>
 
-    {{-- Cabeçalho --}}
-    <div class="flex items-center justify-between flex-wrap gap-3">
-        <div>
-            <h1 class="text-2xl font-bold text-white uppercase tracking-wide">Gestão de Utilizadores</h1>
-            <p class="text-sm text-blue-200 mt-0.5">Gere os utilizadores com acesso ao sistema</p>
+    {{-- Header CME --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-6">
+        <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="users" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">Gestão de Utilizadores</span>
+            </div>
+            <a href="{{ route('register') }}" wire:navigate
+               style="background:#FFD300; color:#09143B; font-weight:700; font-size:11px; padding:6px 14px; border-radius:6px; text-decoration:none; white-space:nowrap;">
+                + Novo Utilizador
+            </a>
         </div>
-        <a href="{{ route('register') }}" wire:navigate
-           class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold text-sm px-4 py-2 rounded-lg transition">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            Novo Utilizador
-        </a>
     </div>
 
     {{-- Mensagem de sucesso --}}
     @if($successMessage)
-        <div class="bg-green-600/20 border border-green-500 text-green-200 rounded-lg px-4 py-3 text-sm">
+        <div class="badge-ok px-4 py-3 rounded-xl mb-4">
             {{ $successMessage }}
         </div>
     @endif
 
     {{-- Pesquisa --}}
-    <div class="max-w-sm">
+    <div class="mb-4">
         <input wire:model.live="search" type="text" placeholder="Pesquisar por nome ou email…"
-               class="w-full rounded-lg bg-blue-900/50 border border-blue-700 text-white placeholder-blue-400 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+               class="cme-input w-full max-w-sm">
     </div>
 
     {{-- Tabela --}}
-    <div class="overflow-x-auto rounded-xl border border-blue-700/60">
-        <table class="w-full text-sm text-left text-blue-100">
-            <thead class="bg-blue-900/70 text-blue-300 uppercase text-xs tracking-wider">
-                <tr>
-                    <th class="px-5 py-3">Nome</th>
-                    <th class="px-5 py-3">Email</th>
-                    <th class="px-5 py-3">Função</th>
-                    <th class="px-5 py-3">Data de Registo</th>
-                    <th class="px-5 py-3 text-right">Ações</th>
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.14)]">
+        <table class="w-full text-sm text-left">
+            <thead>
+                <tr style="background:#E4E2DF !important; border-bottom:1px solid rgba(9,20,59,0.10);">
+                    <th class="px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Nome</th>
+                    <th class="px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Email</th>
+                    <th class="px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Função</th>
+                    <th class="px-5 py-3" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Data de Registo</th>
+                    <th class="px-5 py-3 text-right" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Ações</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-blue-800/50">
+            <tbody class="divide-y divide-[rgba(9,20,59,0.06)]">
                 @forelse($users as $user)
-                    <tr class="bg-blue-950/30 hover:bg-blue-900/30 transition">
-                        <td class="px-5 py-3 font-medium text-white">
-                            {{ $user->name }}
+                    <tr class="transition-colors hover:bg-[#E4E2DF]" style="background:{{ $loop->index % 2 === 0 ? '#FFFFFF' : '#F0EEEB' }} !important;">
+                        <td class="px-5 py-3">
+                            <span style="color:#1A1A1A; font-weight:600;">{{ $user->name }}</span>
                             @if($user->id === auth()->id())
-                                <span class="ml-2 text-xs bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 rounded px-1.5 py-0.5">Você</span>
+                                <span class="badge-warn ml-2">Você</span>
                             @endif
                             @if($user->email === 'israelmontesino@gmail.com' && auth()->user()->email !== 'israelmontesino@gmail.com')
-                                <span class="ml-2 text-xs bg-gray-500/20 text-gray-400 border border-gray-500/40 rounded px-1.5 py-0.5" title="Protegido — apenas o próprio pode editar">🔒</span>
+                                <span class="badge-neutral ml-2" title="Protegido — apenas o próprio pode editar">🔒</span>
                             @endif
                         </td>
-                        <td class="px-5 py-3">{{ $user->email }}</td>
+                        <td class="px-5 py-3" style="color:#4A4845;">{{ $user->email }}</td>
                         <td class="px-5 py-3">
                             @php
                                 $roles = $user->role ?? [App\Models\User::ROLE_OPERARIO];
                                 $roleLabels = [
-                                    'super_admin' => ['emoji' => '👑', 'label' => 'Super Admin', 'class' => 'bg-purple-900 text-purple-200'],
-                                    'admin'       => ['emoji' => '🛡', 'label' => 'Admin',       'class' => 'bg-blue-900 text-blue-200'],
-                                    'logistica'   => ['emoji' => '🚛', 'label' => 'Logística',   'class' => 'bg-orange-900 text-orange-200'],
-                                    'epi'         => ['emoji' => '🧤', 'label' => 'EPI',         'class' => 'bg-green-900 text-green-200'],
-                                    'operario'    => ['emoji' => '👷', 'label' => 'Operário',    'class' => 'bg-gray-700 text-gray-200'],
+                                    'super_admin' => ['emoji' => '👑', 'label' => 'Super Admin', 'style' => 'background:#f3e8ff; color:#7e22ce;'],
+                                    'admin'       => ['emoji' => '🛡', 'label' => 'Admin',       'class' => 'badge-info'],
+                                    'logistica'   => ['emoji' => '🚛', 'label' => 'Logística',   'class' => 'badge-warn'],
+                                    'epi'         => ['emoji' => '🧤', 'label' => 'EPI',         'class' => 'badge-ok'],
+                                    'operario'    => ['emoji' => '👷', 'label' => 'Operário',    'class' => 'badge-neutral'],
                                 ];
                                 $primary = $roles[0];
                                 $extra = count($roles) - 1;
                             @endphp
                             <div class="flex items-center gap-1 flex-wrap">
                                 @if(isset($roleLabels[$primary]))
-                                    <span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full {{ $roleLabels[$primary]['class'] }}">
-                                        {{ $roleLabels[$primary]['emoji'] }} {{ $roleLabels[$primary]['label'] }}
-                                    </span>
+                                    @if(isset($roleLabels[$primary]['style']))
+                                        <span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full" style="{{ $roleLabels[$primary]['style'] }}">
+                                            {{ $roleLabels[$primary]['emoji'] }} {{ $roleLabels[$primary]['label'] }}
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 {{ $roleLabels[$primary]['class'] }}">
+                                            {{ $roleLabels[$primary]['emoji'] }} {{ $roleLabels[$primary]['label'] }}
+                                        </span>
+                                    @endif
                                 @endif
                                 @if($extra > 0)
-                                    <span class="text-xs text-blue-300 font-medium cursor-default"
+                                    <span class="text-xs font-medium cursor-default" style="color:#7A7775;"
                                           title="{{ collect($roles)->skip(1)->map(fn($r) => $roleLabels[$r]['label'] ?? $r)->join(', ') }}">
                                         +{{ $extra }}
                                     </span>
                                 @endif
                             </div>
                         </td>
-                        <td class="px-5 py-3 text-blue-400">{{ $user->created_at->format('d/m/Y') }}</td>
+                        <td class="px-5 py-3" style="color:#7A7775;">{{ $user->created_at->format('d/m/Y') }}</td>
                         <td class="px-5 py-3">
                             @php $isProtected = $user->email === 'israelmontesino@gmail.com' && auth()->user()->email !== 'israelmontesino@gmail.com'; @endphp
                             <div class="flex items-center justify-end gap-2">
                                 @if($isProtected)
-                                    <span class="text-xs text-gray-500 italic">protegido</span>
+                                    <span class="text-xs italic" style="color:#7A7775;">protegido</span>
                                 @else
                                 {{-- Editar --}}
-                                <button wire:click="openEdit({{ $user->id }})"
-                                        class="text-xs bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition">
+                                <button wire:click="openEdit({{ $user->id }})" class="btn-cme-secondary text-xs px-3 py-1.5 rounded-lg">
                                     Editar
                                 </button>
                                 {{-- Palavra-passe --}}
                                 <button wire:click="openResetPassword({{ $user->id }})"
-                                        class="text-xs bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded-lg transition">
+                                        class="badge-warn cursor-pointer px-3 py-1.5 rounded-lg text-xs font-semibold">
                                     Palavra-passe
                                 </button>
                                 {{-- Eliminar --}}
                                 @if($user->id !== auth()->id())
                                     <button wire:click="confirmDelete({{ $user->id }})"
-                                            class="text-xs bg-red-700 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition">
+                                            style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); font-size:11px; font-weight:600; padding:6px 12px; border-radius:6px; cursor:pointer;">
                                         Eliminar
                                     </button>
                                 @endif
@@ -162,7 +168,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-5 py-8 text-center text-blue-400">Nenhum utilizador encontrado.</td>
+                        <td colspan="5" class="px-5 py-8 text-center cme-muted">Nenhum utilizador encontrado.</td>
                     </tr>
                 @endforelse
             </tbody>
