@@ -99,20 +99,20 @@
                         <td class="px-8 py-6">
                             @php
                                 $estadoColor = match($g->estado) {
-                                    'pendente' => 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30',
-                                    'emitida'  => 'bg-green-500/10 text-green-400 border-green-500/30',
-                                    'recusada' => 'bg-red-500/10 text-red-400 border-red-500/30',
-                                    default    => 'bg-white/5 text-white/40 border-white/10',
+                                    'pendente' => 'badge-warn',
+                                    'emitida'  => 'badge-ok',
+                                    'recusada' => 'badge-danger',
+                                    default    => 'badge-neutral',
                                 };
                             @endphp
-                            <div class="inline-flex items-center px-3 py-1 rounded-full border {{ $estadoColor }} text-[8px] font-black uppercase tracking-widest">
+                            <div class="inline-flex items-center px-3 py-1 rounded-full {{ $estadoColor }} text-[8px] font-black uppercase tracking-widest">
                                 {{ $g->estado }}
                             </div>
                             @if($g->numero_at)
-                                <div class="text-[9px] font-black text-green-400/70 mt-1 uppercase tracking-widest">AT: {{ $g->numero_at }}</div>
+                                <div class="mt-1 uppercase tracking-widest" style="color:#0F6E56; font-size:9px; font-weight:700;">AT: {{ $g->numero_at }}</div>
                             @endif
                             @if($g->requerente)
-                                <div class="text-[9px] text-orange-400/60 mt-1">{{ $g->requerente->nombre }}</div>
+                                <div class="mt-1" style="color:#854F0B; font-size:9px;">{{ $g->requerente->nombre }}</div>
                             @endif
                         </td>
                         <td class="px-8 py-6 text-right space-x-4">
