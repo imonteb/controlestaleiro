@@ -316,7 +316,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-end gap-3 px-6 py-4" style="border-top:1px solid rgba(9,20,59,0.08);">
+            <div class="flex justify-end gap-3 px-6 py-4" style="background:white; border-top:1px solid rgba(9,20,59,0.08);">
                 <button wire:click="$set('showModal', false)" class="btn-cme-secondary">
                     Cancelar
                 </button>
