@@ -342,10 +342,10 @@
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div class="bg-green-800 px-6 py-4 flex items-center justify-between">
+                    <div class="px-6 py-4 flex items-center justify-between" style="background:#09143B !important;">
                         <div class="flex items-center gap-3">
-                            <div class="bg-green-600 p-2 rounded-lg">
-                                <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="p-2 rounded-lg" style="background:rgba(255,211,0,0.15);">
+                                <svg class="h-5 w-5 text-[#FFD300]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                             </div>
@@ -357,12 +357,12 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="p-6 flex flex-col gap-6">
+                    <div class="p-6 flex flex-col gap-6" style="background:#F0EEEB;">
                         <div>
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Colunas Necessárias no Excel</p>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 @foreach([['Obrigatório','red','referencia'],['Obrigatório','red','designacao'],['Opcional','gray','marca'],['Opcional','gray','modelo'],['Opcional','gray','num_serie'],['Opcional','gray','periodicidade'],['Opcional','gray','documentacao'],['Histórico','blue','data_verificacao'],['Histórico','blue','registo'],['Opcional','gray','familia']] as [$tipo,$cor,$campo])
-                                <div class="p-2 border border-gray-100 rounded-lg bg-gray-50/50">
+                                <div class="p-2 rounded-lg" style="background:white; border:1px solid rgba(9,20,59,0.12);">
                                     <div class="text-[9px] font-black text-{{ $cor }}-500 uppercase">{{ $tipo }}</div>
                                     <div class="text-xs font-mono font-bold text-gray-800 mt-0.5">{{ $campo }}</div>
                                 </div>
@@ -389,18 +389,18 @@
                             <div class="flex flex-col gap-2">
                                 <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Selecionar Ficheiro (.xlsx, .xls, .csv)</label>
                                 <input type="file" wire:model="ficheiroImport" accept=".xlsx,.xls,.csv"
-                                    class="block w-full text-sm text-gray-700 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:uppercase file:bg-green-100 file:text-green-800 hover:file:bg-green-200 cursor-pointer text-gray-900 border border-gray-100 rounded-xl bg-gray-50/30">
+                                    class="block w-full text-sm text-gray-700 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:uppercase file:bg-[#09143B] file:text-[#FFD300] hover:file:opacity-90 cursor-pointer border border-[rgba(9,20,59,0.14)] rounded-xl bg-white">
                                 @error('ficheiroImport') <span class="text-xs text-red-500 mt-1">{{ $message }}</span> @enderror
                             </div>
-                            <div class="flex items-center justify-between gap-4 pt-4 border-t border-gray-100">
-                                <a href="{{ route('ferramentas.plantilla') }}" class="inline-flex items-center gap-2 text-xs text-green-700 hover:text-green-900 font-bold uppercase tracking-wider transition-colors">
+                            <div class="flex items-center justify-between gap-4 pt-4 border-t border-[rgba(9,20,59,0.08)]">
+                                <a href="{{ route('ferramentas.plantilla') }}" style="color:#09143B;" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-75">
                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     Modelo Excel
                                 </a>
                                 <button wire:click="importar" wire:loading.attr="disabled"
-                                    class="inline-flex items-center gap-2 bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg text-xs uppercase tracking-widest">
+                                    class="btn-cme-primary inline-flex items-center gap-2 disabled:opacity-50">
                                     <svg wire:loading.remove wire:target="importar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                                     <svg wire:loading wire:target="importar" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" /></svg>
                                     <span wire:loading.remove wire:target="importar">Importar Dados</span>
