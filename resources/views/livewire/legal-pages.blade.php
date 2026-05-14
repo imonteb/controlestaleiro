@@ -24,7 +24,7 @@
                         class="flex items-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wide border-b-2 transition-colors
                                {{ $tab === $key
                                    ? 'text-[#FFD300] border-[#FFD300]'
-                                   : 'text-white/35 border-transparent hover:text-white/60' }}">
+                                   : 'text-white/65 border-transparent hover:text-white/90' }}">
                     <flux:icon name="{{ $icon }}" class="w-3.5 h-3.5" />
                     {{ $label }}
                 </button>

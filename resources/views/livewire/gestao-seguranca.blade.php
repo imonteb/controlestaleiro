@@ -27,15 +27,15 @@
         {{-- Tabs --}}
         <div class="bg-[#0d1a4a] flex border-b border-[rgba(255,255,255,0.06)] px-2">
             <button wire:click="$set('activeTab', 'contactos')"
-                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $activeTab === 'contactos' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/40 border-transparent hover:text-white/70' }}">
+                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $activeTab === 'contactos' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/65 border-transparent hover:text-white/90' }}">
                 Contactos Emergência
             </button>
             <button wire:click="$set('activeTab', 'procedimentos')"
-                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $activeTab === 'procedimentos' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/40 border-transparent hover:text-white/70' }}">
+                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $activeTab === 'procedimentos' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/65 border-transparent hover:text-white/90' }}">
                 Procedimentos
             </button>
             <button wire:click="$set('activeTab', 'incidentes')"
-                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $activeTab === 'incidentes' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/40 border-transparent hover:text-white/70' }}">
+                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $activeTab === 'incidentes' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/65 border-transparent hover:text-white/90' }}">
                 Relatórios
             </button>
         </div>

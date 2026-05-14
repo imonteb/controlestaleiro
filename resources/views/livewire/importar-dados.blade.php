@@ -8,15 +8,15 @@
         </div>
         <div class="bg-[#0d1a4a] flex border-b border-[rgba(255,255,255,0.06)] px-2">
             <button wire:click="setTab('colaboradores')"
-                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $tab === 'colaboradores' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/40 border-transparent hover:text-white/70' }}">
+                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $tab === 'colaboradores' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/65 border-transparent hover:text-white/90' }}">
                 👷 Colaboradores
             </button>
             <button wire:click="setTab('veiculos')"
-                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $tab === 'veiculos' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/40 border-transparent hover:text-white/70' }}">
+                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $tab === 'veiculos' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/65 border-transparent hover:text-white/90' }}">
                 🚗 Veículos
             </button>
             <button wire:click="setTab('peps')"
-                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $tab === 'peps' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/40 border-transparent hover:text-white/70' }}">
+                    class="px-4 py-2.5 text-[11px] font-semibold transition-colors border-b-2 {{ $tab === 'peps' ? 'text-[#FFD300] border-[#FFD300]' : 'text-white/65 border-transparent hover:text-white/90' }}">
                 📋 PEPs
             </button>
         </div>
