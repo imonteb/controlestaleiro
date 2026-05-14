@@ -97,23 +97,19 @@
                         </td>
 
                         <td class="px-5 py-3">
-                            @if($pedido->estado === \App\Enums\EpiPedidoEstado::Pendente)
-                                <span style="display:inline-block; padding:3px 10px; border-radius:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);">
-                                    {{ $pedido->estado->label() }}
-                                </span>
-                            @elseif($pedido->estado === \App\Enums\EpiPedidoEstado::Aprovado)
-                                <span style="display:inline-block; padding:3px 10px; border-radius:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);">
-                                    {{ $pedido->estado->label() }}
-                                </span>
-                            @elseif($pedido->estado === \App\Enums\EpiPedidoEstado::Rejeitado)
-                                <span style="display:inline-block; padding:3px 10px; border-radius:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20);">
-                                    {{ $pedido->estado->label() }}
-                                </span>
-                            @else
-                                <span style="display:inline-block; padding:3px 10px; border-radius:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; background:#E4E2DF; color:#7A7775; border:1px solid rgba(9,20,59,0.14);">
-                                    {{ $pedido->estado->label() }}
-                                </span>
-                            @endif
+                            @php
+                                $badgeMap = [
+                                    'pendente'  => 'background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);',
+                                    'aprovado'  => 'background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);',
+                                    'rejeitado' => 'background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20);',
+                                    'entregue'  => 'background:#09143B; color:#FFD300; border:1px solid rgba(9,20,59,0.30);',
+                                    'sem_stock' => 'background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20);',
+                                ];
+                                $bs = $badgeMap[$pedido->estado->value] ?? 'background:#E4E2DF; color:#7A7775; border:1px solid rgba(9,20,59,0.14);';
+                            @endphp
+                            <span style="display:inline-block; padding:3px 10px; border-radius:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; {{ $bs }}">
+                                {{ $pedido->estado->label() }}
+                            </span>
                         </td>
 
                         <td class="px-5 py-3">
@@ -147,6 +143,24 @@
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                         </span>
                                     </flux:tooltip>
+                                @endif
+
+                                @if($pedido->estado === \App\Enums\EpiPedidoEstado::SemStock)
+                                    <button wire:click="aprovar({{ $pedido->id }})" title="Aprovar mesmo assim"
+                                        style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25); cursor:pointer;">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    </button>
+                                    <button wire:click="rejeitar({{ $pedido->id }})" title="Rejeitar"
+                                        style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); cursor:pointer;">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                @endif
+
+                                @if($pedido->estado === \App\Enums\EpiPedidoEstado::Entregue)
+                                    <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:6px; font-size:10px; font-weight:700; background:#09143B; color:#FFD300;">
+                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        Entregue
+                                    </span>
                                 @endif
                             </div>
                         </td>
