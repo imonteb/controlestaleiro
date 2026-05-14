@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\AppNotification;
 use App\Models\CtConcelho;
 use App\Models\CtDistrito;
 use App\Models\GuiaItem;
@@ -21,6 +22,10 @@ class GestaoGuias extends Component
     public bool $isModalOpen = false;
 
     public string $modalMode = 'edit'; // 'edit' | 'view'
+
+    public bool $confirmandoEliminar = false;
+
+    public ?int $eliminandoId = null;
 
     public $guia_id;
 
@@ -392,7 +397,7 @@ class GestaoGuias extends Component
         ]);
 
         if ($guia->requerente_id) {
-            \App\Models\AppNotification::create([
+            AppNotification::create([
                 'titulo' => 'Guia de Transporte Pronta',
                 'mensagem' => "A guia para {$guia->matricula} foi emitida. Nº AT: {$guia->numero_at}. Pode iniciar o transporte.",
                 'activa' => true,
@@ -417,7 +422,7 @@ class GestaoGuias extends Component
         ]);
 
         if ($guia->requerente_id) {
-            \App\Models\AppNotification::create([
+            AppNotification::create([
                 'titulo' => 'Guia de Transporte Recusada',
                 'mensagem' => "A guia para {$guia->matricula} foi recusada. Motivo: {$this->motivo_recusa}",
                 'activa' => true,
@@ -470,7 +475,7 @@ class GestaoGuias extends Component
             }
 
             if ($emitida && $guia->requerente_id) {
-                \App\Models\AppNotification::create([
+                AppNotification::create([
                     'titulo' => 'Guia de Transporte Pronta',
                     'mensagem' => "A guia para {$guia->matricula} foi emitida. Nº AT: {$guia->numero_at}. Pode iniciar o transporte.",
                     'activa' => true,
@@ -484,10 +489,24 @@ class GestaoGuias extends Component
         $this->closeModal();
     }
 
-    public function apagarGuia(int $id): void
+    public function pedirEliminar(int $id): void
     {
-        GuiaTransporte::find($id)?->delete();
+        $this->eliminandoId = $id;
+        $this->confirmandoEliminar = true;
+    }
+
+    public function apagarGuia(): void
+    {
+        GuiaTransporte::find($this->eliminandoId)?->delete();
+        $this->confirmandoEliminar = false;
+        $this->eliminandoId = null;
         session()->flash('success', 'Guia apagada.');
+    }
+
+    public function cancelarEliminar(): void
+    {
+        $this->confirmandoEliminar = false;
+        $this->eliminandoId = null;
     }
 
     public function render(): mixed

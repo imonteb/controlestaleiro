@@ -132,7 +132,7 @@
                                     @endif
                                 </button>
                                 {{-- Eliminar --}}
-                                <button wire:click="apagarGuia({{ $g->id }})" wire:confirm="Apagar esta guia?" title="Eliminar"
+                                <button wire:click="pedirEliminar({{ $g->id }})" title="Eliminar"
                                     style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); cursor:pointer;">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                 </button>
@@ -920,6 +920,25 @@
     </div>
     @endif
 </div>
+
+{{-- Modal eliminar guia --}}
+@if($confirmandoEliminar)
+<div class="fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(0,0,0,0.55);">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+        <div class="px-5 py-3 flex items-center gap-2" style="background:#09143B;">
+            <svg class="w-4 h-4 shrink-0" style="color:#FFD300;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            <span class="text-white font-medium text-sm">Eliminar Guia</span>
+        </div>
+        <div class="px-6 py-5">
+            <p style="color:#4A4845; font-size:13px;">Tem a certeza que pretende apagar esta guia? Esta ação é irreversível.</p>
+        </div>
+        <div class="px-6 pb-5 flex justify-end gap-3">
+            <button wire:click="cancelarEliminar" style="padding:8px 16px; border-radius:8px; border:1px solid rgba(9,20,59,0.16); color:#4A4845; background:white; font-size:13px; cursor:pointer;">Cancelar</button>
+            <button wire:click="apagarGuia" style="padding:8px 16px; border-radius:8px; background:#A32D2D; color:white; font-weight:700; font-size:13px; border:none; cursor:pointer;">Sim, eliminar</button>
+        </div>
+    </div>
+</div>
+@endif
 
 <style>
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
