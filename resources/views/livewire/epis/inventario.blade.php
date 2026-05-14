@@ -112,33 +112,50 @@
             </table>
         </div>
 
-        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/50 flex-wrap gap-3">
-            <div class="flex items-center gap-4">
-                <span class="text-xs text-gray-500">
-                    {{ collect($linhas)->filter(fn($l) => $l['diferenca'] != 0)->count() }} item(s) com diferença
-                </span>
+        {{-- Footer --}}
+        @php $totalDiferencas = collect($linhas)->filter(fn($l) => $l['diferenca'] != 0)->count(); @endphp
+        <div style="background:#F0EEEB; border-top:1px solid rgba(9,20,59,0.10);" class="px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
+
+            {{-- Diferenças badge --}}
+            <div>
+                @if($totalDiferencas > 0)
+                    <span style="display:inline-flex; align-items:center; gap:6px; background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700;">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                        {{ $totalDiferencas }} {{ $totalDiferencas === 1 ? 'item' : 'itens' }} com diferença — preencha o motivo antes de guardar
+                    </span>
+                @else
+                    <span style="display:inline-flex; align-items:center; gap:6px; color:#7A7775; font-size:11px;">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Sem diferenças de stock
+                    </span>
+                @endif
+            </div>
+
+            <div class="flex items-center gap-3">
+                {{-- Paginação --}}
                 @if($totalPaginas > 1)
-                <div class="flex items-center gap-1">
+                <div class="flex items-center gap-1.5" style="border-right:1px solid rgba(9,20,59,0.12); padding-right:12px;">
                     <button wire:click="paginaAnterior" @disabled($pagina <= 1)
-                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:#E4E2DF; color:#4A4845; border:1px solid rgba(9,20,59,0.14); cursor:pointer;"
-                        :class="{ 'opacity-40 cursor-not-allowed': {{ $pagina }} <= 1 }">
+                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:white; color:#4A4845; border:1px solid rgba(9,20,59,0.16); cursor:pointer; {{ $pagina <= 1 ? 'opacity:0.4; cursor:not-allowed;' : '' }}">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                     </button>
-                    <span style="font-size:11px; color:#4A4845; font-weight:600;">{{ $pagina }} / {{ $totalPaginas }}</span>
+                    <span style="font-size:11px; color:#1A1A1A; font-weight:700; padding:0 4px;">Página {{ $pagina }} de {{ $totalPaginas }}</span>
                     <button wire:click="paginaSeguinte" @disabled($pagina >= $totalPaginas)
-                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:#E4E2DF; color:#4A4845; border:1px solid rgba(9,20,59,0.14); cursor:pointer;">
+                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:white; color:#4A4845; border:1px solid rgba(9,20,59,0.16); cursor:pointer; {{ $pagina >= $totalPaginas ? 'opacity:0.4; cursor:not-allowed;' : '' }}">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
                 </div>
                 @endif
+
+                {{-- Guardar --}}
+                <button wire:click="guardar" wire:loading.attr="disabled"
+                        class="btn-cme-primary inline-flex items-center gap-2 disabled:opacity-50">
+                    <svg wire:loading.remove wire:target="guardar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <svg wire:loading wire:target="guardar" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                    <span wire:loading.remove wire:target="guardar">Guardar ajustes</span>
+                    <span wire:loading wire:target="guardar">A guardar...</span>
+                </button>
             </div>
-            <button wire:click="guardar" wire:loading.attr="disabled"
-                    class="btn-cme-primary inline-flex items-center gap-2 disabled:opacity-50">
-                <svg wire:loading.remove wire:target="guardar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                <svg wire:loading wire:target="guardar" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
-                <span wire:loading.remove wire:target="guardar">Guardar ajustes</span>
-                <span wire:loading wire:target="guardar">A guardar...</span>
-            </button>
         </div>
         @endif
     </div>
