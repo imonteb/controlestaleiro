@@ -149,7 +149,7 @@
                 </div>
                 <span class="text-white font-semibold text-lg">Recepções de Stock</span>
             </div>
-            <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">{{ $rececoes->count() }} registos</span>
+            <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">{{ $rececoes->total() }} registos</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -206,6 +206,12 @@
                 </tbody>
             </table>
         </div>
+
+        @if($rececoes->hasPages())
+        <div class="px-5 py-3" style="border-top:1px solid rgba(9,20,59,0.08);">
+            {{ $rececoes->links() }}
+        </div>
+        @endif
     </div>
 
     {{-- Modal eliminar --}}

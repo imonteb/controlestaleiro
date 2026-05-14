@@ -10,13 +10,14 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 #[Layout('layouts.app')]
 #[Title('Recepções EPI')]
 class Index extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public string $search = '';
 
@@ -34,6 +35,16 @@ class Index extends Component
     public bool $confirmandoEliminar = false;
 
     public ?int $eliminandoId = null;
+
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFiltroEpi(): void
+    {
+        $this->resetPage();
+    }
 
     public function pedirEliminar(int $id): void
     {
@@ -98,7 +109,7 @@ class Index extends Component
         }
 
         return view('livewire.epis.rececoes.index', [
-            'rececoes' => $query->get(),
+            'rececoes' => $query->paginate(25),
             'epiItems' => EpiItem::ativos()->orderBy('nombre')->get(),
         ]);
     }
