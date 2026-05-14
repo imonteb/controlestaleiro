@@ -184,26 +184,9 @@ class Pedidos extends Component
             ? EpiPedido::with(['colaborador', 'epiItem'])->whereIn('id', $this->entregaBatch)->get()
             : collect();
 
-        // Lista de compra: pedidos sem stock agrupados por EPI
-        $listaCompra = EpiPedido::with(['epiItem', 'colaborador'])
-            ->where('estado', EpiPedidoEstado::SemStock)
-            ->get()
-            ->groupBy('epi_item_id')
-            ->map(function ($pedidos) {
-                return [
-                    'epi' => $pedidos->first()->epiItem,
-                    'total_unidades' => $pedidos->sum('quantidade'),
-                    'colaboradores' => $pedidos->count(),
-                    'pedidos' => $pedidos,
-                ];
-            })
-            ->sortByDesc('total_unidades')
-            ->values();
-
         return view('livewire.epis.pedidos', [
             'pedidos' => $query->paginate(15),
             'pedidosBatch' => $pedidosBatch,
-            'listaCompra' => $listaCompra,
         ]);
     }
 }

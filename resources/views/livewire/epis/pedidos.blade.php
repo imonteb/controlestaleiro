@@ -250,5 +250,5 @@
     @endif
 
     {{-- Modal unificado de assinatura --}}
-    <livewire:epis.entrega-modal />
+    <livewire:epis.entrega-modal wire:key="entrega-modal-signature" />
 </div>
