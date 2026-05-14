@@ -255,22 +255,21 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('epis.editar', $item->id) }}" wire:navigate
-                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
-                                   style="background:#F0EEEB; color:#09143B; border:1px solid rgba(9,20,59,0.18);">
-                                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                    Editar
+                                   title="Editar EPI"
+                                   style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#E4E2DF; color:#4A4845; border:1px solid rgba(9,20,59,0.14); text-decoration:none; flex-shrink:0;">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                 </a>
                                 @if($item->activo)
                                     <button wire:click="desativar({{ $item->id }})"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border"
-                                        style="background:#fff7ed; color:#c2410c; border-color:#fed7aa;">
-                                        Desativar
+                                        title="Desativar EPI"
+                                        style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20); cursor:pointer; flex-shrink:0;">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 115.636 5.636m12.728 12.728L5.636 5.636"/></svg>
                                     </button>
                                 @else
                                     <button wire:click="reactivar({{ $item->id }})"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border"
-                                        style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0;">
-                                        Reativar
+                                        title="Reativar EPI"
+                                        style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25); cursor:pointer; flex-shrink:0;">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </button>
                                 @endif
                             </div>
@@ -319,18 +318,21 @@
 
     {{-- Modal: Confirmar eliminación --}}
     @if($confirmandoEliminar)
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/55">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-            <div class="px-6 py-4 flex items-center gap-3 bg-red-900">
-                <svg class="h-6 w-6 text-red-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-                <h3 class="text-white font-bold text-lg">Eliminar EPI</h3>
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+        <div class="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl border border-[rgba(163,45,45,0.30)]">
+            <div style="background:#09143B;" class="px-5 py-3 flex items-center gap-2">
+                <svg class="w-4 h-4 shrink-0" style="color:#FFD300;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                <span class="text-white font-medium text-sm">Eliminar EPI</span>
             </div>
-            <div class="px-6 py-5">
-                <p class="text-gray-700 text-sm">Esta ação <strong>não pode ser desfeita</strong>. Só é possível eliminar EPIs sem entregas ou recepções registadas.</p>
-            </div>
-            <div class="px-6 pb-5 flex justify-end gap-3">
-                <button wire:click="cancelarEliminar" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors">Cancelar</button>
-                <button wire:click="eliminarPermanente" class="px-4 py-2 rounded-lg text-white text-sm font-bold transition-colors bg-red-600 hover:bg-red-700">Sim, eliminar</button>
+            <div style="background:white;" class="px-6 py-5">
+                <p class="text-sm mb-4" style="color:#4A4845;">Esta ação <strong style="color:#1A1A1A;">não pode ser desfeita</strong>. Só é possível eliminar EPIs sem entregas ou recepções registadas.</p>
+                <div class="flex gap-3">
+                    <button wire:click="cancelarEliminar" class="btn-cme-secondary flex-1">Cancelar</button>
+                    <button wire:click="eliminarPermanente"
+                            style="flex:1; background:#A32D2D; color:white; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; border:none; cursor:pointer;">
+                        Sim, eliminar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
