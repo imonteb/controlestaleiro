@@ -70,17 +70,23 @@
                         </flux:table.cell>
 
                         <flux:table.cell>
-                            @php
-                                $badgeStyle = match($pedido->estado) {
-                                    \App\Enums\EpiPedidoEstado::Pendente  => 'background:#fefce8; color:#ca8a04; border:1px solid rgba(202,138,4,0.15);',
-                                    \App\Enums\EpiPedidoEstado::Aprovado  => 'background:#f0fdf4; color:#16a34a; border:1px solid rgba(22,163,74,0.15);',
-                                    \App\Enums\EpiPedidoEstado::Rejeitado => 'background:#fff1f2; color:#f43f5e; border:1px solid rgba(244,63,94,0.15);',
-                                    default                                => 'background:#f8f8f8; color:#9ca3af; border:1px solid rgba(9,20,59,0.10);',
-                                };
-                            @endphp
-                            <span style="display:inline-block; padding:2px 10px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; {{ $badgeStyle }}">
-                                {{ $pedido->estado->label() }}
-                            </span>
+                            @if($pedido->estado === \App\Enums\EpiPedidoEstado::Pendente)
+                                <span style="display:inline-block !important; padding:3px 10px !important; border-radius:6px !important; font-size:10px !important; font-weight:700 !important; text-transform:uppercase !important; letter-spacing:0.05em !important; background:#f59e0b !important; color:#fff !important; border:none !important;">
+                                    {{ $pedido->estado->label() }}
+                                </span>
+                            @elseif($pedido->estado === \App\Enums\EpiPedidoEstado::Aprovado)
+                                <span style="display:inline-block !important; padding:3px 10px !important; border-radius:6px !important; font-size:10px !important; font-weight:700 !important; text-transform:uppercase !important; letter-spacing:0.05em !important; background:#10b981 !important; color:#fff !important; border:none !important;">
+                                    {{ $pedido->estado->label() }}
+                                </span>
+                            @elseif($pedido->estado === \App\Enums\EpiPedidoEstado::Rejeitado)
+                                <span style="display:inline-block !important; padding:3px 10px !important; border-radius:6px !important; font-size:10px !important; font-weight:700 !important; text-transform:uppercase !important; letter-spacing:0.05em !important; background:#ef4444 !important; color:#fff !important; border:none !important;">
+                                    {{ $pedido->estado->label() }}
+                                </span>
+                            @else
+                                <span style="display:inline-block !important; padding:3px 10px !important; border-radius:6px !important; font-size:10px !important; font-weight:700 !important; text-transform:uppercase !important; letter-spacing:0.05em !important; background:#6b7280 !important; color:#fff !important; border:none !important;">
+                                    {{ $pedido->estado->label() }}
+                                </span>
+                            @endif
                         </flux:table.cell>
 
                         <flux:table.cell align="end">
