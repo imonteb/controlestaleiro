@@ -1,4 +1,5 @@
-<div class="p-6 space-y-6">
+<div class="p-6 space-y-6"
+     x-data="{ confirmOpen: false, confirmMessage: '', confirmAction: null }">
 
     {{-- Header CME con tabs --}}
     <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-6">
@@ -84,8 +85,7 @@
                         <td class="px-5 py-4 text-sm italic" style="color:#4A4845;">{{ $c->descricao ?: '—' }}</td>
                         <td class="px-5 py-4 text-right space-x-2">
                             <button wire:click="editarContato({{ $c->id }})" class="btn-cme-secondary text-xs px-3 py-1.5 rounded-lg">Editar</button>
-                            <button wire:click="apagarContato({{ $c->id }})"
-                                    onclick="confirm('Apagar este contacto?') || event.stopImmediatePropagation()"
+                            <button @click="confirmMessage = 'Apagar este contacto?'; confirmAction = () => $wire.apagarContato({{ $c->id }}); confirmOpen = true"
                                     style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); font-size:11px; font-weight:600; padding:6px 12px; border-radius:6px; cursor:pointer;">
                                 Eliminar
                             </button>
@@ -138,8 +138,7 @@
                     <button wire:click="editarProcedimento({{ $p->id }})" class="btn-cme-secondary p-2 rounded-lg" title="Editar">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                     </button>
-                    <button wire:click="apagarProcedimento({{ $p->id }})"
-                            onclick="confirm('Eliminar este protocolo?') || event.stopImmediatePropagation()"
+                    <button @click="confirmMessage = 'Eliminar este protocolo?'; confirmAction = () => $wire.apagarProcedimento({{ $p->id }}); confirmOpen = true"
                             style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); padding:8px; border-radius:8px; cursor:pointer;"
                             title="Eliminar">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -250,6 +249,28 @@
         @endif
     </div>
     @endif
+
+    {{-- Modal de Confirmação --}}
+    <div x-show="confirmOpen" x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+         @keydown.escape.window="confirmOpen = false">
+        <div class="w-full max-w-sm mx-4 rounded-2xl overflow-hidden shadow-2xl border border-[rgba(163,45,45,0.30)]">
+            <div style="background:#09143B;" class="px-5 py-3 flex items-center gap-2">
+                <svg class="w-4 h-4 shrink-0" style="color:#FFD300;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                <span class="text-white font-medium text-sm">Confirmar eliminação</span>
+            </div>
+            <div style="background:white;" class="px-6 py-5">
+                <p class="text-sm mb-5" style="color:#4A4845;" x-text="confirmMessage"></p>
+                <div class="flex justify-end gap-3">
+                    <button @click="confirmOpen = false" class="btn-cme-secondary">Cancelar</button>
+                    <button @click="confirmAction(); confirmOpen = false"
+                        style="background:#A32D2D; color:white; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; border:none; cursor:pointer;">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- MODAL --}}
     @if($isModalOpen)
