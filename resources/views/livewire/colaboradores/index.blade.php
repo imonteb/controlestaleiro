@@ -140,20 +140,17 @@
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('colaboradores.editar', $colaborador->id) }}" wire:navigate
                                    title="Ver / Editar colaborador"
-                                   class="btn-cme-secondary inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors">
+                                   style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#E4E2DF; color:#4A4845; border:1px solid rgba(9,20,59,0.14); text-decoration:none; flex-shrink:0;">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 </a>
                                 {{-- Toggle visible en dashboard --}}
                                 <button wire:click="toggleVisibleDashboard({{ $colaborador->id }})"
                                     title="{{ $colaborador->visible_en_dashboard ? 'Visível no dashboard — clique para ocultar' : 'Oculto do dashboard — clique para mostrar' }}"
-                                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
-                                    style="min-width:76px; justify-content:center; {{ $colaborador->visible_en_dashboard ? 'background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);' : 'background:#E4E2DF; color:#7A7775; border:1px solid rgba(9,20,59,0.14);' }}">
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; flex-shrink:0; border:none; cursor:pointer; {{ $colaborador->visible_en_dashboard ? 'background:#d4ede4; color:#0F6E56;' : 'background:#E4E2DF; color:#7A7775;' }}">
                                     @if($colaborador->visible_en_dashboard)
-                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        Visível
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     @else
-                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.34 6.34A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-1.21 2.592M6.34 6.34L3 3m3.34 3.34l11.32 11.32M17.66 17.66L21 21"/></svg>
-                                        Oculto
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.34 6.34A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-1.21 2.592M6.34 6.34L3 3m3.34 3.34l11.32 11.32M17.66 17.66L21 21"/></svg>
                                     @endif
                                 </button>
                                 @if($colaborador->activo)
