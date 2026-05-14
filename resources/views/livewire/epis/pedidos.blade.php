@@ -70,7 +70,15 @@
                         </flux:table.cell>
 
                         <flux:table.cell>
-                            <span class="px-2 py-1 rounded-lg text-[10px] font-black uppercase border {{ $pedido->estado->badgeClass() }}">
+                            @php
+                                $badgeStyle = match($pedido->estado) {
+                                    \App\Enums\EpiPedidoEstado::Pendente  => 'background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);',
+                                    \App\Enums\EpiPedidoEstado::Aprovado  => 'background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);',
+                                    \App\Enums\EpiPedidoEstado::Rejeitado => 'background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20);',
+                                    default                                => 'background:#E4E2DF; color:#7A7775; border:1px solid rgba(9,20,59,0.14);',
+                                };
+                            @endphp
+                            <span style="display:inline-block; padding:2px 10px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; {{ $badgeStyle }}">
                                 {{ $pedido->estado->label() }}
                             </span>
                         </flux:table.cell>
