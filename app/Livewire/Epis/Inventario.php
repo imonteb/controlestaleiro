@@ -3,7 +3,9 @@
 namespace App\Livewire\Epis;
 
 use App\Models\EpiAjuste;
+use App\Models\EpiEntrega;
 use App\Models\EpiItem;
+use App\Models\EpiRececao;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -21,6 +23,10 @@ class Inventario extends Component
 
     public bool $soloConStock = true;
 
+    public int $pagina = 1;
+
+    public int $porPagina = 25;
+
     protected $queryString = [
         'search' => ['except' => ''],
         'soloConStock' => ['except' => false],
@@ -33,12 +39,29 @@ class Inventario extends Component
 
     public function updatedSearch(): void
     {
+        $this->pagina = 1;
         $this->carregarLinhas();
     }
 
     public function updatedSoloConStock(): void
     {
+        $this->pagina = 1;
         $this->carregarLinhas();
+    }
+
+    public function paginaAnterior(): void
+    {
+        if ($this->pagina > 1) {
+            $this->pagina--;
+        }
+    }
+
+    public function paginaSeguinte(): void
+    {
+        $totalPaginas = (int) ceil(count($this->linhas) / $this->porPagina);
+        if ($this->pagina < $totalPaginas) {
+            $this->pagina++;
+        }
     }
 
     public function carregarLinhas(): void
@@ -131,7 +154,7 @@ class Inventario extends Component
 
         if ($this->mostrarHistorico) {
             // 1. Receções
-            $rececoes = \App\Models\EpiRececao::with(['epiItem', 'registradoPor'])
+            $rececoes = EpiRececao::with(['epiItem', 'registradoPor'])
                 ->latest('fecha')
                 ->limit(30)
                 ->get()
@@ -148,7 +171,7 @@ class Inventario extends Component
                 ]);
 
             // 2. Entregas
-            $entregas = \App\Models\EpiEntrega::with(['epiItem', 'colaborador', 'entregadoPor'])
+            $entregas = EpiEntrega::with(['epiItem', 'colaborador', 'entregadoPor'])
                 ->latest('fecha_entrega')
                 ->limit(30)
                 ->get()
@@ -165,7 +188,7 @@ class Inventario extends Component
                 ]);
 
             // 3. Ajustes
-            $ajustes = \App\Models\EpiAjuste::with(['epiItem', 'ajustadoPor'])
+            $ajustes = EpiAjuste::with(['epiItem', 'ajustadoPor'])
                 ->latest()
                 ->limit(30)
                 ->get()
@@ -186,8 +209,15 @@ class Inventario extends Component
                 ->take(50);
         }
 
+        $totalPaginas = max(1, (int) ceil(count($this->linhas) / $this->porPagina));
+        $offset = ($this->pagina - 1) * $this->porPagina;
+        $linhasPagina = array_slice($this->linhas, $offset, $this->porPagina, true);
+
         return view('livewire.epis.inventario', [
             'historial' => $historial,
+            'linhasPagina' => $linhasPagina,
+            'totalPaginas' => $totalPaginas,
+            'totalLinhas' => count($this->linhas),
         ]);
     }
 }

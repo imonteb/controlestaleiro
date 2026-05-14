@@ -32,7 +32,7 @@
             <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
 
             <span class="text-[10px] sm:text-xs font-medium text-gray-400 whitespace-nowrap">
-                Mostrando {{ count($linhas) }} linha(s)
+                Mostrando {{ $totalLinhas }} linha(s)
             </span>
         </div>
 
@@ -63,7 +63,7 @@
             <span class="text-white font-semibold text-lg">Conferência de Stock</span>
         </div>
 
-        @if(count($linhas) === 0)
+        @if($totalLinhas === 0)
             <div class="p-12 text-center text-gray-400">Nenhum resultado encontrado. Tente ajustar os filtros.</div>
         @else
         <div class="overflow-x-auto">
@@ -80,12 +80,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($linhas as $i => $linha)
+                    @foreach($linhasPagina as $i => $linha)
                     <tr wire:key="inv-row-{{ $linha['epi_item_id'] }}-{{ $linha['tamanho'] }}" class="border-b border-gray-100 hover:bg-blue-50/30 transition-colors {{ $linha['diferenca'] != 0 ? 'bg-yellow-50' : '' }}">
                         <td class="px-4 py-2.5 font-semibold text-gray-900 whitespace-nowrap">{{ $linha['nome'] }}</td>
                         <td class="px-4 py-2.5 text-gray-600 whitespace-nowrap font-mono">{{ $linha['codigo'] ?: '—' }}</td>
-                        <td class="px-4 py-2.5 text-center whitespace-nowrap">@if($linha['tamanho'])<span class="inline-flex px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-semibold">{{ $linha['tamanho'] }}</span>@else<span class="text-gray-400">—</span>@endif</td>
-                        <td class="px-3 py-2 text-center font-mono font-semibold text-gray-700 whitespace-nowrap">{{ $linha['stock_sistema'] }}</td><td class="px-3 py-2 text-center whitespace-nowrap"><input type="number" wire:model.live.debounce.500ms="linhas.{{ $i }}.stock_real" class="w-14 text-center rounded border font-mono text-sm font-semibold text-gray-900 bg-white {{ $linha['diferenca'] != 0 ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300' }}" style="padding:0.2rem;outline:none;display:inline-block;"></td><td class="px-3 py-2 text-center font-mono font-bold whitespace-nowrap {{ $linha['diferenca'] > 0 ? 'text-green-600' : ($linha['diferenca'] < 0 ? 'text-red-600' : 'text-gray-400') }}">{{ $linha['diferenca'] > 0 ? '+' : '' }}{{ $linha['diferenca'] }}</td>
+                        <td class="px-4 py-2.5 text-center whitespace-nowrap">@if($linha['tamanho'] && $linha['tamanho'] !== '—')<span class="inline-flex px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-semibold">{{ $linha['tamanho'] }}</span>@else<span class="text-gray-400">—</span>@endif</td>
+                        <td class="px-3 py-2 text-center font-mono font-semibold text-gray-700 whitespace-nowrap">{{ $linha['stock_sistema'] }}</td>
+                        <td class="px-3 py-2 text-center whitespace-nowrap">
+                            <input type="number" wire:model.live.debounce.500ms="linhas.{{ $i }}.stock_real"
+                                class="w-14 text-center rounded border font-mono text-sm font-semibold text-gray-900 bg-white {{ $linha['diferenca'] != 0 ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300' }}"
+                                style="padding:0.2rem;outline:none;display:inline-block;">
+                        </td>
+                        <td class="px-3 py-2 text-center font-mono font-bold whitespace-nowrap {{ $linha['diferenca'] > 0 ? 'text-green-600' : ($linha['diferenca'] < 0 ? 'text-red-600' : 'text-gray-400') }}">
+                            {{ $linha['diferenca'] > 0 ? '+' : '' }}{{ $linha['diferenca'] }}
+                        </td>
                         <td class="px-4 py-2.5">
                             @if($linha['diferenca'] != 0)
                             <input type="text"
@@ -93,7 +101,7 @@
                                    placeholder="Motivo do ajuste..."
                                    class="w-full rounded border text-sm text-gray-900 bg-white {{ $errors->has('linhas.'.$i.'.motivo') ? 'border-red-400 bg-red-50' : 'border-gray-300' }}"
                                    style="padding:0.375rem 0.5rem;outline:none;">
-                                @error("linhas.{$i}.motivo") <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                            @error("linhas.{$i}.motivo") <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                             @else
                                 <span class="text-gray-300 text-xs">—</span>
                             @endif
@@ -104,10 +112,26 @@
             </table>
         </div>
 
-        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
-            <span class="text-xs text-gray-500">
-                {{ collect($linhas)->filter(fn($l) => $l['diferenca'] != 0)->count() }} item(s) com diferença
-            </span>
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/50 flex-wrap gap-3">
+            <div class="flex items-center gap-4">
+                <span class="text-xs text-gray-500">
+                    {{ collect($linhas)->filter(fn($l) => $l['diferenca'] != 0)->count() }} item(s) com diferença
+                </span>
+                @if($totalPaginas > 1)
+                <div class="flex items-center gap-1">
+                    <button wire:click="paginaAnterior" @disabled($pagina <= 1)
+                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:#E4E2DF; color:#4A4845; border:1px solid rgba(9,20,59,0.14); cursor:pointer;"
+                        :class="{ 'opacity-40 cursor-not-allowed': {{ $pagina }} <= 1 }">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <span style="font-size:11px; color:#4A4845; font-weight:600;">{{ $pagina }} / {{ $totalPaginas }}</span>
+                    <button wire:click="paginaSeguinte" @disabled($pagina >= $totalPaginas)
+                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:#E4E2DF; color:#4A4845; border:1px solid rgba(9,20,59,0.14); cursor:pointer;">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+                @endif
+            </div>
             <button wire:click="guardar" wire:loading.attr="disabled"
                     class="btn-cme-primary inline-flex items-center gap-2 disabled:opacity-50">
                 <svg wire:loading.remove wire:target="guardar" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
