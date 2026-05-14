@@ -48,8 +48,8 @@
 }">
 
     {{-- Page Header --}}
-    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)]">
-        <div style="background:#09143B;" class="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="rounded-xl border border-[rgba(9,20,59,0.16)]">
+        <div style="background:#09143B; border-radius:inherit;" class="px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div class="flex items-center gap-2">
                 <flux:icon name="hand-raised" class="text-[#FFD300] w-4 h-4" />
                 <span style="color:white;" class="text-sm font-medium">Entregas de EPI</span>
