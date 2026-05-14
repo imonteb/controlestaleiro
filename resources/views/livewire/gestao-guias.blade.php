@@ -115,13 +115,28 @@
                                 <div class="mt-1" style="color:#854F0B; font-size:9px;">{{ $g->requerente->nombre }}</div>
                             @endif
                         </td>
-                        <td class="px-8 py-6 text-right space-x-4">
-                            <button wire:click="editarGuia({{ $g->id }})"
-                                    class="transition-colors text-xs font-black uppercase tracking-widest"
-                                    style="{{ $g->origem === 'colaborador' ? 'color:#854F0B;' : 'color:#09143B;' }}">
-                                {{ $g->origem === 'colaborador' ? 'Ver Pedido' : 'Editar' }}
-                            </button>
-                            <button wire:click="apagarGuia({{ $g->id }})" wire:confirm="Apagar esta guia?" class="transition-colors text-xs font-black uppercase tracking-widest" style="color:#A32D2D;">Eliminar</button>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center justify-end gap-1.5">
+                                {{-- Editar / Ver Pedido --}}
+                                <button wire:click="editarGuia({{ $g->id }})" title="{{ $g->origem === 'colaborador' ? 'Ver Pedido' : 'Editar' }}"
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; cursor:pointer;
+                                        {{ $g->origem === 'colaborador'
+                                            ? 'background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);'
+                                            : 'background:#E4E2DF; color:#09143B; border:1px solid rgba(9,20,59,0.14);' }}">
+                                    @if($g->origem === 'colaborador')
+                                        {{-- eye icon --}}
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    @else
+                                        {{-- pencil icon --}}
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                    @endif
+                                </button>
+                                {{-- Eliminar --}}
+                                <button wire:click="apagarGuia({{ $g->id }})" wire:confirm="Apagar esta guia?" title="Eliminar"
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); cursor:pointer;">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     @empty
