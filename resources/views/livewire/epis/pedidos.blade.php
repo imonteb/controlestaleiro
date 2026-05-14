@@ -72,10 +72,10 @@
                         <flux:table.cell>
                             @php
                                 $badgeStyle = match($pedido->estado) {
-                                    \App\Enums\EpiPedidoEstado::Pendente  => 'background:#fdf0c2; color:#854F0B; border:1px solid rgba(133,79,11,0.20);',
-                                    \App\Enums\EpiPedidoEstado::Aprovado  => 'background:#d4ede4; color:#0F6E56; border:1px solid rgba(15,110,86,0.25);',
-                                    \App\Enums\EpiPedidoEstado::Rejeitado => 'background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20);',
-                                    default                                => 'background:#E4E2DF; color:#7A7775; border:1px solid rgba(9,20,59,0.14);',
+                                    \App\Enums\EpiPedidoEstado::Pendente  => 'background:#fefce8; color:#a16207; border:1px solid rgba(161,98,7,0.15);',
+                                    \App\Enums\EpiPedidoEstado::Aprovado  => 'background:#f0fdf4; color:#15803d; border:1px solid rgba(21,128,61,0.15);',
+                                    \App\Enums\EpiPedidoEstado::Rejeitado => 'background:#fff1f2; color:#be123c; border:1px solid rgba(190,18,60,0.15);',
+                                    default                                => 'background:#f8f8f8; color:#7A7775; border:1px solid rgba(9,20,59,0.10);',
                                 };
                             @endphp
                             <span style="display:inline-block; padding:2px 10px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; {{ $badgeStyle }}">
