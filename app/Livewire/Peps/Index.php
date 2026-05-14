@@ -6,11 +6,14 @@ use App\Models\Pep;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 #[Title('PEPs')]
 class Index extends Component
 {
+    use WithPagination;
+
     public string $filtro = 'activos';
 
     public string $pesquisa = '';
@@ -22,6 +25,16 @@ class Index extends Component
     public bool $confirmandoEliminar = false;
 
     public ?int $eliminandoId = null;
+
+    public function updatingFiltro(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPesquisa(): void
+    {
+        $this->resetPage();
+    }
 
     public function desativar(int $id): void
     {
@@ -91,7 +104,7 @@ class Index extends Component
         }
 
         return view('livewire.peps.index', [
-            'peps' => $query->get(),
+            'peps' => $query->paginate(25),
         ]);
     }
 }

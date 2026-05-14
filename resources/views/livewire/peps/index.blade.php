@@ -184,6 +184,11 @@
                 </tbody>
             </table>
         </div>
+        @if($peps->hasPages())
+        <div class="px-4 py-3" style="border-top:1px solid rgba(9,20,59,0.08);">
+            {{ $peps->links() }}
+        </div>
+        @endif
     </div>
 
     {{-- Modal: Confirmar eliminación permanente --}}
