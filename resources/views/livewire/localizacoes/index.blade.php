@@ -1,80 +1,84 @@
 <div class="w-full max-w-3xl mx-auto px-4 py-8">
 
-    {{-- Cabecera --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold uppercase tracking-wide text-yellow-600">Localizações</h1>
-            <p class="text-sm text-blue-200 mt-1">Locais da Madeira usados nos PEPs</p>
+    {{-- Header CME --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.16)] mb-6">
+        <div class="bg-[#09143B] px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <flux:icon name="map-pin" class="text-[#FFD300] w-4 h-4" />
+                <span class="text-white font-medium text-sm">Localizações</span>
+                <span style="color:rgba(255,255,255,0.4); font-size:11px;">— Locais usados nos PEPs</span>
+            </div>
+            <a href="{{ route('localizacoes.crear') }}" wire:navigate
+               style="background:#FFD300; color:#09143B; font-weight:700; font-size:12px; padding:6px 16px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Nova Localização
+            </a>
         </div>
-        <a href="{{ route('localizacoes.crear') }}" wire:navigate
-           class="inline-flex items-center gap-2 px-4 py-2 font-bold rounded-lg shadow transition text-sm"
-           style="background-color:var(--cme-yellow);color:var(--cme-blue);"
-           onmouseover="this.style.backgroundColor='#facc15';"
-           onmouseout="this.style.backgroundColor='var(--cme-yellow)';">
-            + Nova Localização
-        </a>
     </div>
 
-    {{-- Buscar --}}
-    <div style="position:relative;display:flex;align-items:center;margin-bottom:1rem;">
-        <svg style="position:absolute;left:10px;color:#9ca3af;pointer-events:none;" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/></svg>
+    {{-- Pesquisa --}}
+    <div class="relative mb-4 w-72">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none" style="color:#7A7775;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/></svg>
         <input wire:model.live.debounce.300ms="search" type="search"
                placeholder="Pesquisar localização..."
-               style="background:white;color:#1f2937;border:1px solid #d1d5db;padding:8px 10px 8px 34px;border-radius:8px;font-size:0.875rem;width:280px;outline:none;">
+               class="cme-input pl-9 w-full">
         @if($search)
-        <button wire:click="$set('search','')" type="button" style="position:absolute;right:8px;color:#9ca3af;cursor:pointer;background:none;border:none;font-size:1rem;">✕</button>
+            <button wire:click="$set('search','')" type="button"
+                    style="position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; color:#7A7775; cursor:pointer; font-size:1rem; line-height:1;">✕</button>
         @endif
     </div>
 
-    {{-- Tabla --}}
-    <div class="bg-white/0 rounded-xl border border-white/8 overflow-hidden">
+    {{-- Tabela --}}
+    <div class="rounded-xl overflow-hidden border border-[rgba(9,20,59,0.14)]">
         @if($locaciones->isEmpty())
-            <div class="flex flex-col items-center justify-center py-16 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div style="background:#F0EEEB;" class="flex flex-col items-center justify-center py-16">
+                <svg class="h-10 w-10 mb-3 cme-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                <p class="text-base font-medium">Não há localizações registadas</p>
-                <a href="{{ route('localizacoes.crear') }}" wire:navigate class="mt-3 text-sm font-semibold hover:underline" style="color:var(--cme-blue);">
+                <p class="cme-muted italic text-sm">Não há localizações registadas.</p>
+                <a href="{{ route('localizacoes.crear') }}" wire:navigate
+                   class="mt-3 text-sm font-semibold hover:underline" style="color:#09143B;">
                     Criar a primeira →
                 </a>
             </div>
         @else
             <table class="w-full text-sm">
                 <thead>
-                    <tr class="bg-gray-50 border-b border-gray-200">
-                        <th class="text-left px-5 py-3 font-semibold text-white/60 uppercase text-xs tracking-wider">Nome</th>
-                        <th class="text-left px-5 py-3 font-semibold text-white/60 uppercase text-xs tracking-wider">PEPs</th>
+                    <tr style="background:#E4E2DF; border-bottom:1px solid rgba(9,20,59,0.10);">
+                        <th class="px-5 py-3 text-left" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">Nome</th>
+                        <th class="px-5 py-3 text-left" style="color:#4A4845; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em;">PEPs</th>
                         <th class="px-5 py-3"></th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-[rgba(9,20,59,0.06)]">
                     @foreach($locaciones as $locacion)
-                    <tr class="hover:bg-yellow-400/5 transition-colors">
+                    <tr class="transition-colors hover:bg-[#E4E2DF]" style="background:{{ $loop->index % 2 === 0 ? '#FFFFFF' : '#F0EEEB' }} !important;">
                         <td class="px-5 py-3">
                             <div class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white/40 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="h-4 w-4 shrink-0" style="color:#7A7775;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                <span class="font-medium text-white/90">{{ $locacion->nombre }}</span>
+                                <span style="color:#1A1A1A; font-weight:600;">{{ $locacion->nombre }}</span>
                             </div>
                         </td>
                         <td class="px-5 py-3">
-                            <span class="text-white/50 font-medium">{{ $locacion->peps_count }}</span>
+                            <span style="color:#4A4845; font-weight:600;">{{ $locacion->peps_count }}</span>
                             @if($locacion->peps_count > 0)
-                                <span class="text-white/40 text-xs ml-1">PEP{{ $locacion->peps_count !== 1 ? 's' : '' }}</span>
+                                <span class="cme-muted text-xs ml-1">PEP{{ $locacion->peps_count !== 1 ? 's' : '' }}</span>
                             @endif
                         </td>
                         <td class="px-5 py-3 text-right">
-                            <div class="flex items-center justify-end gap-2">
+                            <div class="inline-flex items-center gap-1">
                                 <a href="{{ route('localizacoes.editar', $locacion) }}" wire:navigate
-                                   class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/8 text-white/80 hover:bg-white/15 transition">
-                                    Editar
+                                   title="Editar" class="btn-cme-secondary p-2 rounded-lg inline-flex">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                 </a>
                                 <button wire:click="pedirEliminar({{ $locacion->id }})"
-                                        class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition">
-                                    Eliminar
+                                        title="Eliminar"
+                                        style="background:#fde8e8; color:#A32D2D; border:1px solid rgba(163,45,45,0.20); padding:8px; border-radius:8px; cursor:pointer;">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                 </button>
                             </div>
                         </td>
@@ -85,36 +89,33 @@
         @endif
     </div>
 
-    {{-- Modal confirmar eliminación --}}
+    {{-- Modal confirmar eliminação --}}
     @if($confirmandoEliminar)
-    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6">
-            @php $locacion = $locaciones->find($eliminandoId); @endphp
-            <div class="flex items-start gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-gray-900">Eliminar localização</h3>
-                    <p class="text-sm text-gray-600 mt-1">
-                        Eliminar <strong>{{ $locacion?->nombre }}</strong>?
-                        @if($locacion?->peps_count > 0)
-                            <br><span class="text-red-600 font-medium">⚠ Tem {{ $locacion->peps_count }} PEP{{ $locacion->peps_count !== 1 ? 's' : '' }} associado{{ $locacion->peps_count !== 1 ? 's' : '' }} — ficarão sem localização.</span>
-                        @endif
-                    </p>
-                </div>
+    <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl border border-[rgba(163,45,45,0.30)]">
+            <div style="background:#09143B;" class="px-5 py-3 flex items-center gap-2">
+                <svg class="w-4 h-4 shrink-0" style="color:#FFD300;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                <span class="text-white font-medium text-sm">Eliminar localização</span>
             </div>
-            <div class="flex gap-3">
-                <button wire:click="cancelarEliminar"
-                        class="flex-1 px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition">
-                    Cancelar
-                </button>
-                <button wire:click="eliminarPermanente"
-                        class="flex-1 px-4 py-2 text-sm font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 transition">
-                    Sim, eliminar
-                </button>
+            <div style="background:white;" class="px-6 py-5">
+                @php $locacion = $locaciones->find($eliminandoId); @endphp
+                <p class="text-sm mb-2" style="color:#4A4845;">
+                    Eliminar <strong style="color:#1A1A1A;">{{ $locacion?->nombre }}</strong>?
+                </p>
+                @if($locacion?->peps_count > 0)
+                    <p class="text-xs mb-4" style="color:#A32D2D;">
+                        ⚠ Tem {{ $locacion->peps_count }} PEP{{ $locacion->peps_count !== 1 ? 's' : '' }} associado{{ $locacion->peps_count !== 1 ? 's' : '' }} — ficarão sem localização.
+                    </p>
+                @else
+                    <p class="text-xs mb-4 cme-muted">Esta ação não pode ser desfeita.</p>
+                @endif
+                <div class="flex gap-3">
+                    <button wire:click="cancelarEliminar" class="btn-cme-secondary flex-1">Cancelar</button>
+                    <button wire:click="eliminarPermanente"
+                            style="flex:1; background:#A32D2D; color:white; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; border:none; cursor:pointer;">
+                        Sim, eliminar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
