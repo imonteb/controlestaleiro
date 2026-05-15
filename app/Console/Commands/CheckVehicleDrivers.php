@@ -12,7 +12,7 @@ class CheckVehicleDrivers extends Command
 {
     protected $signature = 'app:check-vehicle-drivers';
 
-    protected $description = 'Verifica se veículos em PEPs ativos têm condutor registado às 9:00 AM';
+    protected $description = 'Verifica se veículos atribuídos têm condutor registado (08:15 e 08:45)';
 
     public function handle(): void
     {
@@ -21,11 +21,12 @@ class CheckVehicleDrivers extends Command
 
         $atribuicoes = Atribuicao::with(['veiculos', 'colaboradores'])
             ->where('fecha', $today)
-            ->whereNotNull('pep_id')
             ->get();
 
         foreach ($atribuicoes as $atrib) {
             foreach ($atrib->veiculos as $veh) {
+                $equipoTipo = $veh->pivot->equipo_tipo;
+
                 $temCondutor = VehicleDriverLog::where('vehicle_id', $veh->id)
                     ->whereNull('ended_at')
                     ->exists();
@@ -34,33 +35,36 @@ class CheckVehicleDrivers extends Command
                     continue;
                 }
 
-                // Evitar duplicar notificações no mesmo dia
-                $jaAlertado = AppNotification::where('tipo', 'sem_condutor')
-                    ->where('mensagem', 'like', "%{$veh->matricula}%")
+                // Máximo 2 notificações por veículo por dia (08:15 + 08:45)
+                $alertasHoje = AppNotification::where('tipo', 'sem_condutor')
                     ->whereDate('created_at', $today)
-                    ->exists();
+                    ->where('mensagem', 'like', "%{$veh->matricula}%")
+                    ->count();
 
-                if ($jaAlertado) {
+                if ($alertasHoje >= 2) {
                     continue;
                 }
 
-                $this->warn("Veículo {$veh->matricula} sem condutor registado.");
+                $this->warn("Veículo {$veh->matricula} ({$equipoTipo}) sem condutor registado.");
 
-                // Notificação no PC (header)
+                // Jefe do mesmo equipo_tipo
+                $jefe = $atrib->colaboradores
+                    ->first(fn ($c) => $c->pivot->equipo_tipo === $equipoTipo && (int) $c->pivot->es_jefe === 1);
+
                 AppNotification::create([
+                    'colaborador_id' => $jefe?->id,
                     'tipo' => 'sem_condutor',
                     'titulo' => "Veículo sem condutor: {$veh->matricula}",
-                    'mensagem' => "O veículo {$veh->matricula} está atribuído a uma equipa mas não tem condutor registado. Quem está a conduzir?",
+                    'mensagem' => "O veículo {$veh->matricula} está atribuído à equipa {$equipoTipo} mas não tem condutor registado.",
                     'activa' => true,
                     'data_expiracao' => now()->endOfDay(),
                 ]);
 
-                // Push para todos os colaboradores da equipa
-                $colaboradorIds = $atrib->colaboradores->pluck('id');
-                foreach ($colaboradorIds as $colId) {
-                    $push->sendToColaborador($colId, [
-                        'title' => '🚗 Quem conduz o veículo?',
-                        'body' => "O {$veh->matricula} ainda não tem condutor registado. Abra a app e marque «Sou eu que conduzo».",
+                // Push só para o jefe da equipa
+                if ($jefe) {
+                    $push->sendToColaborador($jefe->id, [
+                        'title' => '🚗 Veículo sem condutor',
+                        'body' => "O {$veh->matricula} ({$equipoTipo}) ainda não tem condutor registado.",
                         'tag' => "sem-condutor-{$veh->id}",
                         'url' => '/phone',
                         'requireInteraction' => true,

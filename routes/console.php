@@ -9,4 +9,5 @@ Artisan::command('inspire', function () {
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('app:check-vehicle-drivers')->dailyAt('09:00');
+Schedule::command('app:check-vehicle-drivers')->dailyAt('08:15')->weekdays();
+Schedule::command('app:check-vehicle-drivers')->dailyAt('08:45')->weekdays();
